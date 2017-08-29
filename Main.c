@@ -7,8 +7,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include <string.h>
-#include "Hotel.h"
+#include "Arquivos_Cabecalho/Hotel.h"
 
 //Inicio
 
@@ -17,6 +16,9 @@ int main(int argc, char const *argv[])
 	system("clear");
 		//Limpa a tela
 	
+	Verificacao_Arquivo_Hotel("Arquivos/Hotel.txt");
+		//Verifica se existe o Arquivo;
+		//POSTERIORMENTE FAZER UMA FUNÇÃO QUE CHAMA TODAS AS OUTRAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	int Modo_de_Abertura,teste;
 	while(1){
 		printf("\nDigite:"
@@ -29,13 +31,13 @@ int main(int argc, char const *argv[])
 			//limpa a tela
 
 		if(teste>=1 && teste<=2){
-			Modo_de_Abertura=Manipular_Arquivo();
+			Modo_de_Abertura=Manipular_Arquivo_Hotel();
 		}
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		switch (teste){
 			case 1:
-				Ler_Hotel_Txt();
+				Ler_Hotel_Txt("Arquivos/Hotel.txt");
 				break;
 
 			case 2:
