@@ -24,6 +24,7 @@ int main(int argc, char const *argv[])
 		printf("\nDigite:"
 			"\n\t1\tPara Ler"
 			"\n\t2\tPara Gravar"
+			"\n\t3\tEditar"
 			"\n\t?\tSair\n\t");
 		scanf("%d",&teste);
 
@@ -43,7 +44,12 @@ int main(int argc, char const *argv[])
 			case 2:
 				Criar_Editar_Hotel(Modo_de_Abertura);	
 				break;	
-
+			case 3:
+			printf("Digite o codigo");
+			int a;
+			scanf("%d",&a);
+				Apagar_Modificar_Hotel("Arquivos/Hotel.txt",a);
+			break;
 			default:
 				return 0;
 				break;

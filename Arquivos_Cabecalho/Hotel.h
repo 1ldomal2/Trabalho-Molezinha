@@ -27,8 +27,12 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura);
 void Quick_Sort(int vetor[], int inicio, int fim);
 int Intervalo_Vetor_Hotel(int Vetor[],int Ultimo);
 void Verificacao_Arquivo_Hotel(char Url[99]);
+int Temporaria_Hotel(char Url[99], int Numero_De_Registros);
+int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo);
+void Apagar_Modificar_Hotel(char Url[99], int Codigo);	
 
 //Funçoes
+
 void Verificacao_Arquivo_Hotel(char Url[99]){
 	FILE *Arquivo;
 		//Ponteiro para Arquivo
@@ -173,6 +177,80 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 }
 
 //----------------------------Hotel--------------------------------------
+/*int Temporaria_Hotel(char Url[99], int Numero_De_Registros){
+	FILE *Arquivo, *Arquivo_Temporario;
+	switch (Modo_de_Abertura){
+		case Arquivo_Texto:
+			Verificacao_Arquivo_Hotel(Url);
+		break;
+	}
+
+	
+}*/
+int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo){
+	//Funcao para procurar hotel com base no codigo digitado pelo usuario
+	FILE *Arquivo;
+	//Ponteiro do tipo File
+	char Temporario[9999];
+	Arquivo = fopen(Url,"r");
+	//Abre o arquivo em modo de leitura
+	int Validador = -1, Contador = 1;
+	
+	//Armazena o codigo lido no arquivo TXT
+	do{
+		fscanf(Arquivo,"%d",&Validador);
+		if(feof(Arquivo)){
+			return -1;
+			break;
+		}
+		if(Validador == Codigo){
+			//Verifica se o codigo é igual ao lido
+			return Contador;
+			//Retorna a linha que tem o codigo
+			break;
+			//Confirma se saiu do loop
+		}
+		Contador++;
+		fscanf(Arquivo,"%[^\n]s",Temporario);
+		//Le o arquivo ate a quebra de linha
+		getc(Arquivo);
+		//Pula a quebra de linha
+			
+	}while(!feof(Arquivo));
+	//Le ate o fim do arquivo
+	fclose(Arquivo);
+	//Fecha o arquvio
+	return -1;
+}
+	void Apagar_Modificar_Hotel(char Url[99], int Codigo){
+		int Linha = Retorna_Linha_Codigo_Hotel(Url,Codigo);
+		if(Linha == -1){
+			printf("Codigo inexistente");
+		}
+		else{
+			char Temporario[9999];		
+			FILE *Arquivo, *Arquivo_Temporario;
+			Arquivo = fopen(Url,"r");
+			Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
+			fclose(Arquivo_Temporario);
+			Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
+			for(int i=0;i<Linha;i++){
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				fprintf(Arquivo_Temporario,"%s;\n",Temporario);
+				getc(Arquivo);
+			}
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);		
+			while(!feof(Arquivo)){
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				fprintf(Arquivo_Temporario,"%s;\n",Temporario);
+				getc(Arquivo);
+			}
+			fclose(Arquivo_Temporario);
+			fclose(Arquivo);
+			
+		}
+	}
 
 	//-------------------------Txt--------------------------------------
 	void Ler_Hotel_Txt(char Url[99]){
