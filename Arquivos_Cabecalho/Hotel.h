@@ -234,7 +234,7 @@ int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo){
 			Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
 			fclose(Arquivo_Temporario);
 			Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
-			for(int i=0;i<Linha;i++){
+			for(int i=1;i<Linha;i++){
 				fscanf(Arquivo,"%[^\n]s",Temporario);
 				fprintf(Arquivo_Temporario,"%s;\n",Temporario);
 				getc(Arquivo);
