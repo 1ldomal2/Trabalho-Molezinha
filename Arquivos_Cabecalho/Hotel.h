@@ -205,7 +205,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 			
 			break;
 		case Arquivo_Texto:
-		 strcpy(Url,"Arquivos/Hotel.txt");
+		 	strcpy(Url,"Arquivos/Hotel.txt");
 		 	//Coloca o caminho na URL
 		 	if (Manter_Codigo == 0)
 		 	{
@@ -215,7 +215,16 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		 	}
 			break;
 		case Arquivo_Binario:
-		 
+		 	strcpy(Url,"Arquivos/Hotel.bin");
+		 	//Coloca o caminho na URL
+
+		 	if (Manter_Codigo == 0)
+		 	{
+		 		Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario);
+		 	}else{
+		 		Hotel.Codigo = Manter_Codigo;
+		 	}
+			break;
 			break;
 		case Banco_De_Dados:
 			//Não está implementado

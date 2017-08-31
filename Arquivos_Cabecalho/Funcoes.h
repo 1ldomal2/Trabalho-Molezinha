@@ -35,69 +35,82 @@ void Verificacao_Arquivo(char Url[99]);
 			printf("Codigo inexistente");
 		}
 		else{
-			char Temporario[9999];
-				//Somente é declara para alocação do ponteiro dentro do arquivo		
-			FILE *Arquivo, *Arquivo_Temporario;
-				//Ponteiros para Arquivos
-			Arquivo = fopen(Url,"r");
-				//Abre em modo Leitura
-			Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
-				//Cria o Arquivo Temporario
-			fclose(Arquivo_Temporario);
-				//Fecha
-			Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
-				//Abre para Editar
-			for(int i=1;i<Linha;i++){
-				//Vai ate a linha do codigo
-				fscanf(Arquivo,"%[^\n]s",Temporario);
-				fprintf(Arquivo_Temporario,"%s\n",Temporario);
-				getc(Arquivo);
-			}
-
-			fscanf(Arquivo,"%[^;]s",Temporario);
-				//Pula a Linha do Codigo
-			if(Modificar==1){
-				//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
-				Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
-			}
-			fscanf(Arquivo,"%[^\n]s",Temporario);
-			getc(Arquivo);
-
-			while(!feof(Arquivo)){
-				//Vai ate o Final do Arquivo
-				fscanf(Arquivo,"%[^\n]s",Temporario);
-				if(feof(Arquivo)){
-					//Sai caso esteja no fim do arquivo;
-					break;
+			
+			if(Confirmacao()){
+				char Temporario[9999];
+					//Somente é declara para alocação do ponteiro dentro do arquivo		
+				FILE *Arquivo, *Arquivo_Temporario;
+					//Ponteiros para Arquivos
+				Arquivo = fopen(Url,"r");
+					//Abre em modo Leitura
+				Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
+					//Cria o Arquivo Temporario
+				fclose(Arquivo_Temporario);
+					//Fecha
+				Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
+					//Abre para Editar
+				for(int i=1;i<Linha;i++){
+					//Vai ate a linha do codigo
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					fprintf(Arquivo_Temporario,"%s\n",Temporario);
+					getc(Arquivo);
 				}
-				fprintf(Arquivo_Temporario,"%s\n",Temporario);
-					//Printa no Arquivo Temporario
+
+				fscanf(Arquivo,"%[^;]s",Temporario);
+					//Pula a Linha do Codigo
+
+				if(Modificar==1){
+					//Se for 1 a função serve para modificar caso contraria apenas apaga
+					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
+					Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
+					printf("\nEditado com Sucesso");
+					system("clear");
+				}
+				fscanf(Arquivo,"%[^\n]s",Temporario);
 				getc(Arquivo);
-					//Pula o \n
+
+				while(!feof(Arquivo)){
+					//Vai ate o Final do Arquivo
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					if(feof(Arquivo)){
+						//Sai caso esteja no fim do arquivo;
+						break;
+					}
+					fprintf(Arquivo_Temporario,"%s\n",Temporario);
+						//Printa no Arquivo Temporario
+					getc(Arquivo);
+						//Pula o \n
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+					//Fecha ambos os Arquivos
+				remove(Url);
+					//Remove o Arquivo Original
+				rename("Arquivos/Temp.txt",Url);
+					//Renomeia o Arquivo
+				if(Modificar==0){
+					printf("\nExcluído com Sucesso");
+				}
 			}
-			fclose(Arquivo_Temporario);
-			fclose(Arquivo);
-				//Fecha ambos os Arquivos
-			remove(Url);
-				//Remove o Arquivo Original
-			rename("Arquivos/Temp.txt",Url);
-				//Renomeia o Arquivo
 		}
 
 	}
 
 int Confirmacao(){
-	char Confirmacao;
+	int Confirmacao;
 		//Declaração variavel
 
-	printf("\nDigite 'S' para confirmar: ");
-	scanf("%c",&Confirmacao);
-	system("clear");
-	if(Confirmacao=='S' || Confirmacao =='s'){
+	printf("\nDigite '1' para confirmar: ");
+	fflush(stdin);
+	scanf("%d%*c",&Confirmacao);
+	fflush(stdin);
+	//system("clear");
+	if(Confirmacao ==1){
 		return 1;
-	}else{
+	}else{	
 		return 0;
 	}
+	return 0;
 }
 
 int Intervalo_Vetor(int Vetor[],int Ultimo){
@@ -253,7 +266,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	char Temporario[9999];
 	int Vetor_Codigos[9999],Codigo;
 		//Declaraçao de variaveis
-
+printf("sdfghj\n");
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
 	switch(Modo_de_Abertura){
@@ -268,52 +281,58 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 
 	int Contador1=0;
 		//Evita lixo de memoria
-
-	while(!feof(Arquivo)){
-
-		fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
-			//Salva o Codigo
-
-			getc(Arquivo);
-
-		if(feof(Arquivo)){
-			Contador1--;
-			break;
-		}
-		for (int i = 1; i <=Numero_De_Registros; ++i)
-		{//Pula os Registros
-			fscanf(Arquivo,"%[^;]s",Temporario);
-			getc(Arquivo);
-		}
-		getc(Arquivo);
-		Contador1++;
-		
-	}
-
-	Quick_Sort(Vetor_Codigos,0,Contador1);
-		//Ordenamento do Vetor;
-																
-	int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
-	//Variavel Auxiliar recebe retorno da Funcao intervalor 
-							
-	if (Auxiliar != -1)
-		//Se diferente de -1
+	if (Modo_de_Abertura == Arquivo_Texto)
 	{
-		Codigo = (Vetor_Codigos[Auxiliar])+1;
-		//Codigo recebe o valor do Vetor Codigos na posicao Auxiliar somado 1
+	
+		while(!feof(Arquivo)){
 
-	}else{
-		Codigo = Vetor_Codigos[Contador1]+1;
-		//Se Nao Codigo recebe vetor na ultima posicao somado 1
-		
+			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
+				//Salva o Codigo
+
+				getc(Arquivo);
+
+			if(feof(Arquivo)){
+				Contador1--;
+				break;
+			}
+			for (int i = 1; i <=Numero_De_Registros; ++i)
+			{//Pula os Registros
+				fscanf(Arquivo,"%[^;]s",Temporario);
+				getc(Arquivo);
+			}
+			getc(Arquivo);
+			Contador1++;
+			
+		}
+
+		Quick_Sort(Vetor_Codigos,0,Contador1);
+			//Ordenamento do Vetor;
+																	
+		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
+		//Variavel Auxiliar recebe retorno da Funcao intervalor 
+								
+		if (Auxiliar != -1)
+			//Se diferente de -1
+		{
+			Codigo = (Vetor_Codigos[Auxiliar])+1;
+			//Codigo recebe o valor do Vetor Codigos na posicao Auxiliar somado 1
+
+		}else{
+			Codigo = Vetor_Codigos[Contador1]+1;
+			//Se Nao Codigo recebe vetor na ultima posicao somado 1
+			
+		}
+	}else if (Modo_de_Abertura == Arquivo_Binario)
+	{
+		/* code */
 	}
-
 	fclose(Arquivo);
 	//Fecha arquivo
 	return Codigo;
 	//Retorna o Codigo
 
 }
+
 void Verificacao_Arquivo(char Url[99]){
 	FILE *Arquivo;
 		//Ponteiro para Arquivo
