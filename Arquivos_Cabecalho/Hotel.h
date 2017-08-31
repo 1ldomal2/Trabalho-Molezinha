@@ -21,7 +21,7 @@ void Ler_Hotel_Txt(char Url[99]);
 void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
 void Ler_Hotel_Bin();
 void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
-void Criar_Editar_Hotel(int Modo_de_Abertura);
+void Criar_Editar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
 int Manipular_Arquivo_Hotel();
 int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura);
 void Quick_Sort(int vetor[], int inicio, int fim);
@@ -29,7 +29,7 @@ int Intervalo_Vetor_Hotel(int Vetor[],int Ultimo);
 void Verificacao_Arquivo_Hotel(char Url[99]);
 int Temporaria_Hotel(char Url[99], int Numero_De_Registros);
 int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo);
-void Apagar_Modificar_Hotel(char Url[99], int Codigo);	
+void Apagar_Modificar_Hotel(char Url[99], int Codigo,int Modificar);	
 
 //Funçoes
 
@@ -222,34 +222,62 @@ int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo){
 	//Fecha o arquvio
 	return -1;
 }
-	void Apagar_Modificar_Hotel(char Url[99], int Codigo){
+	void Apagar_Modificar_Hotel(char Url[99], int Codigo,int Modificar){
 		int Linha = Retorna_Linha_Codigo_Hotel(Url,Codigo);
+			//Retorna qual linha deve ser apagada
 		if(Linha == -1){
+			//Caso o codigo nãp esteja presente dentro do arquivo
 			printf("Codigo inexistente");
 		}
 		else{
-			char Temporario[9999];		
+			char Temporario[9999];
+				//Somente é declara para alocação do ponteiro dentro do arquivo		
 			FILE *Arquivo, *Arquivo_Temporario;
+				//Ponteiros para Arquivos
 			Arquivo = fopen(Url,"r");
+				//Abre em modo Leitura
 			Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
+				//Cria o Arquivo Temporario
 			fclose(Arquivo_Temporario);
+				//Fecha
 			Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
+				//Abre para Editar
 			for(int i=1;i<Linha;i++){
+				//Vai ate a linha do codigo
 				fscanf(Arquivo,"%[^\n]s",Temporario);
-				fprintf(Arquivo_Temporario,"%s;\n",Temporario);
+				fprintf(Arquivo_Temporario,"%s\n",Temporario);
 				getc(Arquivo);
 			}
+
+			fscanf(Arquivo,"%[^;]s",Temporario);
+				//Pula a Linha do Codigo
+			if(Modificar==1){
+				Criar_Editar_Hotel(Arquivo_Texto, Codigo);
+			}
 			fscanf(Arquivo,"%[^\n]s",Temporario);
-			getc(Arquivo);		
+			getc(Arquivo);
+
 			while(!feof(Arquivo)){
+				//Vai ate o Final do Arquivo
 				fscanf(Arquivo,"%[^\n]s",Temporario);
-				fprintf(Arquivo_Temporario,"%s;\n",Temporario);
+				if(feof(Arquivo)){
+					//Sai caso esteja no fim do arquivo;
+					break;
+				}
+				fprintf(Arquivo_Temporario,"%s\n",Temporario);
+					//Printa no Arquivo Temporario
 				getc(Arquivo);
+					//Pula o \n
 			}
 			fclose(Arquivo_Temporario);
 			fclose(Arquivo);
-			
+				//Fecha ambos os Arquivos
+			remove(Url);
+				//Remove o Arquivo Original
+			rename("Arquivos/Temp.txt",Url);
+				//Renomeia o Arquivo
 		}
+
 	}
 
 	//-------------------------Txt--------------------------------------
@@ -425,7 +453,7 @@ int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo){
 	}
 
 	//---------------------Editar/Criar---------------------
-	void Criar_Editar_Hotel(int Modo_de_Abertura){
+	void Criar_Editar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		char Url[99];
 		DADOS_HOTEL Hotel;
 			//Variavel Local
@@ -438,13 +466,15 @@ int Retorna_Linha_Codigo_Hotel(char Url[99], int Codigo){
 			case Arquivo_Texto:
 			 strcpy(Url,"Arquivos/Hotel.txt");
 			 	//Coloca o caminho na URL
-				Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Texto);
+			 	if (Manter_Codigo == 0)
+			 	{
+			 		Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Texto);
+			 	}else{
+			 		Hotel.Codigo = Manter_Codigo;
+			 	}
 				break;
 			case Arquivo_Binario:
-			 strcpy(Url,"Arquivos/Hotel.bin");
-			 	//Coloca o caminho na URL
-				Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario);
-
+			 
 				break;
 			case Banco_De_Dados:
 				//Não está implementado

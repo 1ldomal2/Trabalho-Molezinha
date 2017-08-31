@@ -6,8 +6,8 @@ teste: temp.o main.o
 #-----> Distancia com o botão TAB ### e não com espaços
 teste.o: teste.c
         gcc -o teste.o -c teste.c -W -Wall -ansi -pedantic
-main.o: main.c teste.h
-        gcc -o main.o -c main.c -W -Wall -ansi -pedantic
+main.o: Main.c
+        gcc -o Main.o -c Executar
 clean:
         rm -rf *.o
 mrproper: clean

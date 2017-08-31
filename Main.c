@@ -19,12 +19,13 @@ int main(int argc, char const *argv[])
 	Verificacao_Arquivo_Hotel("Arquivos/Hotel.txt");
 		//Verifica se existe o Arquivo;
 		//POSTERIORMENTE FAZER UMA FUNÇÃO QUE CHAMA TODAS AS OUTRAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	int Modo_de_Abertura,teste;
+	int Modo_de_Abertura,teste,Codigo=0;
 	while(1){
 		printf("\nDigite:"
 			"\n\t1\tPara Ler"
-			"\n\t2\tPara Gravar"
-			"\n\t3\tEditar"
+			"\n\t2\tPara Criar"
+			"\n\t3\tPara Editar"
+			"\n\t4\tPara Apagar"
 			"\n\t?\tSair\n\t");
 		scanf("%d",&teste);
 
@@ -42,13 +43,17 @@ int main(int argc, char const *argv[])
 				break;
 
 			case 2:
-				Criar_Editar_Hotel(Modo_de_Abertura);	
+				Criar_Editar_Hotel(Modo_de_Abertura,0);	
 				break;	
 			case 3:
-			printf("Digite o codigo");
-			int a;
-			scanf("%d",&a);
-				Apagar_Modificar_Hotel("Arquivos/Hotel.txt",a);
+			printf("Digite o codigo a ser editado: ");
+			scanf("%d",&Codigo);
+				Apagar_Modificar_Hotel("Arquivos/Hotel.txt",Codigo,1);
+			break;
+			case 4:
+			printf("Digite o codigo a ser apagado: ");
+			scanf("%d",&Codigo);
+				Apagar_Modificar_Hotel("Arquivos/Hotel.txt",Codigo,0);
 			break;
 			default:
 				return 0;
