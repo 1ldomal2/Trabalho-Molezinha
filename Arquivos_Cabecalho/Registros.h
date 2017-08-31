@@ -3,8 +3,6 @@
 #define _Registro_ 
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 
-//Prototipos de Função
-
 //Enum
 enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
 enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
