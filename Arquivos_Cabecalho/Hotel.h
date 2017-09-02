@@ -239,6 +239,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
  			case Memoria:
 			
 			break;
+			
 		case Arquivo_Texto:
 		 	strcpy(Url,"Arquivos/Hotel.txt");
 		 	//Coloca o caminho na URL
@@ -249,17 +250,16 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		 		Hotel.Codigo = Manter_Codigo;
 		 	}
 			break;
+
 		case Arquivo_Binario:
 		 	strcpy(Url,"Arquivos/Hotel.bin");
 		 	//Coloca o caminho na URL
-
 		 	if (Manter_Codigo == 0)
 		 	{
 		 		Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario);
 		 	}else{
 		 		Hotel.Codigo = Manter_Codigo;
 		 	}
-			break;
 			break;
 		case Banco_De_Dados:
 			//Não está implementado
@@ -330,6 +330,43 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 			break;
 	}
 		//Para Grava o Buffer da String no Arquivo
+}
+
+
+int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo){
+	//Funcao para procurar hotel com base no codigo digitado pelo usuario
+	FILE *Arquivo;
+	MODO Modo;
+	Modo = Modo_Nao_Sei(Arquivo_Binario);
+	//Ponteiro do tipo File
+	char Temporario[9999];
+	DADOS_HOTEL Hotel;
+	Arquivo = fopen(Url,Modo.Leitura);
+	//Abre o arquivo em modo de leitura
+	int Validador = -1, Numero_Structs = 1;
+	
+	//Armazena o codigo lido no arquivo Bin
+	do{
+		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+		Validador = Hotel.Codigo;
+		if(feof(Arquivo)){
+			return -1;
+			break;
+		}
+		if(Validador == Codigo){
+			//Verifica se o codigo é igual ao lido
+			return Numero_Structs;
+			//Retorna a linha que tem o codigo
+			break;
+			//Confirma se saiu do loop
+		}
+		Numero_Structs++;
+		//Soma no contac
+	}while(!feof(Arquivo));
+	//Le ate o fim do arquivo
+	fclose(Arquivo);
+	//Fecha o arquvio
+	return -1;
 }
 
 #endif

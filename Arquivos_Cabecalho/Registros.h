@@ -12,6 +12,13 @@ enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,
 
 //Struturas e Union
 	//O Typedef atribui um apelido em vez de ter que declarar "struct Dados_Hotel" será usado apenas "DADOS_HOTEL"
+typedef struct Modo{
+	char Leitura[4];
+	char Escrita[4];
+	char Concatenacao[4];
+	int Modo_de_Abertura;
+}MODO;
+	
 typedef struct Endereco{
 	char Logradouro[80];
 	char Numero[80];

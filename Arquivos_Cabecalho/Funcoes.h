@@ -23,32 +23,28 @@ int Modo_Manipulacao();
 void Quick_Sort(int vetor[], int inicio, int fim);
 int Retorna_Linha_Codigo(char Url[99], int Codigo);
 int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura);
-void Verificacao_Arquivo(char Url[99]);
+void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 */
 
 //Funçoes
-	void Apagar_Modificar(char Url[99], int Codigo,int Modificar){
+void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo){
+	if(Modo.Modo_de_Abertura == Arquivo_Texto){
 		int Linha = Retorna_Linha_Codigo(Url,Codigo);
 			//Retorna qual linha deve ser apagada
 		if(Linha == -1){
 			//Caso o codigo nãp esteja presente dentro do arquivo
 			printf("Codigo inexistente");
-		}
-		else{
-			
+		}else{
 			if(Confirmacao()){
 				char Temporario[9999];
 					//Somente é declara para alocação do ponteiro dentro do arquivo		
 				FILE *Arquivo, *Arquivo_Temporario;
 					//Ponteiros para Arquivos
-				Arquivo = fopen(Url,"r");
+				Arquivo = fopen(Url,Modo.Leitura);
 					//Abre em modo Leitura
-				Arquivo_Temporario = fopen("Arquivos/Temp.txt","w");
-					//Cria o Arquivo Temporario
-				fclose(Arquivo_Temporario);
-					//Fecha
-				Arquivo_Temporario = fopen("Arquivos/Temp.txt","a");
+				Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
 					//Abre para Editar
+
 				for(int i=1;i<Linha;i++){
 					//Vai ate a linha do codigo
 					fscanf(Arquivo,"%[^\n]s",Temporario);
@@ -57,7 +53,7 @@ void Verificacao_Arquivo(char Url[99]);
 				}
 
 				fscanf(Arquivo,"%[^;]s",Temporario);
-					//Pula a Linha do Codigo
+				//Pula a Linha do Codigo
 
 				if(Modificar==1){
 					//Se for 1 a função serve para modificar caso contraria apenas apaga
@@ -86,15 +82,62 @@ void Verificacao_Arquivo(char Url[99]);
 					//Fecha ambos os Arquivos
 				remove(Url);
 					//Remove o Arquivo Original
-				rename("Arquivos/Temp.txt",Url);
+				rename("Arquivos/Temp",Url);
 					//Renomeia o Arquivo
 				if(Modificar==0){
 					printf("\nExcluído com Sucesso");
 				}
 			}
 		}
+			
+	}else if(Modo.Modo_de_Abertura == Arquivo_Binario){
+		DADOS_HOTEL Hotel;
+		FILE *Arquivo, *Arquivo_Temporario;
+		Arquivo=fopen(Url,Modo.Leitura);
+		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
+		int Campo_Struct = Retorna_Campo_Struct_Hotel(Url, Codigo);
+		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
+		if(Campo_Struct == -1){
+			printf("O codigo digitado não foi encontrado");
+		}else{
+			if(Confirmacao()){
+				for(int i=1;i<Campo_Struct;i++){
+					//Vai ate o campo do codigo
+					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+				}
 
+				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+
+				if(Modificar==1){
+					Criar_Modificar_Hotel(Arquivo_Binario, Codigo);
+					printf("\nEditado com Sucesso");
+					system("clear");
+				}
+				while(!feof(Arquivo)){
+					//Vai ate o Final do Arquivo
+					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+					if(feof(Arquivo)){
+						//Sai caso esteja no fim do arquivo;
+						break;
+					}
+					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+						//Printa no Arquivo Temporario
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+					//Fecha ambos os Arquivos
+				remove(Url);
+					//Remove o Arquivo Original
+				rename("Arquivos/Temp",Url);
+					//Renomeia o Arquivo
+				if(Modificar==0){
+					printf("\nExcluído com Sucesso");
+				}
+			}
+		}
 	}
+}
 
 int Confirmacao(){
 	int Confirmacao;
@@ -261,44 +304,6 @@ int Retorna_Linha_Codigo(char Url[99], int Codigo){
 	return -1;
 }
 
-/*int Retorna_Campo_Struct(char Url[99], int Codigo){
-	//Funcao para procurar hotel com base no codigo digitado pelo usuario
-	FILE *Arquivo;
-	//Ponteiro do tipo File
-	char Temporario[9999];
-	DADOS_HOTEL Hotel;
-	Arquivo = fopen(Url,"rb");
-	//Abre o arquivo em modo de leitura
-	int Validador = -1, Contador = 1;
-	
-	//Armazena o codigo lido no arquivo TXT
-	do{
-		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-		Validador = Hotel.Codigo;
-		if(feof(Arquivo)){
-			return -1;
-			break;
-		}
-		if(Validador == Codigo){
-			//Verifica se o codigo é igual ao lido
-			return Contador;
-			//Retorna a linha que tem o codigo
-			break;
-			//Confirma se saiu do loop
-		}
-		Contador++;
-		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-		//Le o arquivo ate a quebra de linha
-		getc(Arquivo);
-		//Pula a quebra de linha
-			
-	}while(!feof(Arquivo));
-	//Le ate o fim do arquivo
-	fclose(Arquivo);
-	//Fecha o arquvio
-	return -1;
-}*/
-
 
 int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	char Temporario[9999];
@@ -327,18 +332,12 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 
 			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
 				//Salva o Codigo
-
 				getc(Arquivo);
 
 			if(feof(Arquivo)){
-				Contador1--;
 				break;
 			}
-			for (int i = 1; i <=Numero_De_Registros; ++i)
-			{//Pula os Registros
-				fscanf(Arquivo,"%[^;]s",Temporario);
-				getc(Arquivo);
-			}
+			fscanf(Arquivo,"%[^\n]s",Temporario);
 			getc(Arquivo);
 			Contador1++;
 			
@@ -353,6 +352,13 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 		if (Auxiliar != -1)
 			//Se diferente de -1
 		{
+			if(Vetor_Codigos[0] != 1){
+				//Verifica se o codigo na posicao 0 é diferente de 1
+				Codigo = 1;
+				//Se for atribui 1 ao codigo
+				return Codigo;
+				//Retorna o Codigo
+			}
 			Codigo = (Vetor_Codigos[Auxiliar])+1;
 			//Codigo recebe o valor do Vetor Codigos na posicao Auxiliar somado 1
 
@@ -364,11 +370,9 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
 		Contador1=0;
-		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
 		while(!feof(Arquivo)){
 			fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
 			if(feof(Arquivo)){
-				Contador1--;
 				break;
 			}
 			Vetor_Codigos[Contador1] = Hotel.Codigo;
@@ -399,23 +403,60 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 
 }
 
-void Verificacao_Arquivo(char Url[99]){
+void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura){
 	FILE *Arquivo;
 		//Ponteiro para Arquivo
+	switch(Modo_de_Abertura){
+		case Arquivo_Texto:
+			Arquivo=fopen(Url,"r");
+			//Abre o Arquivo em Modo Leitura
 
-	Arquivo=fopen(Url,"r");
-		//Abre o Arquivo em Modo Leitura
+			if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+				Arquivo=fopen(Url,"w");
+					//Abre no modo leitura e caso não exista ele vai criar o arquivo
+			}
+			break;
+		case Arquivo_Binario:
+			Arquivo=fopen(Url,"rb");
+			//Abre o Arquivo em Modo Leitura
 
-	if(Arquivo==NULL){
-		//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
 
-		Arquivo=fopen(Url,"w");
-			//Abre no modo leitura e caso não exista ele vai criar o arquivo
-
+				Arquivo=fopen(Url,"wb");
+					//Abre no modo leitura e caso não exista ele vai criar o arquivo
+			
+			}
+			break;
 	}
+	
 	fclose(Arquivo);
 		//Fecha o Arquivo
 }
 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+MODO Modo_Nao_Sei(int Modo_de_Abertura){
+	MODO Modo;
+	switch(Modo_de_Abertura){
+		case Arquivo_Texto:
+			strcpy(Modo.Leitura,"r");
+			strcpy(Modo.Escrita,"w");
+			strcpy(Modo.Concatenacao,"a");
+			Modo.Modo_de_Abertura = Arquivo_Texto;
+			break;
+		
+		case Arquivo_Binario:
+			strcpy(Modo.Leitura,"rb");
+			strcpy(Modo.Escrita,"wb");
+			strcpy(Modo.Concatenacao,"ab");
+			Modo.Modo_de_Abertura = Arquivo_Binario;
+			break;
+	}
+	return Modo;
+}
 
 #endif

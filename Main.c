@@ -29,10 +29,12 @@ int main(int argc, char const *argv[])
 	system("clear");
 		//Limpa a tela
 	
-	Verificacao_Arquivo("Arquivos/Hotel.txt");
-		//Verifica se existe o Arquivo;
-
+	
+	MODO Modo;
 	int Modo_de_Abertura,teste,Codigo=0;
+	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
+	
 	while(1){
 		printf("\nDigite:"
 			"\n\t1\tPara Ler"
@@ -45,8 +47,9 @@ int main(int argc, char const *argv[])
 		system("clear");
 			//limpa a tela
 
-		if(teste>=1 && teste<=2){
+		if(teste>=1 && teste<=4){
 			Modo_de_Abertura=Modo_Manipulacao();
+			Modo = Modo_Nao_Sei(Modo_de_Abertura);
 		}
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -54,8 +57,11 @@ int main(int argc, char const *argv[])
 			case 1:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
+				
+				//Verifica se existe o Arquivo;
 				Ler_Hotel_Bin("Arquivos/Hotel.bin");
 			}else{
+				//Verifica se existe o Arquivo;
 				Ler_Hotel_Txt("Arquivos/Hotel.txt");
 			}
 				break;
@@ -64,14 +70,28 @@ int main(int argc, char const *argv[])
 				Criar_Modificar_Hotel(Modo_de_Abertura,0);	
 				break;	
 			case 3:
-				printf("Digite o codigo a ser editado: ");
-				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1);
+				if(Modo_de_Abertura == Arquivo_Binario){
+					printf("Digite o codigo a ser editado: ");
+					scanf("%d",&Codigo);
+					Apagar_Modificar("Arquivos/Hotel.bin",Codigo,1,Modo);
+				}else if(Modo_de_Abertura == Arquivo_Texto){
+					printf("Digite o codigo a ser editado: ");
+					scanf("%d",&Codigo);
+					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo);
+				}
+				
 			break;
 			case 4:
+			if(Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0);
+				Apagar_Modificar("Arquivos/Hotel.bin",Codigo,0,Modo);
+			}else if(Modo_de_Abertura == Arquivo_Texto){
+				printf("Digite o codigo a ser apagado: ");
+				scanf("%d",&Codigo);
+				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo);
+			}
+				
 			break;
 			default:
 				return 0;
