@@ -73,7 +73,7 @@ int main(int argc, char const *argv[])
 				if(Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hotel.bin",Codigo,1,Modo);
+					Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,1,Modo);
 				}else if(Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
@@ -85,7 +85,7 @@ int main(int argc, char const *argv[])
 			if(Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hotel.bin",Codigo,0,Modo);
+				Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,0,Modo);
 			}else if(Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);

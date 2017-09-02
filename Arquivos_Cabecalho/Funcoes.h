@@ -28,13 +28,12 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 
 //Funçoes
 void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo){
-	if(Modo.Modo_de_Abertura == Arquivo_Texto){
-		int Linha = Retorna_Linha_Codigo(Url,Codigo);
-			//Retorna qual linha deve ser apagada
-		if(Linha == -1){
-			//Caso o codigo nãp esteja presente dentro do arquivo
-			printf("Codigo inexistente");
-		}else{
+	int Linha = Retorna_Linha_Codigo(Url,Codigo);
+		//Retorna qual linha deve ser apagada
+	if(Linha == -1){
+		//Caso o codigo nãp esteja presente dentro do arquivo
+		printf("Codigo inexistente");
+	}else{
 			if(Confirmacao()){
 				char Temporario[9999];
 					//Somente é declara para alocação do ponteiro dentro do arquivo		
@@ -89,55 +88,7 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo){
 				}
 			}
 		}
-			
-	}else if(Modo.Modo_de_Abertura == Arquivo_Binario){
-		DADOS_HOTEL Hotel;
-		FILE *Arquivo, *Arquivo_Temporario;
-		Arquivo=fopen(Url,Modo.Leitura);
-		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
-		int Campo_Struct = Retorna_Campo_Struct_Hotel(Url, Codigo);
-		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
-		if(Campo_Struct == -1){
-			printf("O codigo digitado não foi encontrado");
-		}else{
-			if(Confirmacao()){
-				for(int i=1;i<Campo_Struct;i++){
-					//Vai ate o campo do codigo
-					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
-				}
-
-				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-
-				if(Modificar==1){
-					Criar_Modificar_Hotel(Arquivo_Binario, Codigo);
-					printf("\nEditado com Sucesso");
-					system("clear");
-				}
-				while(!feof(Arquivo)){
-					//Vai ate o Final do Arquivo
-					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-					if(feof(Arquivo)){
-						//Sai caso esteja no fim do arquivo;
-						break;
-					}
-					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
-						//Printa no Arquivo Temporario
-				}
-				fclose(Arquivo_Temporario);
-				fclose(Arquivo);
-					//Fecha ambos os Arquivos
-				remove(Url);
-					//Remove o Arquivo Original
-				rename("Arquivos/Temp",Url);
-					//Renomeia o Arquivo
-				if(Modificar==0){
-					printf("\nExcluído com Sucesso");
-				}
-			}
-		}
 	}
-}
 
 int Confirmacao(){
 	int Confirmacao;

@@ -23,5 +23,5 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
 void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
 void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
-
+void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 #endif

@@ -31,6 +31,8 @@ void Ler_Hotel_Txt(char Url[99]){
 
 	Arquivo=fopen(Url,"r");
 		//Abre o Arquivo
+	int Arquivo_Vazio=0;
+
 	
 	if(Arquivo==NULL){
 		printf("O Arquivo não foi aberto corretamente\n");
@@ -126,8 +128,12 @@ void Ler_Hotel_Txt(char Url[99]){
 			printf("Check out:\t\t%s\n",Hotel.Check_out);
 			printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
 			printf("____________________________________________________\n");
+			Arquivo_Vazio++;
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
+		if(Arquivo_Vazio==0){
+			printf("O Arquivo está vazio\n");
+		}
 	}
 
 	fclose(Arquivo);
@@ -138,35 +144,41 @@ void Ler_Hotel_Bin(char Url[99]){
 	FILE *Arquivo;
 	DADOS_HOTEL Hotel;
 	Arquivo = fopen(Url,"rb");
+	int Arquivo_Vazio=0;
 	if(Arquivo == NULL){
    		printf("\nNao foi possivel abrir o arquivo!");
-   	}
-   	while(!feof(Arquivo)){
-	    fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-		if(feof(Arquivo)){
-			//Verifica se esta no fim do arquivo
-			break;
-			//Sai do loop
+   	}else{
+	   	while(!feof(Arquivo)){
+		    fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+		   	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
+			printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
+			printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
+			printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
+			printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
+			printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
+			printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
+			printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
+			printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
+			printf("Telefone:\t\t%s\n",Hotel.Telefone);
+			printf("Email:\t\t\t%s\n",Hotel.Email);
+			printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
+			printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
+			printf("Check in:\t\t%s\n",Hotel.Check_in);
+			printf("Check out:\t\t%s\n",Hotel.Check_out);
+			printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
+			printf("____________________________________________________\n");
+			Arquivo_Vazio++;
+	   	}
+	   	fclose(Arquivo);
+	   	if(Arquivo_Vazio==0){
+			printf("O Arquivo está vazio\n");
 		}
-	   	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
-		printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
-		printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
-		printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
-		printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
-		printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
-		printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
-		printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
-		printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
-		printf("Telefone:\t\t%s\n",Hotel.Telefone);
-		printf("Email:\t\t\t%s\n",Hotel.Email);
-		printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
-		printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
-		printf("Check in:\t\t%s\n",Hotel.Check_in);
-		printf("Check out:\t\t%s\n",Hotel.Check_out);
-		printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
-		printf("____________________________________________________\n");
-   	}
-   	fclose(Arquivo);
+	}
 }
 
 void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
@@ -368,5 +380,56 @@ int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo){
 	//Fecha o arquvio
 	return -1;
 }
+
+void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo){
+	if(Modo.Modo_de_Abertura == Arquivo_Binario){
+		DADOS_HOTEL Hotel;
+		FILE *Arquivo, *Arquivo_Temporario;
+		Arquivo=fopen(Url,Modo.Leitura);
+		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
+		int Campo_Struct = Retorna_Campo_Struct_Hotel(Url, Codigo);
+		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
+		if(Campo_Struct == -1){
+			printf("O codigo digitado não foi encontrado");
+		}else{
+			if(Confirmacao()){
+				for(int i=1;i<Campo_Struct;i++){
+					//Vai ate o campo do codigo
+					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+				}
+
+				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+
+				if(Modificar==1){
+					Criar_Modificar_Hotel(Arquivo_Binario, Codigo);
+					printf("\nEditado com Sucesso");
+					system("clear");
+				}
+				while(!feof(Arquivo)){
+					//Vai ate o Final do Arquivo
+					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+					if(feof(Arquivo)){
+						//Sai caso esteja no fim do arquivo;
+						break;
+					}
+					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+						//Printa no Arquivo Temporario
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+					//Fecha ambos os Arquivos
+				remove(Url);
+					//Remove o Arquivo Original
+				rename("Arquivos/Temp",Url);
+					//Renomeia o Arquivo
+				if(Modificar==0){
+					printf("\nExcluído com Sucesso");
+				}
+			}
+		}
+	}
+}
+
 
 #endif
