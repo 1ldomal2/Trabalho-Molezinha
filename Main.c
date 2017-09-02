@@ -52,7 +52,12 @@ int main(int argc, char const *argv[])
 
 		switch (teste){
 			case 1:
+			if (Modo_de_Abertura == Arquivo_Binario)
+			{
+				Ler_Hotel_Bin("Arquivos/Hotel.bin");
+			}else{
 				Ler_Hotel_Txt("Arquivos/Hotel.txt");
+			}
 				break;
 
 			case 2:

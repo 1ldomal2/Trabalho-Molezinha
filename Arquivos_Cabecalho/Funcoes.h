@@ -261,12 +261,51 @@ int Retorna_Linha_Codigo(char Url[99], int Codigo){
 	return -1;
 }
 
+/*int Retorna_Campo_Struct(char Url[99], int Codigo){
+	//Funcao para procurar hotel com base no codigo digitado pelo usuario
+	FILE *Arquivo;
+	//Ponteiro do tipo File
+	char Temporario[9999];
+	DADOS_HOTEL Hotel;
+	Arquivo = fopen(Url,"rb");
+	//Abre o arquivo em modo de leitura
+	int Validador = -1, Contador = 1;
+	
+	//Armazena o codigo lido no arquivo TXT
+	do{
+		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+		Validador = Hotel.Codigo;
+		if(feof(Arquivo)){
+			return -1;
+			break;
+		}
+		if(Validador == Codigo){
+			//Verifica se o codigo é igual ao lido
+			return Contador;
+			//Retorna a linha que tem o codigo
+			break;
+			//Confirma se saiu do loop
+		}
+		Contador++;
+		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+		//Le o arquivo ate a quebra de linha
+		getc(Arquivo);
+		//Pula a quebra de linha
+			
+	}while(!feof(Arquivo));
+	//Le ate o fim do arquivo
+	fclose(Arquivo);
+	//Fecha o arquvio
+	return -1;
+}*/
+
 
 int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	char Temporario[9999];
 	int Vetor_Codigos[9999],Codigo;
+	DADOS_HOTEL Hotel;
 		//Declaraçao de variaveis
-printf("sdfghj\n");
+
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
 	switch(Modo_de_Abertura){
@@ -324,12 +363,39 @@ printf("sdfghj\n");
 		}
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
-		/* code */
+		Contador1=0;
+		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+		while(!feof(Arquivo)){
+			fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+			if(feof(Arquivo)){
+				Contador1--;
+				break;
+			}
+			Vetor_Codigos[Contador1] = Hotel.Codigo;
+			Contador1++;
+		}
+
+		Quick_Sort(Vetor_Codigos,0,Contador1);
+			//Ordenamento do Vetor;
+																	
+		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
+		//Variavel Auxiliar recebe retorno da Funcao intervalor 
+								
+		if (Auxiliar != -1)
+			//Se diferente de -1
+		{
+			Codigo = (Vetor_Codigos[Auxiliar])+1;
+			//Codigo recebe o valor do Vetor Codigos na posicao Auxiliar somado 1
+
+		}else{
+			Codigo = Vetor_Codigos[Contador1]+1;
+			//Se Nao Codigo recebe vetor na ultima posicao somado 1
+			
+		}	
+
 	}
-	fclose(Arquivo);
-	//Fecha arquivo
-	return Codigo;
-	//Retorna o Codigo
+
+		
 
 }
 

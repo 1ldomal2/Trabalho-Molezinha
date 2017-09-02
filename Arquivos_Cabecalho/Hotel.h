@@ -40,6 +40,11 @@ void Ler_Hotel_Txt(char Url[99]){
 				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
 				//Expreção Regular
 			getc(Arquivo);
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
 				//Pula o Ponteiro para o proximo caractere
 			fscanf(Arquivo,"%[^;]s",Hotel.Nome_Fantasia);
 				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
@@ -129,8 +134,39 @@ void Ler_Hotel_Txt(char Url[99]){
 		//Fecha o Arquivo;
 }
 
-void Ler_Hotel_Bin(){
-
+void Ler_Hotel_Bin(char Url[99]){
+	FILE *Arquivo;
+	DADOS_HOTEL Hotel;
+	Arquivo = fopen(Url,"rb");
+	if(Arquivo == NULL){
+   		printf("\nNao foi possivel abrir o arquivo!");
+   	}
+   	while(!feof(Arquivo)){
+	    fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+		if(feof(Arquivo)){
+			//Verifica se esta no fim do arquivo
+			break;
+			//Sai do loop
+		}
+	   	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
+		printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
+		printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
+		printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
+		printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
+		printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
+		printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
+		printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
+		printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
+		printf("Telefone:\t\t%s\n",Hotel.Telefone);
+		printf("Email:\t\t\t%s\n",Hotel.Email);
+		printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
+		printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
+		printf("Check in:\t\t%s\n",Hotel.Check_in);
+		printf("Check out:\t\t%s\n",Hotel.Check_out);
+		printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
+		printf("____________________________________________________\n");
+   	}
+   	fclose(Arquivo);
 }
 
 void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
@@ -176,14 +212,13 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
 	FILE *Arquivo;
 		//Um ponteiro que aponta para um arquivo
 	
-	Arquivo=fopen(Url,"a+b");
+	Arquivo=fopen(Url,"ab");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 
 	if(Arquivo == NULL){
    		printf("\nNao foi possivel abrir o arquivo!");
    	}
-
-   	fwrite(&Hotel, sizeof(DADOS_HOTEL), 1, Arquivo); 
+   	fwrite(Hotel, sizeof(DADOS_HOTEL), 1, Arquivo); 
    		//Primeiro argumento é um ponteiro .... como proceder
 
    	fclose(Arquivo);
@@ -201,7 +236,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		//Obedecendo o principio do privilegio mínimo
 		//Usada somente para transição do buffer para o arquivo ou do arquivo para a tela
 	switch (Modo_de_Abertura){
-		case Memoria:
+ 			case Memoria:
 			
 			break;
 		case Arquivo_Texto:
