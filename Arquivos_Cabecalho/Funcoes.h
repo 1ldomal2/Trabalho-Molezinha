@@ -95,9 +95,7 @@ int Confirmacao(){
 		//Declaração variavel
 
 	printf("\nDigite '1' para confirmar: ");
-	fflush(stdin);
 	scanf("%d%*c",&Confirmacao);
-	fflush(stdin);
 	//system("clear");
 	if(Confirmacao ==1){
 		return 1;

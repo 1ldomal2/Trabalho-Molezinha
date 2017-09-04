@@ -127,6 +127,25 @@ void Ler_Hotel_Txt(char Url[99]){
 	fclose(Arquivo);
 		//Fecha o Arquivo;
 }
+void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
+	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
+	printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
+	printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
+	printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
+	printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
+	printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
+	printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
+	printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
+	printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
+	printf("Telefone:\t\t%s\n",Hotel.Telefone);
+	printf("Email:\t\t\t%s\n",Hotel.Email);
+	printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
+	printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
+	printf("Check in:\t\t%s\n",Hotel.Check_in);
+	printf("Check out:\t\t%s\n",Hotel.Check_out);
+	printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
+	printf("____________________________________________________\n");
+}
 
 void Ler_Hotel_Bin(char Url[99]){
 	FILE *Arquivo;
@@ -227,6 +246,42 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
 	printf("\nArquivo Salvo 'Hotel.bin'");
    		//Mensagem de Confirmação
 }
+
+DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel){
+	Hotel->Codigo = 1;
+	printf("\nNome Fantasia:");
+	scanf("%s",Hotel->Nome_Fantasia);
+	printf("Razão Social:");
+	scanf("%s",Hotel->Razao_Social);
+	printf("Inscrição Estadual:");
+	scanf("%s",Hotel->Inscricao_Estadual);
+	printf("CNPJ:");
+	scanf("%s",Hotel->CNPJ);
+	printf("Logradouro:");
+	scanf("%s",Hotel->Endereco.Logradouro);
+	printf("Numero:");
+	scanf("%s",Hotel->Endereco.Numero);
+	printf("Bairro:");
+	scanf("%s",Hotel->Endereco.Bairro);
+	printf("Cidade:");
+	scanf("%s",Hotel->Endereco.Cidade);
+	printf("Telefone:");
+	scanf("%s",Hotel->Telefone);
+	printf("e-mail:");
+	scanf("%s",Hotel->Email);
+	printf("Dono/Gerente:");
+	scanf("%s",Hotel->Dono_Gerente);
+	printf("Telefone/Gente:");
+	scanf("%s",Hotel->Telefone_Gerente);
+	printf("Horário de check-in:");
+	scanf("%s",Hotel->Check_in);
+	printf("Horário de check-out:");
+	scanf("%s",Hotel->Check_out);
+	printf("Margen de lucro de produtos vendidos:");
+	scanf("%s",Hotel->Lucro);
+	return *Hotel;
+}
+
 void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 	char Url[99];
 	DADOS_HOTEL Hotel;
@@ -234,10 +289,6 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		//Obedecendo o principio do privilegio mínimo
 		//Usada somente para transição do buffer para o arquivo ou do arquivo para a tela
 	switch (Modo_de_Abertura){
-		case Memoria:
-
-		break;
-
 		case Arquivo_Texto:
 		strcpy(Url,"Arquivos/Hotel.txt");
 		 	//Coloca o caminho na URL
@@ -297,23 +348,22 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 	scanf("%s",Hotel.Check_out);
 	printf("Margen de lucro de produtos vendidos:");
 	scanf("%s",Hotel.Lucro);
-	
-	switch(Modo_de_Abertura){
-
+	//Mostra Dados de Hotel salvos na struct
+	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
-		Gravar_Hotel_Txt(Url,&Hotel);
-		break;
+			Gravar_Hotel_Txt(Url,&Hotel);
+			break;
 
 		case Arquivo_Binario:
-		Gravar_Hotel_Bin(Url,&Hotel);
-		break;
+			Gravar_Hotel_Bin(Url,&Hotel);
+			break;
 
 		case Banco_De_Dados:
-		printf("Banco de Dados não foi implentado\n");
-		break;
+			printf("Banco de Dados não foi implentado\n");
+			break;
 		case Nuvem:
-		printf("Nuvem não foi implementado\n");
-		break;
+			printf("Nuvem não foi implementado\n");
+			break;
 	}
 		//Para Grava o Buffer da String no Arquivo
 }

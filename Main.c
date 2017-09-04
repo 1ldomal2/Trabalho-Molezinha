@@ -28,7 +28,7 @@ int main(int argc, char const *argv[])
 	system("clear");
 		//Limpa a tela
 	
-	
+	DADOS_HOTEL Hotel;
 	MODO Modo;
 	int Modo_de_Abertura,teste,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
@@ -57,13 +57,29 @@ int main(int argc, char const *argv[])
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
 				Ler_Hotel_Bin("Arquivos/Hotel.bin");
-			}else{
+			}else if(Modo_de_Abertura == Arquivo_Texto){
 				Ler_Hotel_Txt("Arquivos/Hotel.txt");
+			}else if(Modo_de_Abertura==Memoria){
+				if(Hotel.Codigo == 1){
+					Ler_Hotel_Memoria(Hotel);
+				}else{
+					printf("Não existe nenhum dado na memória");
+				}
 			}
 				break;
-
 			case 2:
-				Criar_Modificar_Hotel(Modo_de_Abertura,0);	
+				if(Modo_de_Abertura == Memoria){
+					printf("!!!ATENÇÂO!!!\n"
+					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
+					if(Confirmacao()){
+						Retorna_Struct_Grava_Memoria(&Hotel);
+						printf("Salvo com sucesso na memória");
+					}
+					
+					break;
+				}else{
+					Criar_Modificar_Hotel(Modo_de_Abertura,0);	
+				}
 				break;	
 			case 3:
 				if(Modo_de_Abertura == Arquivo_Binario){
