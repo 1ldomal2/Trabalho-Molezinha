@@ -1,7 +1,6 @@
 //Autor		:Lucas Mateus Fernandes e Leandro
 //Ano		:2017
 //Semestre	:2º Semestre
-
 //
 //Arquivos de cabeçalho padrão Ansi
 #include <stdio.h>
