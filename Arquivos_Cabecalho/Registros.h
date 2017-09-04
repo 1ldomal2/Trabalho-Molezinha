@@ -5,13 +5,14 @@
 
 //Enum
 enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
-enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
+//enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
 	//o valor sendo que a cada termo tem um acrescimo unário ou seja como o primeiro termo tem
 	//tribuido o valor 0 o segundo será atribuido o valor 1 o 3º o valor 2 e assim por diante
 
 //Struturas e Union
-	//O Typedef atribui um apelido em vez de ter que declarar "struct Dados_Hotel" será usado apenas "DADOS_HOTEL"
+
+	//O Typedef atribui um apelido em vez de ter que declarar "struct Nome_da_struct" será usado apenas "Nome_da_struct"
 typedef struct Modo{
 	char Leitura[4];
 	char Escrita[4];

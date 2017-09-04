@@ -49,7 +49,7 @@ int main(int argc, char const *argv[])
 
 		if(teste>=1 && teste<=4){
 			Modo_de_Abertura=Modo_Manipulacao();
-			Modo = Modo_Nao_Sei(Modo_de_Abertura);
+			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
 		}
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -57,11 +57,8 @@ int main(int argc, char const *argv[])
 			case 1:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
-				
-				//Verifica se existe o Arquivo;
 				Ler_Hotel_Bin("Arquivos/Hotel.bin");
 			}else{
-				//Verifica se existe o Arquivo;
 				Ler_Hotel_Txt("Arquivos/Hotel.txt");
 			}
 				break;
@@ -100,7 +97,7 @@ int main(int argc, char const *argv[])
 "            /                                                    \\\n"
 "           |    _____________________________________________     |\n"
 "           |   |                                             |    |\n"
-"           |   |  C:\\>Windows > Linux                        |    |\n"
+"           |   |  C:\\>Mint > Ubunto                          |    |\n"
 "           |   |                                             |    |\n"
 "           |   |                                             |    |\n"
 "           |   |                                             |    |\n"
@@ -109,7 +106,7 @@ int main(int argc, char const *argv[])
 "           |   |                                             |    |\n"
 "           |   |                                             |    |\n"
 "           |   |                                             |    |\n"
-"           |   |                   #Da 10 Manuel             |    |\n"
+"           |   |                   #Da 50 Manuel             |    |\n"
 "           |   |_____________________________________________|    |\n"
 "           |                                                      |\n"
 "            \\_____________________________________________________/\n"
