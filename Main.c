@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
 		{
 			senha[i] = senha[i]-1;	
 		}
-	*/
+	
 	for(int i=0;senha[i];i++){
 		if(i%2==0){
 			senha[i]= senha[i]-3;
@@ -60,7 +60,7 @@ int main(int argc, char const *argv[])
 	}	
 	printf("DEPOIS   %s\n",senha );
 
-
+*/
 	
 	DADOS_HOTEL Hotel;
 	MODO Modo;
@@ -123,7 +123,7 @@ int main(int argc, char const *argv[])
 				}else if(Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo);
+					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo,Dados_Hotel);
 				}
 				
 			break;
@@ -135,7 +135,7 @@ int main(int argc, char const *argv[])
 			}else if(Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo);
+				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo,Dados_Hotel);
 			}
 				
 			break;

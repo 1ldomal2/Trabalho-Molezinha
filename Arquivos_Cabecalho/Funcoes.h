@@ -57,10 +57,27 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 			if(Modificar==1){
 					//Se for 1 a função serve para modificar caso contraria apenas apaga
 					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
+				switch(Registro){
+					case Dados_Hotel:
+						Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
+					break;
+					case Dados_Hospede:
+					break;
+					case Acomodacoes:
+					break;
+					case Codigo_Categoria:
+					break;
+					case Produtos:
+					break;
+					case Fornecedores:
+					break;
+					case Funcionarios:
+					break;
+
+				}
 				
-				Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
-				printf("\nEditado com Sucesso");
-				system("clear");
 			}
 			fscanf(Arquivo,"%[^\n]s",Temporario);
 			getc(Arquivo);

@@ -7,7 +7,7 @@
 	//Inclui arquivos de cabeçalho
 
 //Funçoes
-void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
+void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
 int Confirmacao();
 int Intervalo_Vetor(int Vetor[],int Ultimo);
 int Modo_Manipulacao();

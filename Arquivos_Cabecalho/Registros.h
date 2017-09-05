@@ -5,7 +5,7 @@
 
 //Enum
 enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
-enum Registro{Erro=0,Dados_Hotel,Dados_Hospede,Acomodacoes,Codigo_Categoria,Produtos,Fornecedores,Funcionarios};	
+enum Registro{Dados_Hotel=1,Dados_Hospede,Acomodacoes,Codigo_Categoria,Produtos,Fornecedores,Funcionarios};	
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
 	//o valor sendo que a cada termo tem um acrescimo unário ou seja como o primeiro termo tem
