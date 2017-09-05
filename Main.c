@@ -24,7 +24,6 @@
 
 //Inicio
 
-
 int main(int argc, char const *argv[])
 {
 	system("clear");
