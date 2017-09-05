@@ -9,6 +9,17 @@
 #include "Registros.h"
 #include "Prototipos.h"
 	//Inclui arquivos de cabeçalho
+/*
+void Ler_Hotel_Txt(char Url[99]);
+void Ler_Hotel_Bin();
+void Ler_Hotel_Memoria(DADOS_HOTEL Hotel);
+void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
+void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
+void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
+void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel);
+*/
 
 void Ler_Hotel_Txt(char Url[99]){
 	DADOS_HOTEL Hotel;
@@ -128,6 +139,7 @@ void Ler_Hotel_Txt(char Url[99]){
 		//Fecha o Arquivo;
 }
 void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
+	//Recebe por parametro Struct de Hotel
 	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
 	printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
 	printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
@@ -145,10 +157,12 @@ void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
 	printf("Check out:\t\t%s\n",Hotel.Check_out);
 	printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
 	printf("____________________________________________________\n");
+	//Mostra dados do Hotel cadastrado na memoria
 }
 
 void Ler_Hotel_Bin(char Url[99]){
 	FILE *Arquivo;
+	//Cria ponteiro de arquivo
 	DADOS_HOTEL Hotel;
 	Arquivo = fopen(Url,"rb");
 	int Arquivo_Vazio=0;
@@ -228,7 +242,6 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
 
 
 void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
-
 	FILE *Arquivo;
 		//Um ponteiro que aponta para um arquivo
 	
@@ -248,7 +261,9 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
 }
 
 DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel){
+	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
 	Hotel->Codigo = 1;
+	//Como salva so 1 dado na memoria coloca como codigo 1
 	printf("\nNome Fantasia:");
 	scanf("%s",Hotel->Nome_Fantasia);
 	printf("Razão Social:");
@@ -279,7 +294,9 @@ DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel){
 	scanf("%s",Hotel->Check_out);
 	printf("Margen de lucro de produtos vendidos:");
 	scanf("%s",Hotel->Lucro);
+	//Le os outros dados
 	return *Hotel;
+	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
@@ -352,10 +369,12 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
 			Gravar_Hotel_Txt(Url,&Hotel);
+			//Grava em TXT
 			break;
 
 		case Arquivo_Binario:
 			Gravar_Hotel_Bin(Url,&Hotel);
+			//Grava em BIN
 			break;
 
 		case Banco_De_Dados:
