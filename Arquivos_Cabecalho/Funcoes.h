@@ -27,6 +27,60 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 */
 
 //Funçoes
+int Menu_Inicial(){
+	int Registro = 0;
+	do{
+		printf("\nDigite:"
+			"\n\t1\tPara Hotel"
+			"\n\t2\tPara Hospedes"
+			"\n\t3\tPara Acomodações"
+			"\n\t4\tPara Categoria"
+			"\n\t5\tPara Produtos"
+			"\n\t6\tPara Fornecedores"
+			"\n\t7\tPara Funcionários"
+			"\n\t0\tSair\n\t");
+		scanf("%d",&Registro);
+		if (Registro <0 || Registro > 7)
+		{
+			if (Registro == 666)
+			{
+				system("clear");
+				printf(""
+"             ____________________________________________________\n"
+"            /                                                    \\\n"
+"           |    _____________________________________________     |\n"
+"           |   |                                             |    |\n"
+"           |   |  C:\\>Mint < Ubunto                          |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                                             |    |\n"
+"           |   |                   #Da 50 Manuel             |    |\n"
+"           |   |_____________________________________________|    |\n"
+"           |                                                      |\n"
+"            \\_____________________________________________________/\n"
+"                   \\_______________________________________/\n"
+"                _______________________________________________\n"
+"             _-'    .-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.  --- `-_\n"
+"          _-'.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.--.  .-.-.`-_\n"
+"       _-'.-.-.-. .---.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-`__`. .-.-.-.`-_\n"
+"    _-'.-.-.-.-. .-----.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-----. .-.-.-.-.`-_\n"
+" _-'.-.-.-.-.-. .---.-. .-----------------------------. .-.---. .---.-.-.-.`-_\n"
+":-----------------------------------------------------------------------------:\n"
+"`---._.-----------------------------------------------------------------._.---'\n");
+
+			}else{
+				printf("Digite uma opção válida\n");
+			}
+		}
+	}while(Registro <0 || Registro > 7);
+	system("clear");
+	return Registro;
+}
 void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro){
 	int Linha = Retorna_Linha_Codigo(Url,Codigo);
 		//Retorna qual linha deve ser apagada
