@@ -5,6 +5,7 @@
 
 //Enum
 enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
+enum Registro{Erro=0,Dados_Hotel,Dados_Hospede,Acomodacoes,Codigo_Categoria,Produtos,Fornecedores,Funcionarios};	
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
 	//o valor sendo que a cada termo tem um acrescimo unário ou seja como o primeiro termo tem
@@ -76,6 +77,14 @@ typedef struct Codigo_Categoria{
 	float Valor_Diaria;
 	int Capacidade;
 }CODIGO_CATEGORIA;
+typedef struct Produtos{
+	int Codigo;
+	unsigned int Estoque;
+	unsigned int Estoque_Minimo;
+	char Descricao[999];
+	float Preco_Codigo;
+	float Preco_Venda;
+}PRODUTOS;
 
 typedef struct Fornecedores{
 	char Nome_Fantasia[80];

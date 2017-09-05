@@ -27,7 +27,7 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 */
 
 //Funçoes
-void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo){
+void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro){
 	int Linha = Retorna_Linha_Codigo(Url,Codigo);
 		//Retorna qual linha deve ser apagada
 	if(Linha == -1){
@@ -57,6 +57,7 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo){
 			if(Modificar==1){
 					//Se for 1 a função serve para modificar caso contraria apenas apaga
 					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
+				
 				Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
 				printf("\nEditado com Sucesso");
 				system("clear");
