@@ -20,6 +20,90 @@ typedef struct DADOS_HOSPEDE{
 	char Estado_Civil[80];
 	char Data_Nascimento[80];
 */
+void Main_Hospede(){
+	DADOS_Hospede Hospede;
+	MODO Modo;
+	int Modo_de_Abertura,teste,Codigo=0;
+	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
+	
+	while(1){
+		printf("\nDigite:"
+			"\n\t1\tPara Ler"
+			"\n\t2\tPara Criar"
+			"\n\t3\tPara Editar"
+			"\n\t4\tPara Apagar"
+			"\n\t?\tSair\n\t");
+		scanf("%d",&teste);
+
+		system("clear");
+			//limpa a tela
+
+		if(teste>=1 && teste<=4){
+			Modo_de_Abertura=Modo_Manipulacao();
+			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
+		}
+		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+		switch (teste){
+			case 1:
+			if (Modo_de_Abertura == Arquivo_Binario)
+			{
+				Ler_Hospede_Bin("Arquivos/Hospede.bin");
+			}else if(Modo_de_Abertura == Arquivo_Texto){
+				Ler_Hospede_Txt("Arquivos/Hospede.txt");
+			}else if(Modo_de_Abertura==Memoria){
+				if(Hospede.Codigo == 1){
+					Ler_Hospede_Memoria(Hospede);
+				}else{
+					printf("Não existe nenhum dado na memória");
+				}
+			}
+				break;
+			case 2:
+				if(Modo_de_Abertura == Memoria){
+					printf("!!!ATENÇÂO!!!\n"
+					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
+					if(Confirmacao()){
+						Retorna_Struct_Grava_Memoria(&Hospede);
+						printf("Salvo com sucesso na memória");
+					}
+					
+					break;
+				}else{
+					Criar_Modificar_Hospede(Modo_de_Abertura,0);	
+				}
+				break;	
+			case 3:
+				if(Modo_de_Abertura == Arquivo_Binario){
+					printf("Digite o codigo a ser editado: ");
+					scanf("%d",&Codigo);
+					Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,1,Modo);
+				}else if(Modo_de_Abertura == Arquivo_Texto){
+					printf("Digite o codigo a ser editado: ");
+					scanf("%d",&Codigo);
+					Apagar_Modificar("Arquivos/Hospede.txt",Codigo,1,Modo,Dados_Hospede);
+				}
+				
+			break;
+			case 4:
+			if(Modo_de_Abertura == Arquivo_Binario){
+				printf("Digite o codigo a ser apagado: ");
+				scanf("%d",&Codigo);
+				Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,0,Modo);
+			}else if(Modo_de_Abertura == Arquivo_Texto){
+				printf("Digite o codigo a ser apagado: ");
+				scanf("%d",&Codigo);
+				Apagar_Modificar("Arquivos/Hospede.txt",Codigo,0,Modo,Dados_Hospede);
+			}
+				
+			break;
+			default:
+				return;
+				break;
+		}
+	}
+}
 
 void Ler_Hospede_Txt(char Url[99]){
 	DADOS_HOSPEDE Hospede;

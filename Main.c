@@ -24,6 +24,7 @@
 
 //Inicio
 
+
 int main(int argc, char const *argv[])
 {
 	system("clear");
@@ -67,7 +68,9 @@ int main(int argc, char const *argv[])
 			case Dados_Hotel:
 				Main_Hotel();
 			break;
+			
 			case Dados_Hospede:
+				Main_Hospede();
 			break;
 			case Acomodacoes:
 			break;
