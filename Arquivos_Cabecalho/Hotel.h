@@ -207,9 +207,6 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
 	//Colocar com parametro não " " mas sim ;
 	FILE *Arquivo;
 		//Um ponteiro que aponta para um arquivo
-	/*
-
-	*/
 	Arquivo=fopen(Url,"a+");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 	if(Arquivo == NULL){
