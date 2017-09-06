@@ -48,6 +48,7 @@ typedef struct Dados_Hospede{
 	int Codigo;
 	char Nome[80];
 	char CPF[80];
+	ENDERECO Endereco;
 	char Telefone[80];
 	char Email[80];
 	char Sexo[15];

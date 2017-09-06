@@ -3,11 +3,6 @@
 #define _Hotel_ 
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "Registros.h"
-#include "Prototipos.h"
 	//Inclui arquivos de cabeçalho
 /*
 void Ler_Hotel_Txt(char Url[99]);
@@ -18,7 +13,7 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
 void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel);
+DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
 */
 void Main_Hotel(){
 	DADOS_HOTEL Hotel;
@@ -65,7 +60,7 @@ void Main_Hotel(){
 					printf("!!!ATENÇÂO!!!\n"
 					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
 					if(Confirmacao()){
-						Retorna_Struct_Grava_Memoria(&Hotel);
+						Retorna_Struct_Hotel_Grava_Memoria(&Hotel);
 						printf("Salvo com sucesso na memória");
 					}
 					
@@ -340,7 +335,7 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
    		//Mensagem de Confirmação
 }
 
-DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel){
+DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
 	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
 	Hotel->Codigo = 1;
 	//Como salva so 1 dado na memoria coloca como codigo 1

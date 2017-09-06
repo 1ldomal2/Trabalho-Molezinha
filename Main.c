@@ -8,7 +8,7 @@
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-/* ... */
+
 //Registros
 #include "Arquivos_Cabecalho/Registros.h"
 
@@ -18,6 +18,8 @@
 //Funções
 #include "Arquivos_Cabecalho/Funcoes.h"
 #include "Arquivos_Cabecalho/Hotel.h"
+#include "Arquivos_Cabecalho/Hospede.h"
+
 
 //Macro
 	#define DEBUG(x) printf("\n______________________%s_____________________________\n",x);

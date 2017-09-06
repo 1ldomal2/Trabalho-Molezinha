@@ -7,7 +7,7 @@
 	//Inclui arquivos de cabeçalho
 
 //Funçoes
-void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
+//void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
 int Confirmacao();
 int Intervalo_Vetor(int Vetor[],int Ultimo);
 int Modo_Manipulacao();
@@ -25,5 +25,15 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
 void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-DADOS_HOTEL Retorna_Struct_Grava_Memoria(DADOS_HOTEL *Hotel);
+DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
+//Hospede
+void Ler_Hospede_Txt(char Url[99]);
+void Ler_Hospede_Bin();
+void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede);
+void Gravar_Hospede_Txt(char Url[99],DADOS_HOSPEDE *Hospede);
+void Gravar_Hospede_Bin(char Url[99],DADOS_HOSPEDE *Hospede);
+void Criar_Modificar_Hospede(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
+void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 #endif

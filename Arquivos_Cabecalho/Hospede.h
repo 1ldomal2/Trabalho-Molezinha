@@ -3,25 +3,20 @@
 #define _Hospede_ 
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "Registros.h"
-#include "Prototipos.h"
 	//Inclui arquivos de cabeçalho
 /*
-typedef struct DADOS_HOSPEDE{
-	int Codigo;
-	char Nome[80];
-	char CPF[80];
-	char Telefone[80];
-	char Email[80];
-	char Sexo[15];
-	char Estado_Civil[80];
-	char Data_Nascimento[80];
+void Ler_Hospede_Txt(char Url[99]);
+void Ler_Hospede_Bin();
+void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede);
+void Gravar_Hospede_Txt(char Url[99],DADOS_HOSPEDE *Hospede);
+void Gravar_Hospede_Bin(char Url[99],DADOS_HOSPEDE *Hospede);
+void Criar_Modificar_Hospede(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
+void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 */
 void Main_Hospede(){
-	DADOS_Hospede Hospede;
+	DADOS_HOSPEDE Hospede;
 	MODO Modo;
 	int Modo_de_Abertura,teste,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
@@ -65,7 +60,7 @@ void Main_Hospede(){
 					printf("!!!ATENÇÂO!!!\n"
 					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
 					if(Confirmacao()){
-						Retorna_Struct_Grava_Memoria(&Hospede);
+						Retorna_Struct_Hospede_Grava_Memoria(&Hospede);
 						printf("Salvo com sucesso na memória");
 					}
 					
@@ -104,7 +99,6 @@ void Main_Hospede(){
 		}
 	}
 }
-
 void Ler_Hospede_Txt(char Url[99]){
 	DADOS_HOSPEDE Hospede;
 		//Cria uma variavel do tipo DADOS Hospede;
@@ -173,24 +167,23 @@ void Ler_Hospede_Txt(char Url[99]){
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
 			fscanf(Arquivo,"%[^;]s",Hospede.Data_Nascimento);
-				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o ;)
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
 
 			printf("Codigo:\t\t\t%d\n",Hospede.Codigo);
-			printf("Nome fantasia:\t\t%s\n",Hospede.Nome);
-			printf("Razao social:\t\t%s\n",Hospede.CPF);
-			printf("Inscricao Estadual\t%s\n",Hospede.Sexo);
-			printf("Estado_Civil:\t\t\t%s\n",Hospede.Estado_Civil);
+			printf("Nome:\t\t%s\n",Hospede.Nome);
+			printf("CPF:\t\t%s\n",Hospede.CPF);
+			printf("Sexo\t%s\n",Hospede.Sexo);
+			printf("Estado civil:\t\t\t%s\n",Hospede.Estado_Civil);
 			printf("Logradouro:\t\t%s\n",Hospede.Endereco.Logradouro);
 			printf("Numero:\t\t\t%s\n",Hospede.Endereco.Numero);
 			printf("Bairro:\t\t\t%s\n",Hospede.Endereco.Bairro);
 			printf("Cidade:\t\t\t%s\n",Hospede.Endereco.Cidade);
 			printf("Telefone:\t\t%s\n",Hospede.Telefone);
 			printf("Email:\t\t\t%s\n",Hospede.Email);
-			printf("Dono gerente:\t\t%s\n",Hospede.Data_Nascimento);
+			printf("%% de Data de nascimento\t\t%s\n",Hospede.Data_Nascimento);
 			printf("____________________________________________________\n");
 			Arquivo_Vazio++;
 		}while(!feof(Arquivo));
@@ -206,18 +199,17 @@ void Ler_Hospede_Txt(char Url[99]){
 void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede){
 	//Recebe por parametro Struct de Hospede
 	printf("Codigo:\t\t\t%d\n",Hospede.Codigo);
-	printf("Nome fantasia:\t\t%s\n",Hospede.Nome);
-	printf("Razao social:\t\t%s\n",Hospede.CPF);
-	printf("Inscricao Estadual\t%s\n",Hospede.Sexo);
-	printf("Estado_Civil:\t\t\t%s\n",Hospede.Estado_Civil);
+	printf("Nome:\t\t%s\n",Hospede.Nome);
+	printf("CPF:\t\t%s\n",Hospede.CPF);
+	printf("Sexo\t%s\n",Hospede.Sexo);
+	printf("Estado civil:\t\t\t%s\n",Hospede.Estado_Civil);
 	printf("Logradouro:\t\t%s\n",Hospede.Endereco.Logradouro);
 	printf("Numero:\t\t\t%s\n",Hospede.Endereco.Numero);
 	printf("Bairro:\t\t\t%s\n",Hospede.Endereco.Bairro);
 	printf("Cidade:\t\t\t%s\n",Hospede.Endereco.Cidade);
 	printf("Telefone:\t\t%s\n",Hospede.Telefone);
 	printf("Email:\t\t\t%s\n",Hospede.Email);
-	printf("Dono gerente:\t\t%s\n",Hospede.Data_Nascimento);
-	printf("Telefone gerente:\t%s\n",Hospede.Telefone_Gerente);
+	printf("%% de Data de nascimento\t\t%s\n",Hospede.Data_Nascimento);
 	printf("____________________________________________________\n");
 	//Mostra dados do Hospede cadastrado na memoria
 }
@@ -239,17 +231,17 @@ void Ler_Hospede_Bin(char Url[99]){
 				//Sai do loop
 			}
 			printf("Codigo:\t\t\t%d\n",Hospede.Codigo);
-			printf("Nome fantasia:\t\t%s\n",Hospede.Nome);
-			printf("Razao social:\t\t%s\n",Hospede.CPF);
-			printf("Inscricao Estadual\t%s\n",Hospede.Sexo);
-			printf("Estado_Civil:\t\t\t%s\n",Hospede.Estado_Civil);
+			printf("Nome:\t\t%s\n",Hospede.Nome);
+			printf("CPF:\t\t%s\n",Hospede.CPF);
+			printf("Sexo\t%s\n",Hospede.Sexo);
+			printf("Estado civil:\t\t\t%s\n",Hospede.Estado_Civil);
 			printf("Logradouro:\t\t%s\n",Hospede.Endereco.Logradouro);
 			printf("Numero:\t\t\t%s\n",Hospede.Endereco.Numero);
 			printf("Bairro:\t\t\t%s\n",Hospede.Endereco.Bairro);
 			printf("Cidade:\t\t\t%s\n",Hospede.Endereco.Cidade);
 			printf("Telefone:\t\t%s\n",Hospede.Telefone);
 			printf("Email:\t\t\t%s\n",Hospede.Email);
-			printf("Dono gerente:\t\t%s\n",Hospede.Data_Nascimento);
+			printf("%% de Data de nascimento\t\t%s\n",Hospede.Data_Nascimento);
 			printf("____________________________________________________\n");
 			Arquivo_Vazio++;
 			//Contador para verificar se o arquivo está em branco
@@ -281,7 +273,7 @@ void Gravar_Hospede_Txt(char Url[99],DADOS_HOSPEDE *Hospede){
 	fprintf(Arquivo,"%s;",Hospede->Endereco.Cidade);
 	fprintf(Arquivo,"%s;",Hospede->Telefone);
 	fprintf(Arquivo,"%s;",Hospede->Email);
-	fprintf(Arquivo,"%s;",Hospede->Data_Nascimento);
+	fprintf(Arquivo,"%s;\n",Hospede->Data_Nascimento);
 		//Salva um struct por Linha
 
 	fclose(Arquivo);
@@ -311,7 +303,7 @@ void Gravar_Hospede_Bin(char Url[99],DADOS_HOSPEDE *Hospede){
    		//Mensagem de Confirmação
 }
 
-DADOS_HOSPEDE Retorna_Struct_Grava_Memoria(DADOS_HOSPEDE *Hospede){
+DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede){
 	//Metodo do tipo DADOS_HOSPEDE e recebe por parametro ponteiro de Dados de Hospede
 	Hospede->Codigo = 1;
 	//Como salva so 1 dado na memoria coloca como codigo 1
@@ -321,7 +313,7 @@ DADOS_HOSPEDE Retorna_Struct_Grava_Memoria(DADOS_HOSPEDE *Hospede){
 	scanf("%s",Hospede->CPF);
 	printf("Inscrição Estadual:");
 	scanf("%s",Hospede->Sexo);
-	printf("Estado_Civil:");
+	printf("Estado civil:");
 	scanf("%s",Hospede->Estado_Civil);
 	printf("Logradouro:");
 	scanf("%s",Hospede->Endereco.Logradouro);
@@ -335,9 +327,8 @@ DADOS_HOSPEDE Retorna_Struct_Grava_Memoria(DADOS_HOSPEDE *Hospede){
 	scanf("%s",Hospede->Telefone);
 	printf("e-mail:");
 	scanf("%s",Hospede->Email);
-	printf("Dono/Gerente:");
+	printf("Data de nascimento:");
 	scanf("%s",Hospede->Data_Nascimento);
-	printf("Telefone/Gente:");
 	//Le os outros dados
 	return *Hospede;
 	//Retorna ponteiro de Hospede
@@ -385,7 +376,7 @@ void Criar_Modificar_Hospede(int Modo_de_Abertura, int Manter_Codigo){
 	scanf("%s",Hospede.CPF);
 	printf("Inscrição Estadual:");
 	scanf("%s",Hospede.Sexo);
-	printf("Estado_Civil:");
+	printf("Estado civil:");
 	scanf("%s",Hospede.Estado_Civil);
 	printf("Logradouro:");
 	scanf("%s",Hospede.Endereco.Logradouro);
@@ -399,9 +390,8 @@ void Criar_Modificar_Hospede(int Modo_de_Abertura, int Manter_Codigo){
 	scanf("%s",Hospede.Telefone);
 	printf("e-mail:");
 	scanf("%s",Hospede.Email);
-	printf("Dono/Gerente:");
+	printf("Data de nascimento:");
 	scanf("%s",Hospede.Data_Nascimento);
-	printf("Telefone/Gente:");
 	//Mostra Dados de Hospede salvos na struct
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
