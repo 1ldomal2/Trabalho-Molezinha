@@ -18,29 +18,21 @@ DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
 void Main_Hotel(){
 	DADOS_HOTEL Hotel;
 	MODO Modo;
-	int Modo_de_Abertura,teste,Codigo=0;
+	int Modo_de_Abertura,Acao,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
 	
 	while(1){
-		printf("\nDigite:"
-			"\n\t1\tPara Ler"
-			"\n\t2\tPara Criar"
-			"\n\t3\tPara Editar"
-			"\n\t4\tPara Apagar"
-			"\n\t?\tSair\n\t");
-		scanf("%d",&teste);
-
-		system("clear");
+		Acao = Opcao_Acoes();
 			//limpa a tela
 
-		if(teste>=1 && teste<=4){
+		if(Acao>=1 && Acao<=4){
 			Modo_de_Abertura=Modo_Manipulacao();
 			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
 		}
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-		switch (teste){
+		switch (Acao){
 			case 1:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
@@ -187,24 +179,8 @@ void Ler_Hotel_Txt(char Url[99]){
 				//Pula o Ponteiro para o proximo caracte (pula o ;)
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
-
-			printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
-			printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
-			printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
-			printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
-			printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
-			printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
-			printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
-			printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
-			printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
-			printf("Telefone:\t\t%s\n",Hotel.Telefone);
-			printf("Email:\t\t\t%s\n",Hotel.Email);
-			printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
-			printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
-			printf("Check in:\t\t%s\n",Hotel.Check_in);
-			printf("Check out:\t\t%s\n",Hotel.Check_out);
-			printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
-			printf("____________________________________________________\n");
+			Ler_Hotel_Memoria(Hotel);
+			
 			Arquivo_Vazio++;
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
@@ -216,6 +192,7 @@ void Ler_Hotel_Txt(char Url[99]){
 	fclose(Arquivo);
 		//Fecha o Arquivo;
 }
+
 void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
 	//Recebe por parametro Struct de Hotel
 	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
@@ -254,23 +231,7 @@ void Ler_Hotel_Bin(char Url[99]){
 				break;
 				//Sai do loop
 			}
-			printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
-			printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
-			printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
-			printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
-			printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
-			printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
-			printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
-			printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
-			printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
-			printf("Telefone:\t\t%s\n",Hotel.Telefone);
-			printf("Email:\t\t\t%s\n",Hotel.Email);
-			printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
-			printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
-			printf("Check in:\t\t%s\n",Hotel.Check_in);
-			printf("Check out:\t\t%s\n",Hotel.Check_out);
-			printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
-			printf("____________________________________________________\n");
+			Ler_Hotel_Memoria(Hotel);
 			Arquivo_Vazio++;
 			//Contador para verificar se o arquivo está em branco
 		}
@@ -334,11 +295,7 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
 	printf("\nArquivo Salvo 'Hotel.bin'");
    		//Mensagem de Confirmação
 }
-
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
-	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
-	Hotel->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
+void Recebe_Dados_Hotel(DADOS_HOTEL *Hotel){
 	printf("\nNome Fantasia:");
 	scanf("%s",Hotel->Nome_Fantasia);
 	printf("Razão Social:");
@@ -370,6 +327,13 @@ DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
 	printf("Margen de lucro de produtos vendidos:");
 	scanf("%s",Hotel->Lucro);
 	//Le os outros dados
+}
+
+DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
+	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
+	Hotel->Codigo = 1;
+	//Como salva so 1 dado na memoria coloca como codigo 1
+	Recebe_Dados_Hotel(Hotel);
 	return *Hotel;
 	//Retorna ponteiro de hotel
 }
@@ -410,36 +374,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		break;
 
 	}
-	printf("\nNome Fantasia:");
-	scanf("%s",Hotel.Nome_Fantasia);
-	printf("Razão Social:");
-	scanf("%s",Hotel.Razao_Social);
-	printf("Inscrição Estadual:");
-	scanf("%s",Hotel.Inscricao_Estadual);
-	printf("CNPJ:");
-	scanf("%s",Hotel.CNPJ);
-	printf("Logradouro:");
-	scanf("%s",Hotel.Endereco.Logradouro);
-	printf("Numero:");
-	scanf("%s",Hotel.Endereco.Numero);
-	printf("Bairro:");
-	scanf("%s",Hotel.Endereco.Bairro);
-	printf("Cidade:");
-	scanf("%s",Hotel.Endereco.Cidade);
-	printf("Telefone:");
-	scanf("%s",Hotel.Telefone);
-	printf("e-mail:");
-	scanf("%s",Hotel.Email);
-	printf("Dono/Gerente:");
-	scanf("%s",Hotel.Dono_Gerente);
-	printf("Telefone/Gente:");
-	scanf("%s",Hotel.Telefone_Gerente);
-	printf("Horário de check-in:");
-	scanf("%s",Hotel.Check_in);
-	printf("Horário de check-out:");
-	scanf("%s",Hotel.Check_out);
-	printf("Margen de lucro de produtos vendidos:");
-	scanf("%s",Hotel.Lucro);
+	Recebe_Dados_Hotel(&Hotel);
 	//Mostra Dados de Hotel salvos na struct
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
@@ -559,5 +494,11 @@ void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo
 	}
 }
 
+/*
+#ifdef Debug
+printf("");
+#endif
+*/
 
 #endif
+

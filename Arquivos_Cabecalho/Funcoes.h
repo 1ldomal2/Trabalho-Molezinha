@@ -1,3 +1,4 @@
+//#define Debug
 /*
 Falta fazer :
 			
@@ -27,6 +28,19 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 */
 
 //Funçoes
+int Opcao_Acoes(){
+	int Acao;
+	printf("\nDigite:"
+			"\n\t1\tPara Ler"
+			"\n\t2\tPara Criar"
+			"\n\t3\tPara Editar"
+			"\n\t4\tPara Apagar"
+			"\n\t?\tSair\n\t");
+		scanf("%d",&Acao);
+
+		system("clear");
+	return Acao;
+}
 int Menu_Inicial(){
 	int Registro = 0;
 	do{
@@ -332,6 +346,9 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	DADOS_HOTEL Hotel;
 		//Declaraçao de variaveis
 
+#ifdef Debug
+printf("ANTES DO SWITCH MODO Abertura\n");
+#endif
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
 	switch(Modo_de_Abertura){
@@ -349,7 +366,11 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
 
+#ifdef Debug
+printf("ABERTO TEXTO\n");
+#endif
 		while(!feof(Arquivo)){
+
 
 			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
 				//Lê o Codigo
@@ -357,7 +378,13 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 				//lê/pula ';'
 			if(feof(Arquivo)){
 				//Verifica se chegou a ao fim do arquivo
+				
+#ifdef Debug
+printf("FIM DO Arquivo \n");
+#endif
 				break;
+
+
 				//sai do while
 			}
 			fscanf(Arquivo,"%[^\n]s",Temporario);
@@ -367,13 +394,28 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 			//Adicione 1 ao contador ou seja adicione um ao numero do indice
 			
 		}
-
+#ifdef Debug
+printf("ANTES DO Quick_Sort\n");
+	for (int i = 0; i < Contador1; ++i)
+	{
+		printf("%d\t",Vetor_Codigos[i] );
+	}
+#endif
 		Quick_Sort(Vetor_Codigos,0,Contador1);
 		//Ordena o Vetor;
-
+#ifdef Debug
+printf("\n \n \n \n Quick_Sort DPS \n");
+for (int i = 0; i < Contador1; ++i)
+	{
+		printf("%d\t",Vetor_Codigos[i+1] );
+	}
+#endif
 		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
 		//Variavel Auxiliar recebe retorno da Funcao intervalor 
+		#ifdef Debug
+printf("INDICE Vetor %d valor vetor %d \n",Auxiliar, Vetor_Codigos[Auxiliar]);
 
+#endif
 		if (Auxiliar != -1)
 			//Se diferente de -1
 		{

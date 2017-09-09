@@ -18,29 +18,21 @@ DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 void Main_Hospede(){
 	DADOS_HOSPEDE Hospede;
 	MODO Modo;
-	int Modo_de_Abertura,teste,Codigo=0;
+	int Modo_de_Abertura,Acao,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
 	
 	while(1){
-		printf("\nDigite:"
-			"\n\t1\tPara Ler"
-			"\n\t2\tPara Criar"
-			"\n\t3\tPara Editar"
-			"\n\t4\tPara Apagar"
-			"\n\t?\tSair\n\t");
-		scanf("%d",&teste);
-
-		system("clear");
+		Acao = Opcao_Acoes();
 			//limpa a tela
 
-		if(teste>=1 && teste<=4){
+		if(Acao>=1 && Acao<=4){
 			Modo_de_Abertura=Modo_Manipulacao();
 			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
 		}
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-		switch (teste){
+		switch (Acao){
 			case 1:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
