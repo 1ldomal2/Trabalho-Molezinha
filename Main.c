@@ -19,6 +19,8 @@
 #include "Arquivos_Cabecalho/Funcoes.h"
 #include "Arquivos_Cabecalho/Hotel.h"
 #include "Arquivos_Cabecalho/Hospede.h"
+#include "Arquivos_Cabecalho/Codigo_Categoria.h"
+#include "Arquivos_Cabecalho/Acomodacoes.h"
 
 
 //Macro
@@ -74,15 +76,17 @@ int main(int argc, char const *argv[])
 			case Dados_Hospede:
 				Main_Hospede();
 			break;
-			case Acomodacoes:
+			case Dados_Acomodacoes:
+				Main_Acomodacoes();
 			break;
-			case Codigo_Categoria:
+			case Dados_Codigo_Categoria:
+				Main_Codigo_Categoria();
 			break;
-			case Produtos:
+			case Dados_Produtos:
 			break;
-			case Fornecedores:
+			case Dados_Fornecedores:
 			break;
-			case Funcionarios:
+			case Dados_Funcionarios:
 			break;
 		}
 	}

@@ -136,15 +136,21 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 						printf("\nEditado com Sucesso");
 						system("clear");
 					break;
-					case Acomodacoes:
+					case Dados_Acomodacoes:
+						Criar_Modificar_Acomodacoes(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
-					case Codigo_Categoria:
+					case Dados_Codigo_Categoria:
+						Criar_Modificar_Codigo_Categoria(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
-					case Produtos:
+					case Dados_Produtos:
 					break;
-					case Fornecedores:
+					case Dados_Fornecedores:
 					break;
-					case Funcionarios:
+					case Dados_Funcionarios:
 					break;
 
 				}
@@ -432,19 +438,19 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 				case Dados_Hospede:
 					fread(&Tipo_Hospedes, sizeof(DADOS_HOSPEDE),1,Arquivo);
 				break;
-				case Acomodacoes:
+				case Dados_Acomodacoes:
 					fread(&Tipo_Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
 				break;
-				case Codigo_Categoria:
+				case Dados_Codigo_Categoria:
 					fread(&Tipo_Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 				break;
-				case Produtos:
+				case Dados_Produtos:
 					fread(&Tipo_Produtos, sizeof(PRODUTOS),1,Arquivo);
 				break;
-				case Fornecedores:
+				case Dados_Fornecedores:
 					fread(&Tipo_Fornecedores, sizeof(FORNECEDORES),1,Arquivo);
 				break;
-				case Funcionarios:
+				case Dados_Funcionarios:
 					fread(&Tipo_Funcionarios, sizeof(FUNCIONARIOS),1,Arquivo);
 				break;
 			}
@@ -462,23 +468,23 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 					Vetor_Codigos[Contador1] = Tipo_Hospedes.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
-				case Acomodacoes:
+				case Dados_Acomodacoes:
 					Vetor_Codigos[Contador1] = Tipo_Acomodacoes.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
-				case Codigo_Categoria:
+				case Dados_Codigo_Categoria:
 					Vetor_Codigos[Contador1] = Tipo_Codigo_Categoria.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
-				case Produtos:
+				case Dados_Produtos:
 					Vetor_Codigos[Contador1] = Tipo_Produtos.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
-				case Fornecedores:
+				case Dados_Fornecedores:
 				Vetor_Codigos[Contador1] = Tipo_Fornecedores.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
-				case Funcionarios:
+				case Dados_Funcionarios:
 					Vetor_Codigos[Contador1] = Tipo_Funcionarios.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;

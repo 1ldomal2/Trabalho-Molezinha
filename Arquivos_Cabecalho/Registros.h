@@ -5,7 +5,7 @@
 
 //Enum
 enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
-enum Registro{Dados_Hotel=1,Dados_Hospede,Acomodacoes,Codigo_Categoria,Produtos,Fornecedores,Funcionarios};	
+enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categoria,Dados_Produtos,Dados_Fornecedores,Dados_Funcionarios};	
 enum Acoes{Ler=1,Criar,Editar,Apagar};	
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
@@ -61,7 +61,7 @@ typedef struct Facilidades{
 	int Televisao;
 	int Ar_Condicionado;
 	int Frigobar;
-	int Internete;
+	int Internet;
 	int Banheira;
 }FACILIDADES;
 

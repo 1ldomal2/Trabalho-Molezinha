@@ -1,26 +1,26 @@
-#ifndef _Hotel_ 
+#ifndef _Codigo_Categoria_ 
 	//Se não estiver definido entra no if
-#define _Hotel_ 
+#define _Codigo_Categoria_ 
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 
 	//Inclui arquivos de cabeçalho
 /*
-void Ler_Hotel_Txt(char Url[99]);
-void Ler_Hotel_Bin();
-void Ler_Hotel_Memoria(DADOS_HOTEL Hotel);
-void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
-void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
-void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
-int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
-void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
+void Ler_Codigo_Categoria_Txt(char Url[99]);
+void Ler_Codigo_Categoria_Bin();
+void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria);
+void Gravar_Codigo_Categoria_Txt(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria);
+void Gravar_Codigo_Categoria_Bin(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria);
+void Criar_Modificar_Codigo_Categoria(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
+void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
 */
-void Main_Hotel(){
-	DADOS_HOTEL Hotel;
+void Main_Codigo_Categoria(){
+	CODIGO_CATEGORIA Codigo_Categoria;
 	MODO Modo;
 	int Modo_de_Abertura,Acao,Codigo=0;
-	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
 	
 	while(1){
 		Acao = Opcao_Acoes();
@@ -36,12 +36,12 @@ void Main_Hotel(){
 			case Ler:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
-				Ler_Hotel_Bin("Arquivos/Hotel.bin");
+				Ler_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin");
 			}else if(Modo_de_Abertura == Arquivo_Texto){
-				Ler_Hotel_Txt("Arquivos/Hotel.txt");
+				Ler_Codigo_Categoria_Txt("Arquivos/Codigo_Categoria.txt");
 			}else if(Modo_de_Abertura==Memoria){
-				if(Hotel.Codigo == 1){
-					Ler_Hotel_Memoria(Hotel);
+				if(Codigo_Categoria.Codigo == 1){
+					Ler_Codigo_Categoria_Memoria(Codigo_Categoria);
 				}else{
 					printf("Não existe nenhum dado na memória");
 				}
@@ -52,24 +52,24 @@ void Main_Hotel(){
 					printf("!!!ATENÇÂO!!!\n"
 					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
 					if(Confirmacao()){
-						Retorna_Struct_Hotel_Grava_Memoria(&Hotel);
+						Retorna_Struct_Codigo_Categoria_Grava_Memoria(&Codigo_Categoria);
 						printf("Salvo com sucesso na memória");
 					}
 					
 					break;
 				}else{
-					Criar_Modificar_Hotel(Modo_de_Abertura,0);	
+					Criar_Modificar_Codigo_Categoria(Modo_de_Abertura,0);	
 				}
 				break;	
 			case Editar:
 				if(Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
-					Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,1,Modo);
+					Apagar_Modificar_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin",Codigo,1,Modo);
 				}else if(Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo,Dados_Hotel);
+					Apagar_Modificar("Arquivos/Codigo_Categoria.txt",Codigo,1,Modo,Dados_Codigo_Categoria);
 				}
 				
 			break;
@@ -77,11 +77,11 @@ void Main_Hotel(){
 			if(Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
-				Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,0,Modo);
+				Apagar_Modificar_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin",Codigo,0,Modo);
 			}else if(Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo,Dados_Hotel);
+				Apagar_Modificar("Arquivos/Codigo_Categoria.txt",Codigo,0,Modo,Dados_Codigo_Categoria);
 			}
 				
 			break;
@@ -91,8 +91,8 @@ void Main_Hotel(){
 		}
 	}
 }
-void Ler_Hotel_Txt(char Url[99]){
-	DADOS_HOTEL Hotel;
+void Ler_Codigo_Categoria_Txt(char Url[99]){
+	CODIGO_CATEGORIA Codigo_Categoria;
 		//Cria uma variavel do tipo DADOS HOTEL;
 
 	FILE *Arquivo;
@@ -107,7 +107,8 @@ void Ler_Hotel_Txt(char Url[99]){
 		printf("O Arquivo não foi aberto corretamente\n");
 	}else{
 		do{
-			fscanf(Arquivo,"%d",&Hotel.Codigo);
+
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Codigo);
 				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
 				//Expreção Regular
 			getc(Arquivo);
@@ -117,69 +118,25 @@ void Ler_Hotel_Txt(char Url[99]){
 				//Sai do loop
 			}
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Nome_Fantasia);
+			fscanf(Arquivo,"%[^;]s",Codigo_Categoria.Nome);
 				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Razao_Social);
+			fscanf(Arquivo,"%[^;]s",Codigo_Categoria.Descricao);
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Inscricao_Estadual);
+			fscanf(Arquivo,"%f",&Codigo_Categoria.Valor_Diaria);
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.CNPJ);
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade);
 				//Expreção Regular
 			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Endereco.Logradouro);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Endereco.Numero);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Endereco.Bairro);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Endereco.Cidade);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Telefone);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Email);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Dono_Gerente);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Telefone_Gerente);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Check_in);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Check_out);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Lucro);
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caracte (pula o ;)
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
-			Ler_Hotel_Memoria(Hotel);
+			Ler_Codigo_Categoria_Memoria(Codigo_Categoria);
 			
 			Arquivo_Vazio++;
 		}while(!feof(Arquivo));
@@ -193,45 +150,34 @@ void Ler_Hotel_Txt(char Url[99]){
 		//Fecha o Arquivo;
 }
 
-void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
-	//Recebe por parametro Struct de Hotel
-	printf("Codigo:\t\t\t%d\n",Hotel.Codigo);
-	printf("Nome fantasia:\t\t%s\n",Hotel.Nome_Fantasia);
-	printf("Razao social:\t\t%s\n",Hotel.Razao_Social);
-	printf("Inscricao Estadual\t%s\n",Hotel.Inscricao_Estadual);
-	printf("CNPJ:\t\t\t%s\n",Hotel.CNPJ);
-	printf("Logradouro:\t\t%s\n",Hotel.Endereco.Logradouro);
-	printf("Numero:\t\t\t%s\n",Hotel.Endereco.Numero);
-	printf("Bairro:\t\t\t%s\n",Hotel.Endereco.Bairro);
-	printf("Cidade:\t\t\t%s\n",Hotel.Endereco.Cidade);
-	printf("Telefone:\t\t%s\n",Hotel.Telefone);
-	printf("Email:\t\t\t%s\n",Hotel.Email);
-	printf("Dono gerente:\t\t%s\n",Hotel.Dono_Gerente);
-	printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
-	printf("Check in:\t\t%s\n",Hotel.Check_in);
-	printf("Check out:\t\t%s\n",Hotel.Check_out);
-	printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
+void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria){
+	//Recebe por parametro Struct de Codigo_Categoria
+	printf("Codigo:\t\t%d\n",Codigo_Categoria.Codigo);
+	printf("Nome:\t\t%s\n",Codigo_Categoria.Nome);
+	printf("Descricão:\t%s\n",Codigo_Categoria.Descricao);
+	printf("Valor Diaria\t%f\n",Codigo_Categoria.Valor_Diaria);
+	printf("Capacidade:\t%d\n",Codigo_Categoria.Capacidade);
 	printf("____________________________________________________\n");
-	//Mostra dados do Hotel cadastrado na memoria
+	//Mostra dados do Codigo_Categoria cadastrado na memoria
 }
 
-void Ler_Hotel_Bin(char Url[99]){
+void Ler_Codigo_Categoria_Bin(char Url[99]){
 	FILE *Arquivo;
 	//Cria ponteiro de arquivo
-	DADOS_HOTEL Hotel;
+	CODIGO_CATEGORIA Codigo_Categoria;
 	Arquivo = fopen(Url,"rb");
 	int Arquivo_Vazio=0;
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}else{
 		while(!feof(Arquivo)){
-			fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 			if(feof(Arquivo)){
 				//Verifica se esta no fim do arquivo
 				break;
 				//Sai do loop
 			}
-			Ler_Hotel_Memoria(Hotel);
+			Ler_Codigo_Categoria_Memoria(Codigo_Categoria);
 			Arquivo_Vazio++;
 			//Contador para verificar se o arquivo está em branco
 		}
@@ -242,7 +188,7 @@ void Ler_Hotel_Bin(char Url[99]){
 	}
 }
 
-void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
+void Gravar_Codigo_Categoria_Txt(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria){
 	//Colocar com parametro não " " mas sim ;
 	FILE *Arquivo;
 		//Um ponteiro que aponta para um arquivo
@@ -251,22 +197,11 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
-	fprintf(Arquivo,"%d;",Hotel->Codigo);
-	fprintf(Arquivo,"%s;",Hotel->Nome_Fantasia);
-	fprintf(Arquivo,"%s;",Hotel->Razao_Social);
-	fprintf(Arquivo,"%s;",Hotel->Inscricao_Estadual);
-	fprintf(Arquivo,"%s;",Hotel->CNPJ);
-	fprintf(Arquivo,"%s;",Hotel->Endereco.Logradouro);
-	fprintf(Arquivo,"%s;",Hotel->Endereco.Numero);
-	fprintf(Arquivo,"%s;",Hotel->Endereco.Bairro);
-	fprintf(Arquivo,"%s;",Hotel->Endereco.Cidade);
-	fprintf(Arquivo,"%s;",Hotel->Telefone);
-	fprintf(Arquivo,"%s;",Hotel->Email);
-	fprintf(Arquivo,"%s;",Hotel->Dono_Gerente);
-	fprintf(Arquivo,"%s;",Hotel->Telefone_Gerente);
-	fprintf(Arquivo,"%s;",Hotel->Check_in);
-	fprintf(Arquivo,"%s;",Hotel->Check_out);
-	fprintf(Arquivo,"%s;\n",Hotel->Lucro);
+	fprintf(Arquivo,"%d;",Codigo_Categoria->Codigo);
+	fprintf(Arquivo,"%s;",Codigo_Categoria->Nome);
+	fprintf(Arquivo,"%s;",Codigo_Categoria->Descricao);
+	fprintf(Arquivo,"%f;",Codigo_Categoria->Valor_Diaria);
+	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade);
 		//Salva um struct por Linha
 
 	fclose(Arquivo);
@@ -277,7 +212,7 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
 }
 
 
-void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
+void Gravar_Codigo_Categoria_Bin(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria){
 	FILE *Arquivo;
 		//Um ponteiro que aponta para um arquivo
 	
@@ -287,83 +222,62 @@ void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel){
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
-	fwrite(Hotel, sizeof(DADOS_HOTEL), 1, Arquivo); 
+	fwrite(Codigo_Categoria, sizeof(CODIGO_CATEGORIA), 1, Arquivo); 
    		//Primeiro argumento é um ponteiro .... como proceder
 
 	fclose(Arquivo);
    		//Fecha o Arquivo Para evitar erro
-	printf("\nArquivo Salvo 'Hotel.bin'");
+	printf("\nArquivo Salvo 'Codigo_Categoria.bin'");
    		//Mensagem de Confirmação
 }
-void Recebe_Dados_Hotel(DADOS_HOTEL *Hotel){
-	printf("\nNome Fantasia:");
-	scanf("%s",Hotel->Nome_Fantasia);
+void Recebe_Dados_Codigo_Categoria(CODIGO_CATEGORIA *Codigo_Categoria){
+	printf("\nNome:");
+	scanf("%s",Codigo_Categoria->Nome);
 	printf("Razão Social:");
-	scanf("%s",Hotel->Razao_Social);
+	scanf("%s",Codigo_Categoria->Descricao);
 	printf("Inscrição Estadual:");
-	scanf("%s",Hotel->Inscricao_Estadual);
-	printf("CNPJ:");
-	scanf("%s",Hotel->CNPJ);
-	printf("Logradouro:");
-	scanf("%s",Hotel->Endereco.Logradouro);
-	printf("Numero:");
-	scanf("%s",Hotel->Endereco.Numero);
-	printf("Bairro:");
-	scanf("%s",Hotel->Endereco.Bairro);
-	printf("Cidade:");
-	scanf("%s",Hotel->Endereco.Cidade);
-	printf("Telefone:");
-	scanf("%s",Hotel->Telefone);
-	printf("e-mail:");
-	scanf("%s",Hotel->Email);
-	printf("Dono/Gerente:");
-	scanf("%s",Hotel->Dono_Gerente);
-	printf("Telefone/Gente:");
-	scanf("%s",Hotel->Telefone_Gerente);
-	printf("Horário de check-in:");
-	scanf("%s",Hotel->Check_in);
-	printf("Horário de check-out:");
-	scanf("%s",Hotel->Check_out);
-	printf("Margen de lucro de produtos vendidos:");
-	scanf("%s",Hotel->Lucro);
+	scanf("%f",&Codigo_Categoria->Valor_Diaria);
+	printf("Capacidade:");
+	scanf("%d",&Codigo_Categoria->Capacidade);
 	//Le os outros dados
+
 }
 
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
-	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
-	Hotel->Codigo = 1;
+CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria){
+	//Metodo do tipo Dados_Codigo_Categoria e recebe por parametro ponteiro de Dados de Codigo_Categoria
+	Codigo_Categoria->Codigo = 1;
 	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Hotel(Hotel);
-	return *Hotel;
+	Recebe_Dados_Codigo_Categoria(Codigo_Categoria);
+	return *Codigo_Categoria;
 	//Retorna ponteiro de hotel
 }
 
-void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
+void Criar_Modificar_Codigo_Categoria(int Modo_de_Abertura, int Manter_Codigo){
 	char Url[99];
-	DADOS_HOTEL Hotel;
+	CODIGO_CATEGORIA Codigo_Categoria;
 		//Variavel Local
 		//Obedecendo o principio do privilegio mínimo
 		//Usada somente para transição do buffer para o arquivo ou do arquivo para a tela
 	switch (Modo_de_Abertura){
 		case Arquivo_Texto:
-		strcpy(Url,"Arquivos/Hotel.txt");
+		strcpy(Url,"Arquivos/Codigo_Categoria.txt");
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Hotel);
+			Codigo_Categoria.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Codigo_Categoria);
 		}else{
-			Hotel.Codigo = Manter_Codigo;
+			Codigo_Categoria.Codigo = Manter_Codigo;
 		}
 		break;
 
 		case Arquivo_Binario:
-		strcpy(Url,"Arquivos/Hotel.bin");
+		strcpy(Url,"Arquivos/Codigo_Categoria.bin");
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Hotel);
+			Codigo_Categoria.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Codigo_Categoria);
 		}else{
-			Hotel.Codigo = Manter_Codigo;
+			Codigo_Categoria.Codigo = Manter_Codigo;
 		}
 		break;
 		case Banco_De_Dados:
@@ -374,16 +288,16 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		break;
 
 	}
-	Recebe_Dados_Hotel(&Hotel);
-	//Mostra Dados de Hotel salvos na struct
+	Recebe_Dados_Codigo_Categoria(&Codigo_Categoria);
+	//Mostra Dados de Codigo_Categoria salvos na struct
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
-			Gravar_Hotel_Txt(Url,&Hotel);
+			Gravar_Codigo_Categoria_Txt(Url,&Codigo_Categoria);
 			//Grava em TXT
 			break;
 
 		case Arquivo_Binario:
-			Gravar_Hotel_Bin(Url,&Hotel);
+			Gravar_Codigo_Categoria_Bin(Url,&Codigo_Categoria);
 			//Grava em BIN
 			break;
 
@@ -398,22 +312,22 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 }
 
 
-int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo){
+int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo){
 	//Funcao para procurar hotel com base no codigo digitado pelo usuario
 	FILE *Arquivo;
 	MODO Modo;
 	Modo = Modo_Bin_ou_Txt(Arquivo_Binario);
 	//Ponteiro do tipo File
 	char Temporario[9999];
-	DADOS_HOTEL Hotel;
+	CODIGO_CATEGORIA Codigo_Categoria;
 	Arquivo = fopen(Url,Modo.Leitura);
 	//Abre o arquivo em modo de leitura
 	int Validador = -1, Numero_Structs = 1;
 	
 	//Armazena o codigo lido no arquivo Bin
 	do{
-		fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-		Validador = Hotel.Codigo;
+		fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+		Validador = Codigo_Categoria.Codigo;
 		if(feof(Arquivo)){
 			return -1;
 			break;
@@ -434,17 +348,17 @@ int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo){
 	return -1;
 }
 
-void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo){
+void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo){
 	if(Modo.Modo_de_Abertura == Arquivo_Binario){
-		DADOS_HOTEL Hotel;
-		//Cria uma Variavel do tipo Dados_Hotel
+		CODIGO_CATEGORIA Codigo_Categoria;
+		//Cria uma Variavel do tipo Dados_Codigo_Categoria
 		FILE *Arquivo, *Arquivo_Temporario;
 		//Cria 2ponteiros do tipo FILE
 		Arquivo=fopen(Url,Modo.Leitura);
 		//Abre o aqruivo principal em modo leitura
 		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
 		//Abre o arquivo que sera apagado em modo de concatenacao
-		int Campo_Struct = Retorna_Campo_Struct_Hotel(Url, Codigo);
+		int Campo_Struct = Retorna_Campo_Struct_Codigo_Categoria(Url, Codigo);
 		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
 		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
 			printf("O codigo digitado não foi encontrado");
@@ -452,16 +366,16 @@ void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo
 			if(Confirmacao()){//Se a confirmacao retornar 1 
 				for(int i=1;i<Campo_Struct;i++){
 					//Vai ate o campo do codigo
-					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
-					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+					fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+					fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
 					//Escreve no Arquivo temporario
 				}
 
-				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo); 
+				fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo); 
 				//Le o arquivo Arquivo Binario e passa dados para struct
 				if(Modificar==1){
 					//Entra no modo Editar
-					Criar_Modificar_Hotel(Arquivo_Binario, Codigo);
+					Criar_Modificar_Codigo_Categoria(Arquivo_Binario, Codigo);
 					//Chama a funcao para editar o arquivo
 					printf("\nEditado com Sucesso");
 					system("clear");
@@ -470,12 +384,12 @@ void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo
 				//Se nao entrar no if so apaga o dado
 				while(!feof(Arquivo)){
 					//Vai ate o Final do Arquivo
-					fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+					fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 					if(feof(Arquivo)){
 						//Sai caso esteja no fim do arquivo;
 						break;
 					}
-					fwrite(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo_Temporario); 
+					fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
 						//Printa no Arquivo Temporario
 				}
 				fclose(Arquivo_Temporario);
