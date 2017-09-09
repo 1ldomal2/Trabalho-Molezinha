@@ -132,6 +132,9 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 						system("clear");
 					break;
 					case Dados_Hospede:
+						Criar_Modificar_Hospede(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
 					case Acomodacoes:
 					break;
@@ -304,7 +307,7 @@ void Quick_Sort(int vetor[], int inicio, int fim){
 
 
 int Retorna_Linha_Codigo(char Url[99], int Codigo){
-	//Funcao para procurar hotel com base no codigo digitado pelo usuario
+	//Funcao para procurar com base no codigo digitado pelo usuario
 	FILE *Arquivo;
 	//Ponteiro do tipo File
 	char Temporario[9999];
@@ -345,10 +348,6 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 	int Vetor_Codigos[9999],Codigo;
 	DADOS_HOTEL Hotel;
 		//Declaraçao de variaveis
-
-#ifdef Debug
-printf("ANTES DO SWITCH MODO Abertura\n");
-#endif
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
 	switch(Modo_de_Abertura){
@@ -365,10 +364,7 @@ printf("ANTES DO SWITCH MODO Abertura\n");
 		//Evita lixo de memoria
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
-
-#ifdef Debug
-printf("ABERTO TEXTO\n");
-#endif
+  
 		while(!feof(Arquivo)){
 
 
@@ -379,9 +375,6 @@ printf("ABERTO TEXTO\n");
 			if(feof(Arquivo)){
 				//Verifica se chegou a ao fim do arquivo
 				
-#ifdef Debug
-printf("FIM DO Arquivo \n");
-#endif
 				break;
 
 
@@ -394,28 +387,10 @@ printf("FIM DO Arquivo \n");
 			//Adicione 1 ao contador ou seja adicione um ao numero do indice
 			
 		}
-#ifdef Debug
-printf("ANTES DO Quick_Sort\n");
-	for (int i = 0; i < Contador1; ++i)
-	{
-		printf("%d\t",Vetor_Codigos[i] );
-	}
-#endif
 		Quick_Sort(Vetor_Codigos,0,Contador1);
 		//Ordena o Vetor;
-#ifdef Debug
-printf("\n \n \n \n Quick_Sort DPS \n");
-for (int i = 0; i < Contador1; ++i)
-	{
-		printf("%d\t",Vetor_Codigos[i+1] );
-	}
-#endif
 		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
 		//Variavel Auxiliar recebe retorno da Funcao intervalor 
-		#ifdef Debug
-printf("INDICE Vetor %d valor vetor %d \n",Auxiliar, Vetor_Codigos[Auxiliar]);
-
-#endif
 		if (Auxiliar != -1)
 			//Se diferente de -1
 		{
@@ -436,6 +411,7 @@ printf("INDICE Vetor %d valor vetor %d \n",Auxiliar, Vetor_Codigos[Auxiliar]);
 		}
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
+		//	Apagar_Modificar(Url,Codigo,);
 		Contador1=0;
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){

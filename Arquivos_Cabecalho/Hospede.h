@@ -33,7 +33,7 @@ void Main_Hospede(){
 		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		switch (Acao){
-			case 1:
+			case Ler:
 			if (Modo_de_Abertura == Arquivo_Binario)
 			{
 				Ler_Hospede_Bin("Arquivos/Hospede.bin");
@@ -47,7 +47,7 @@ void Main_Hospede(){
 				}
 			}
 				break;
-			case 2:
+			case Criar:
 				if(Modo_de_Abertura == Memoria){
 					printf("!!!ATENÇÂO!!!\n"
 					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
@@ -61,7 +61,7 @@ void Main_Hospede(){
 					Criar_Modificar_Hospede(Modo_de_Abertura,0);	
 				}
 				break;	
-			case 3:
+			case Editar:
 				if(Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
@@ -73,7 +73,7 @@ void Main_Hospede(){
 				}
 				
 			break;
-			case 4:
+			case Apagar:
 			if(Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
@@ -158,25 +158,9 @@ void Ler_Hospede_Txt(char Url[99]){
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hospede.Dono_Gerente);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
 			fscanf(Arquivo,"%[^;]s",Hospede.Data_Nascimento);
 				//Expreção Regular
 			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hospede.Check_in);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hospede.Check_out);
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hospede.Lucro);
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caracte (pula o ;)
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
 			Ler_Hospede_Memoria(Hospede);
@@ -258,7 +242,7 @@ void Gravar_Hospede_Txt(char Url[99],DADOS_HOSPEDE *Hospede){
 	fprintf(Arquivo,"%s;",Hospede->Endereco.Cidade);
 	fprintf(Arquivo,"%s;",Hospede->Telefone);
 	fprintf(Arquivo,"%s;",Hospede->Email);
-	fprintf(Arquivo,"%s;",Hospede->Data_Nascimento);
+	fprintf(Arquivo,"%s;\n",Hospede->Data_Nascimento);
 		//Salva um struct por Linha
 
 	fclose(Arquivo);
