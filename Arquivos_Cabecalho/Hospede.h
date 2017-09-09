@@ -34,19 +34,20 @@ void Main_Hospede(){
 
 		switch (Acao){
 			case Ler:
-			if (Modo_de_Abertura == Arquivo_Binario)
-			{
-				Ler_Hospede_Bin("Arquivos/Hospede.bin");
-			}else if(Modo_de_Abertura == Arquivo_Texto){
-				Ler_Hospede_Txt("Arquivos/Hospede.txt");
-			}else if(Modo_de_Abertura==Memoria){
-				if(Hospede.Codigo == 1){
-					Ler_Hospede_Memoria(Hospede);
-				}else{
-					printf("Não existe nenhum dado na memória");
+				if (Modo_de_Abertura == Arquivo_Binario)
+				{
+					Ler_Hospede_Bin("Arquivos/Hospede.bin");
+				}else if(Modo_de_Abertura == Arquivo_Texto){
+					Ler_Hospede_Txt("Arquivos/Hospede.txt");
+				}else if(Modo_de_Abertura==Memoria){
+					if(Hospede.Codigo == 1){
+						Ler_Hospede_Memoria(Hospede);
+					}else{
+						printf("Não existe nenhum dado na memória");
+					}
 				}
-			}
 				break;
+
 			case Criar:
 				if(Modo_de_Abertura == Memoria){
 					printf("!!!ATENÇÂO!!!\n"
@@ -61,6 +62,7 @@ void Main_Hospede(){
 					Criar_Modificar_Hospede(Modo_de_Abertura,0);	
 				}
 				break;	
+
 			case Editar:
 				if(Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
@@ -73,6 +75,7 @@ void Main_Hospede(){
 				}
 				
 			break;
+
 			case Apagar:
 			if(Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
@@ -83,8 +86,8 @@ void Main_Hospede(){
 				scanf("%d",&Codigo);
 				Apagar_Modificar("Arquivos/Hospede.txt",Codigo,0,Modo,Dados_Hospede);
 			}
-				
 			break;
+			
 			default:
 				return;
 				break;
@@ -294,6 +297,7 @@ void Recebe_Dados_Hospede(DADOS_HOSPEDE *Hospede){
 	scanf("%s",Hospede->Email);
 	printf("Data Nascimento:");
 	scanf("%s",Hospede->Data_Nascimento);
+	
 	//Le os outros dados
 }
 
@@ -318,7 +322,7 @@ void Criar_Modificar_Hospede(int Modo_de_Abertura, int Manter_Codigo){
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hospede.Codigo = Valida_Codigo(Url,15,Arquivo_Texto);
+			Hospede.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Hospede);
 		}else{
 			Hospede.Codigo = Manter_Codigo;
 		}
@@ -329,7 +333,7 @@ void Criar_Modificar_Hospede(int Modo_de_Abertura, int Manter_Codigo){
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hospede.Codigo = Valida_Codigo(Url,15,Arquivo_Binario);
+			Hospede.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Hospede);
 		}else{
 			Hospede.Codigo = Manter_Codigo;
 		}

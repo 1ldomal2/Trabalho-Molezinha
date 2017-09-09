@@ -89,6 +89,7 @@ typedef struct Produtos{
 }PRODUTOS;
 
 typedef struct Fornecedores{
+	int Codigo;
 	char Nome_Fantasia[80];
 	char Razao_Social[80];
 	char Inscricao_Estadual[80];

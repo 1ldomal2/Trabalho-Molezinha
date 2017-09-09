@@ -350,7 +350,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Texto);
+			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Hotel);
 		}else{
 			Hotel.Codigo = Manter_Codigo;
 		}
@@ -361,7 +361,7 @@ void Criar_Modificar_Hotel(int Modo_de_Abertura, int Manter_Codigo){
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
-			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario);
+			Hotel.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Hotel);
 		}else{
 			Hotel.Codigo = Manter_Codigo;
 		}

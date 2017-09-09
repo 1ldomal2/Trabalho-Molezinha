@@ -343,11 +343,17 @@ int Retorna_Linha_Codigo(char Url[99], int Codigo){
 }
 
 
-int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
+int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int Tipo_DADO){
 	char Temporario[9999];
 	int Vetor_Codigos[9999],Codigo;
-	DADOS_HOTEL Hotel;
-		//Declaraçao de variaveis
+	DADOS_HOTEL Tipo_Hotel;
+	DADOS_HOSPEDE Tipo_Hospedes;
+	ACOMODACOES Tipo_Acomodacoes;
+	CODIGO_CATEGORIA Tipo_Codigo_Categoria;
+	PRODUTOS Tipo_Produtos;
+	FORNECEDORES Tipo_Fornecedores;
+	FUNCIONARIOS Tipo_Funcionarios;
+	//Declaraçao de variaveis
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
 	switch(Modo_de_Abertura){
@@ -387,20 +393,24 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 			//Adicione 1 ao contador ou seja adicione um ao numero do indice
 			
 		}
+		printf("\n\nANTES DO QUICK\n");
+		for (int i = 0; i < Contador1; ++i)
+		{	
+			printf("%d\t",Vetor_Codigos[i] );
+		}
 		Quick_Sort(Vetor_Codigos,0,Contador1);
+		printf("\n\nDEPOISSSSSS DO QUICK\n");
+		for (int i = 0; i < Contador1; ++i)
+		{	
+			printf("%d\t",Vetor_Codigos[i] );
+		}
 		//Ordena o Vetor;
 		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
 		//Variavel Auxiliar recebe retorno da Funcao intervalor 
 		if (Auxiliar != -1)
 			//Se diferente de -1
 		{
-			if(Vetor_Codigos[0] != 1){
-				//Verifica se o codigo na posicao 0 é diferente de 1
-				Codigo = 1;
-				//Se for atribui 1 ao codigo
-				return Codigo;
-				//Retorna o Codigo
-			}
+			
 			Codigo = (Vetor_Codigos[Auxiliar])+1;
 			//Codigo recebe o valor do Vetor Codigos na posicao Auxiliar somado 1
 
@@ -411,18 +421,69 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura){
 		}
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
-		//	Apagar_Modificar(Url,Codigo,);
 		Contador1=0;
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
-			fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+
+			switch (Tipo_DADO){
+				case Dados_Hotel:
+					fread(&Tipo_Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+				break;
+				case Dados_Hospede:
+					fread(&Tipo_Hospedes, sizeof(DADOS_HOSPEDE),1,Arquivo);
+				break;
+				case Acomodacoes:
+					fread(&Tipo_Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
+				break;
+				case Codigo_Categoria:
+					fread(&Tipo_Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+				break;
+				case Produtos:
+					fread(&Tipo_Produtos, sizeof(PRODUTOS),1,Arquivo);
+				break;
+				case Fornecedores:
+					fread(&Tipo_Fornecedores, sizeof(FORNECEDORES),1,Arquivo);
+				break;
+				case Funcionarios:
+					fread(&Tipo_Funcionarios, sizeof(FUNCIONARIOS),1,Arquivo);
+				break;
+			}
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){
 				break;
 				//Se estiver no fim do arquivo sai do loop
 			}
-			Vetor_Codigos[Contador1] = Hotel.Codigo;
+			switch (Tipo_DADO){
+				case Dados_Hotel:
+					Vetor_Codigos[Contador1] = Tipo_Hotel.Codigo;
 			//Atribui o codigo no  vetor de codigos
+				break;
+				case Dados_Hospede:
+					Vetor_Codigos[Contador1] = Tipo_Hospedes.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+				case Acomodacoes:
+					Vetor_Codigos[Contador1] = Tipo_Acomodacoes.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+				case Codigo_Categoria:
+					Vetor_Codigos[Contador1] = Tipo_Codigo_Categoria.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+				case Produtos:
+					Vetor_Codigos[Contador1] = Tipo_Produtos.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+				case Fornecedores:
+				Vetor_Codigos[Contador1] = Tipo_Fornecedores.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+				case Funcionarios:
+					Vetor_Codigos[Contador1] = Tipo_Funcionarios.Codigo;
+			//Atribui o codigo no  vetor de codigos
+				break;
+			}
+			
 			Contador1++;
 			//Soma no contador de contador
 		}
