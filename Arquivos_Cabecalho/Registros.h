@@ -14,6 +14,11 @@ enum Acoes{Ler=1,Criar,Editar,Apagar};
 
 //Struturas e Union
 
+
+//Define
+#define Tamanho1 80
+#define Tamanho2 999
+
 	//O Typedef atribui um apelido em vez de ter que declarar "struct Nome_da_struct" será usado apenas "Nome_da_struct"
 typedef struct Modo{
 	char Leitura[4];
@@ -22,39 +27,48 @@ typedef struct Modo{
 	int Modo_de_Abertura;
 }MODO;
 	
+typedef struct Login{
+	int Codigo_Usuario;
+	int Permissao_Criar;
+	int Permissao_Editar;
+	int Permissao_Ler;
+	int Permissao_Apagar;
+	int Logado;
+}LOGIN;
+	
 typedef struct Endereco{
-	char Logradouro[80];
-	char Numero[80];
-	char Bairro[80];
-	char Cidade[80];
+	char Logradouro[Tamanho1];
+	char Numero[Tamanho1];
+	char Bairro[Tamanho1];
+	char Cidade[Tamanho1];
 }ENDERECO;
 
 typedef struct Dados_Hotel{
 	int Codigo;
-	char Nome_Fantasia[80];
-	char Razao_Social[80];
-	char Inscricao_Estadual[80];
-	char CNPJ[80];
+	char Nome_Fantasia[Tamanho1];
+	char Razao_Social[Tamanho1];
+	char Inscricao_Estadual[Tamanho1];
+	char CNPJ[Tamanho1];
 	ENDERECO Endereco;
-	char Telefone[80];
-	char Email[80];
-	char Dono_Gerente[80];
-	char Telefone_Gerente[80];
-	char Check_in[80];
-	char Check_out[80];
-	char Lucro[80];
+	char Telefone[Tamanho1];
+	char Email[Tamanho1];
+	char Dono_Gerente[Tamanho1];
+	char Telefone_Gerente[Tamanho1];
+	char Check_in[Tamanho1];
+	char Check_out[Tamanho1];
+	char Lucro[Tamanho1];
 }DADOS_HOTEL;
 
 typedef struct Dados_Hospede{
 	int Codigo;
-	char Nome[80];
-	char CPF[80];
+	char Nome[Tamanho1];
+	char CPF[Tamanho1];
 	ENDERECO Endereco;
-	char Telefone[80];
-	char Email[80];
-	char Sexo[15];
-	char Estado_Civil[80];
-	char Data_Nascimento[80];
+	char Telefone[Tamanho1];
+	char Email[Tamanho1];
+	char Sexo[Tamanho1];
+	char Estado_Civil[Tamanho1];
+	char Data_Nascimento[Tamanho1];
 }DADOS_HOSPEDE;
 
 typedef struct Facilidades{
@@ -67,15 +81,15 @@ typedef struct Facilidades{
 
 typedef struct Acomodacoes{
 	int Codigo;
-	char Descricao[999];
+	char Descricao[Tamanho2];
 	FACILIDADES Facilidades;
 	int Cod_Categoria;
 }ACOMODACOES;
 
 typedef struct Codigo_Categoria{
 	int Codigo;
-	char Nome[80];
-	char Descricao[999];
+	char Nome[Tamanho1];
+	char Descricao[Tamanho2];
 	float Valor_Diaria;
 	int Capacidade;
 }CODIGO_CATEGORIA;
@@ -83,27 +97,27 @@ typedef struct Produtos{
 	int Codigo;
 	unsigned int Estoque;
 	unsigned int Estoque_Minimo;
-	char Descricao[999];
+	char Descricao[Tamanho2];
 	float Preco_Codigo;
 	float Preco_Venda;
 }PRODUTOS;
 
 typedef struct Fornecedores{
 	int Codigo;
-	char Nome_Fantasia[80];
-	char Razao_Social[80];
-	char Inscricao_Estadual[80];
-	char CNPJ[80];
+	char Nome_Fantasia[Tamanho1];
+	char Razao_Social[Tamanho1];
+	char Inscricao_Estadual[Tamanho1];
+	char CNPJ[Tamanho1];
 	ENDERECO Endereco;
-	char Telefone[80];
-	char Email[80];
+	char Telefone[Tamanho1];
+	char Email[Tamanho1];
 
 }FORNECEDORES;
 
 typedef struct Funcionarios{
 	int Codigo;
-	char Usuario[80];
-	char Senha[80];
+	char Usuario[Tamanho1];
+	char Senha[Tamanho1];
 	int Permissao;
 		//Elaborar
 }FUNCIONARIOS;

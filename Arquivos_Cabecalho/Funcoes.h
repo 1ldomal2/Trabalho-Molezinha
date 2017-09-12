@@ -41,7 +41,7 @@ int Opcao_Acoes(){
 		system("clear");
 	return Acao;
 }
-int Menu_Inicial(){
+int Main_All(){
 	int Registro = 0;
 	do{
 		printf("\nDigite:"

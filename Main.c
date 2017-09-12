@@ -32,6 +32,7 @@
 int main(int argc, char const *argv[])
 {
 	system("clear");
+
 		//Limpa a tela
 
 	//SENHA 
@@ -67,7 +68,7 @@ int main(int argc, char const *argv[])
 
 */
 	while(1){
-		int Opcao_Menu_Inicial = Menu_Inicial();
+		int Opcao_Menu_Inicial=Main_All();
 		switch(Opcao_Menu_Inicial){
 			case Dados_Hotel:
 				Main_Hotel();
