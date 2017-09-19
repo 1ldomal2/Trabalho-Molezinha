@@ -41,6 +41,7 @@ int Opcao_Acoes(){
 		system("clear");
 	return Acao;
 }
+
 int Main_All(){
 	int Registro = 0;
 	do{
@@ -399,20 +400,14 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 			//Adicione 1 ao contador ou seja adicione um ao numero do indice
 			
 		}
-		printf("\n\nANTES DO QUICK\n");
-		for (int i = 0; i < Contador1; ++i)
-		{	
-			printf("%d\t",Vetor_Codigos[i] );
-		}
+		
+
 		Quick_Sort(Vetor_Codigos,0,Contador1);
-		printf("\n\nDEPOISSSSSS DO QUICK\n");
-		for (int i = 0; i < Contador1; ++i)
-		{	
-			printf("%d\t",Vetor_Codigos[i] );
-		}
 		//Ordena o Vetor;
+
 		int Auxiliar = Intervalo_Vetor(Vetor_Codigos,Contador1);
 		//Variavel Auxiliar recebe retorno da Funcao intervalor 
+		
 		if (Auxiliar != -1)
 			//Se diferente de -1
 		{
@@ -576,6 +571,10 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura){
 		strcpy(Modo.Concatenacao,"ab");
 			//Modo concatenação Bin
 		Modo.Modo_de_Abertura = Arquivo_Binario;
+		break;
+
+		case Memoria:
+			Modo.Modo_de_Abertura = Memoria;
 		break;
 	}
 	return Modo;

@@ -91,7 +91,8 @@ typedef struct Codigo_Categoria{
 	char Nome[Tamanho1];
 	char Descricao[Tamanho2];
 	float Valor_Diaria;
-	int Capacidade;
+	int Capacidade_Adulto;
+	int Capacidade_Crianca;
 }CODIGO_CATEGORIA;
 typedef struct Produtos{
 	int Codigo;

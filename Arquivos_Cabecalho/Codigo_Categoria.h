@@ -15,31 +15,30 @@ int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
 void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
 */
-void Main_Codigo_Categoria(){
+void Main_Codigo_Categoria(MODO Modo){
+
 	CODIGO_CATEGORIA Codigo_Categoria;
-	MODO Modo;
-	int Modo_de_Abertura,Acao,Codigo=0;
+	int Acao,Codigo=0;
+
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
 	
 	while(1){
+		
 		Acao = Opcao_Acoes();
-			//limpa a tela
-
-		if(Acao>=1 && Acao<=4){
-			Modo_de_Abertura=Modo_Manipulacao();
-			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
-		}
-		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//Retorna um inteiro referente a Ação (Case)
+		//limpa a tela
 
 		switch (Acao){
+
 			case Ler:
-			if (Modo_de_Abertura == Arquivo_Binario)
+
+			if (Modo.Modo_de_Abertura == Arquivo_Binario)
 			{
 				Ler_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin");
-			}else if(Modo_de_Abertura == Arquivo_Texto){
+			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 				Ler_Codigo_Categoria_Txt("Arquivos/Codigo_Categoria.txt");
-			}else if(Modo_de_Abertura==Memoria){
+			}else if(Modo.Modo_de_Abertura==Memoria){
 				if(Codigo_Categoria.Codigo == 1){
 					Ler_Codigo_Categoria_Memoria(Codigo_Categoria);
 				}else{
@@ -48,9 +47,9 @@ void Main_Codigo_Categoria(){
 			}
 				break;
 			case Criar:
-				if(Modo_de_Abertura == Memoria){
+				if(Modo.Modo_de_Abertura == Memoria){
 					printf("!!!ATENÇÂO!!!\n"
-					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
+					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
 					if(Confirmacao()){
 						Retorna_Struct_Codigo_Categoria_Grava_Memoria(&Codigo_Categoria);
 						printf("Salvo com sucesso na memória");
@@ -58,15 +57,15 @@ void Main_Codigo_Categoria(){
 					
 					break;
 				}else{
-					Criar_Modificar_Codigo_Categoria(Modo_de_Abertura,0);	
+					Criar_Modificar_Codigo_Categoria(Modo.Modo_de_Abertura,0);	
 				}
 				break;	
 			case Editar:
-				if(Modo_de_Abertura == Arquivo_Binario){
+				if(Modo.Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin",Codigo,1,Modo);
-				}else if(Modo_de_Abertura == Arquivo_Texto){
+				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar("Arquivos/Codigo_Categoria.txt",Codigo,1,Modo,Dados_Codigo_Categoria);
@@ -74,11 +73,11 @@ void Main_Codigo_Categoria(){
 				
 			break;
 			case Apagar:
-			if(Modo_de_Abertura == Arquivo_Binario){
+			if(Modo.Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin",Codigo,0,Modo);
-			}else if(Modo_de_Abertura == Arquivo_Texto){
+			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar("Arquivos/Codigo_Categoria.txt",Codigo,0,Modo,Dados_Codigo_Categoria);
@@ -117,12 +116,7 @@ void Ler_Codigo_Categoria_Txt(char Url[99]){
 				break;
 				//Sai do loop
 			}
-				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Codigo_Categoria.Nome);
-				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
-				//Expreção Regular
-			getc(Arquivo);
-				//Pula o Ponteiro para o proximo caractere
+
 			fscanf(Arquivo,"%[^;]s",Codigo_Categoria.Descricao);
 				//Expreção Regular
 			getc(Arquivo);
@@ -131,7 +125,10 @@ void Ler_Codigo_Categoria_Txt(char Url[99]){
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade);
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade_Adulto);
+			getc(Arquivo);
+				//Pula o Ponteiro para o proximo caractere
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade_Crianca);
 				//Expreção Regular
 			getc(Arquivo);
 			getc(Arquivo);
@@ -152,11 +149,11 @@ void Ler_Codigo_Categoria_Txt(char Url[99]){
 
 void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria){
 	//Recebe por parametro Struct de Codigo_Categoria
-	printf("Codigo:\t\t%d\n",Codigo_Categoria.Codigo);
-	printf("Nome:\t\t%s\n",Codigo_Categoria.Nome);
-	printf("Descricão:\t%s\n",Codigo_Categoria.Descricao);
-	printf("Valor Diaria\t%f\n",Codigo_Categoria.Valor_Diaria);
-	printf("Capacidade:\t%d\n",Codigo_Categoria.Capacidade);
+	printf("Codigo:\t\t\t%d\n",Codigo_Categoria.Codigo);
+	printf("Descricão:\t\t%s\n",Codigo_Categoria.Descricao);
+	printf("Valor Diaria:\t\tR$%.2f\n",Codigo_Categoria.Valor_Diaria);
+	printf("Capacidade de Adultos:\t%d\n",Codigo_Categoria.Capacidade_Adulto);
+	printf("Capacidade de Crianças:\t%d\n",Codigo_Categoria.Capacidade_Crianca);
 	printf("____________________________________________________\n");
 	//Mostra dados do Codigo_Categoria cadastrado na memoria
 }
@@ -198,10 +195,10 @@ void Gravar_Codigo_Categoria_Txt(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
 	fprintf(Arquivo,"%d;",Codigo_Categoria->Codigo);
-	fprintf(Arquivo,"%s;",Codigo_Categoria->Nome);
 	fprintf(Arquivo,"%s;",Codigo_Categoria->Descricao);
 	fprintf(Arquivo,"%f;",Codigo_Categoria->Valor_Diaria);
-	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade);
+	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade_Adulto);
+	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade_Crianca);
 		//Salva um struct por Linha
 
 	fclose(Arquivo);
@@ -231,16 +228,15 @@ void Gravar_Codigo_Categoria_Bin(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria
    		//Mensagem de Confirmação
 }
 void Recebe_Dados_Codigo_Categoria(CODIGO_CATEGORIA *Codigo_Categoria){
-	printf("\nNome:");
-	scanf("%s",Codigo_Categoria->Nome);
-	printf("Razão Social:");
+	printf("\nDescrição:");
 	scanf("%s",Codigo_Categoria->Descricao);
-	printf("Inscrição Estadual:");
+	printf("Valor Diaria:");
 	scanf("%f",&Codigo_Categoria->Valor_Diaria);
-	printf("Capacidade:");
-	scanf("%d",&Codigo_Categoria->Capacidade);
+	printf("Capacidade Adultos:");
+	scanf("%d",&Codigo_Categoria->Capacidade_Adulto);
+	printf("Capacidade Crianças:");
+	scanf("%d",&Codigo_Categoria->Capacidade_Crianca);
 	//Le os outros dados
-
 }
 
 CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria){

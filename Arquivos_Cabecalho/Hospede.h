@@ -15,31 +15,27 @@ int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
 void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 */
-void Main_Hospede(){
+void Main_Hospede(MODO Modo){
 	DADOS_HOSPEDE Hospede;
-	MODO Modo;
-	int Modo_de_Abertura,Acao,Codigo=0;
+	
+	int Acao,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
 	
 	while(1){
+
 		Acao = Opcao_Acoes();
-			//limpa a tela
-
-		if(Acao>=1 && Acao<=4){
-			Modo_de_Abertura=Modo_Manipulacao();
-			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
-		}
-		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
+		//Retorna um inteiro referente a Ação (Case)
+		//limpa a tela
+		
 		switch (Acao){
 			case Ler:
-				if (Modo_de_Abertura == Arquivo_Binario)
+				if (Modo.Modo_de_Abertura == Arquivo_Binario)
 				{
 					Ler_Hospede_Bin("Arquivos/Hospede.bin");
-				}else if(Modo_de_Abertura == Arquivo_Texto){
+				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 					Ler_Hospede_Txt("Arquivos/Hospede.txt");
-				}else if(Modo_de_Abertura==Memoria){
+				}else if(Modo.Modo_de_Abertura==Memoria){
 					if(Hospede.Codigo == 1){
 						Ler_Hospede_Memoria(Hospede);
 					}else{
@@ -49,9 +45,9 @@ void Main_Hospede(){
 				break;
 
 			case Criar:
-				if(Modo_de_Abertura == Memoria){
+				if(Modo.Modo_de_Abertura == Memoria){
 					printf("!!!ATENÇÂO!!!\n"
-					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
+					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
 					if(Confirmacao()){
 						Retorna_Struct_Hospede_Grava_Memoria(&Hospede);
 						printf("Salvo com sucesso na memória");
@@ -59,16 +55,16 @@ void Main_Hospede(){
 					
 					break;
 				}else{
-					Criar_Modificar_Hospede(Modo_de_Abertura,0);	
+					Criar_Modificar_Hospede(Modo.Modo_de_Abertura,0);	
 				}
 				break;	
 
 			case Editar:
-				if(Modo_de_Abertura == Arquivo_Binario){
+				if(Modo.Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,1,Modo);
-				}else if(Modo_de_Abertura == Arquivo_Texto){
+				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar("Arquivos/Hospede.txt",Codigo,1,Modo,Dados_Hospede);
@@ -77,11 +73,11 @@ void Main_Hospede(){
 			break;
 
 			case Apagar:
-			if(Modo_de_Abertura == Arquivo_Binario){
+			if(Modo.Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,0,Modo);
-			}else if(Modo_de_Abertura == Arquivo_Texto){
+			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar("Arquivos/Hospede.txt",Codigo,0,Modo,Dados_Hospede);

@@ -15,31 +15,27 @@ int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
 void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes);
 */
-void Main_Acomodacoes(){
+void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
-	MODO Modo;
-	int Modo_de_Abertura,Acao,Codigo=0;
+	int Acao,Codigo=0;
+
 	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
 	
 	while(1){
-		Acao = Opcao_Acoes();
-			//limpa a tela
 
-		if(Acao>=1 && Acao<=4){
-			Modo_de_Abertura=Modo_Manipulacao();
-			Modo = Modo_Bin_ou_Txt(Modo_de_Abertura);
-		}
-		///Não sei se tem necessidade  no final mas por enquanto tem !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		Acao = Opcao_Acoes();
+		//Retorna um inteiro referente a Ação (Case)
+		//limpa a tela
 
 		switch (Acao){
 			case Ler:
-			if (Modo_de_Abertura == Arquivo_Binario)
+			if (Modo.Modo_de_Abertura == Arquivo_Binario)
 			{
 				Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");
-			}else if(Modo_de_Abertura == Arquivo_Texto){
+			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 				Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");
-			}else if(Modo_de_Abertura==Memoria){
+			}else if(Modo.Modo_de_Abertura==Memoria){
 				if(Acomodacoes.Codigo == 1){
 					Ler_Acomodacoes_Memoria(Acomodacoes);
 				}else{
@@ -47,26 +43,28 @@ void Main_Acomodacoes(){
 				}
 			}
 				break;
+
 			case Criar:
-				if(Modo_de_Abertura == Memoria){
+				if(Modo.Modo_de_Abertura == Memoria){
 					printf("!!!ATENÇÂO!!!\n"
-					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria");
+					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
 					if(Confirmacao()){
-						Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo_de_Abertura);
+						Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo.Modo_de_Abertura);
 						printf("Salvo com sucesso na memória");
 					}
 					
 					break;
 				}else{
-					Criar_Modificar_Acomodacoes(Modo_de_Abertura,0);	
+					Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);	
 				}
 				break;	
+
 			case Editar:
-				if(Modo_de_Abertura == Arquivo_Binario){
+				if(Modo.Modo_de_Abertura == Arquivo_Binario){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,1,Modo);
-				}else if(Modo_de_Abertura == Arquivo_Texto){
+				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 					printf("Digite o codigo a ser editado: ");
 					scanf("%d",&Codigo);
 					Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,1,Modo,Dados_Acomodacoes);
@@ -74,11 +72,11 @@ void Main_Acomodacoes(){
 				
 			break;
 			case Apagar:
-			if(Modo_de_Abertura == Arquivo_Binario){
+			if(Modo.Modo_de_Abertura == Arquivo_Binario){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,0,Modo);
-			}else if(Modo_de_Abertura == Arquivo_Texto){
+			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 				printf("Digite o codigo a ser apagado: ");
 				scanf("%d",&Codigo);
 				Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,0,Modo,Dados_Acomodacoes);
@@ -215,8 +213,8 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	printf("%d\n",Acomodacoes->Cod_Categoria);
 
 	if(Acomodacoes->Cod_Categoria==0){
-			printf("Erro\n");
-		}else{
+		printf("Erro\n");
+	}else{
 		fprintf(Arquivo,"%d;",Acomodacoes->Codigo);
 		fprintf(Arquivo,"%s;",Acomodacoes->Descricao);
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Televisao);
@@ -254,7 +252,7 @@ void Gravar_Acomodacoes_Bin(char Url[99],ACOMODACOES *Acomodacoes){
 	printf("\nArquivo Salvo 'Acomodacoes.bin'");
    		//Mensagem de Confirmação
 }
-int Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
+void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 	printf("Descrição:");
 	scanf("%s",Acomodacoes->Descricao);
 	printf("Televisao:");
@@ -267,16 +265,19 @@ int Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 	scanf("%d",&Acomodacoes->Facilidades.Internet);
 	printf("Banheira:");
 	scanf("%d",&Acomodacoes->Facilidades.Banheira);
-	printf("Cod_Categoria:");
-	scanf("%d",&Acomodacoes->Cod_Categoria);
-	if (!Valida_Codigo_Categoria_Acomodacoes(Acomodacoes->Cod_Categoria,Modo_de_Abertura))
-	{
-		printf("Erro\n");
-		return 0;
-	}
-	return 1;
+	int Codigo_Categoria_A_Ser_Validado,Auxiliar=0;
 
-	//Le os outros dados
+	while(Auxiliar == 0){
+		printf("Cod_Categoria:");
+		scanf("%d",&Codigo_Categoria_A_Ser_Validado);
+		if (Valida_Codigo_Categoria_Acomodacoes(Codigo_Categoria_A_Ser_Validado,Modo_de_Abertura))
+		{
+			Auxiliar = 1;
+		}else{
+			printf("\nCodigo não cadastrado\n\n");
+		}
+	}
+	Acomodacoes->Cod_Categoria = Codigo_Categoria_A_Ser_Validado;
 }
 
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
@@ -345,8 +346,8 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 			//Soma no contador de contador
 		}
 	}
+
 	Quick_Sort(Vetor_Codigos,0,Contador1);
-	
 		//Ordena o Vetor;
 		for (int i = 0; i < Contador1; ++i)
 		{
@@ -358,60 +359,56 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		return 0;
 }
 
-ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
-	int Validador;
-	//Metodo do tipo Dados_Acomodacoes e recebe por parametro ponteiro de Dados de Acomodacoes
-	Acomodacoes->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	printf("Validador = %d",Validador );
-	Validador=Recebe_Dados_Acomodacoes(Acomodacoes,Modo_de_Abertura);
-	printf("Trocou para %d",Validador);
-	if (Validador==0){
-		Acomodacoes->Cod_Categoria=0;
-		printf("||||%d\n",Acomodacoes->Cod_Categoria );
-	}
-	return *Acomodacoes;
-	//Retorna ponteiro de hotel
-}
+
+
 
 void Criar_Modificar_Acomodacoes(int Modo_de_Abertura, int Manter_Codigo){
 	char Url[99];
+
 	ACOMODACOES Acomodacoes;
 		//Variavel Local
 		//Obedecendo o principio do privilegio mínimo
 		//Usada somente para transição do buffer para o arquivo ou do arquivo para a tela
+
 	switch (Modo_de_Abertura){
+
 		case Arquivo_Texto:
-		strcpy(Url,"Arquivos/Acomodacoes.txt");
-		 	//Coloca o caminho na URL
-		if (Manter_Codigo == 0)
-		{
-			Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Acomodacoes);
-		}else{
-			Acomodacoes.Codigo = Manter_Codigo;
-		}
-		break;
+
+			strcpy(Url,"Arquivos/Acomodacoes.txt");
+			 //Coloca o caminho na URL
+
+			if (Manter_Codigo == 0)
+			{
+				Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Acomodacoes);
+			}else{
+				Acomodacoes.Codigo = Manter_Codigo;
+			}
+			break;
 
 		case Arquivo_Binario:
-		strcpy(Url,"Arquivos/Acomodacoes.bin");
-		 	//Coloca o caminho na URL
-		if (Manter_Codigo == 0)
-		{
-			Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Acomodacoes);
-		}else{
-			Acomodacoes.Codigo = Manter_Codigo;
-		}
-		break;
+
+			strcpy(Url,"Arquivos/Acomodacoes.bin");
+			 //Coloca o caminho na URL
+
+			if (Manter_Codigo == 0)
+			{
+				Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Acomodacoes);
+			}else{
+				Acomodacoes.Codigo = Manter_Codigo;
+			}
+			break;
+
 		case Banco_De_Dados:
 			//Não está implementado
-		break;
+			break;
+
 		case Nuvem:
 			//Não está implementado
-		break;
+			break;
 
 	}
 	Recebe_Dados_Acomodacoes(&Acomodacoes,Modo_de_Abertura);
-	//Mostra Dados de Acomodacoes salvos na struct
+
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
 			Gravar_Acomodacoes_Txt(Url,&Acomodacoes);

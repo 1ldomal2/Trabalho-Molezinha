@@ -68,28 +68,49 @@ int main(int argc, char const *argv[])
 
 */
 	while(1){
-		int Opcao_Menu_Inicial=Main_All();
-		switch(Opcao_Menu_Inicial){
-			case Dados_Hotel:
-				Main_Hotel();
-			break;
-			
-			case Dados_Hospede:
-				Main_Hospede();
-			break;
-			case Dados_Acomodacoes:
-				Main_Acomodacoes();
-			break;
-			case Dados_Codigo_Categoria:
-				Main_Codigo_Categoria();
-			break;
-			case Dados_Produtos:
-			break;
-			case Dados_Fornecedores:
-			break;
-			case Dados_Funcionarios:
-			break;
+		int Enum_Manipulacao;
+		MODO Modo;
+
+		Enum_Manipulacao=Modo_Manipulacao();//Retorna um inteiro referente ao modo de manipulação
+		Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);//Retorna uma struct com os modos txt ou bin
+
+		//LOGAR 
+
+		while(1){
+			int Opcao_Menu_Inicial;
+
+			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case
+
+			switch(Opcao_Menu_Inicial){
+
+				case Dados_Hotel:
+					Main_Hotel(Modo);
+				break;
+				
+				case Dados_Hospede:
+					Main_Hospede(Modo); 	
+				break;
+
+				case Dados_Acomodacoes:
+					Main_Acomodacoes(Modo);
+				break;
+
+				case Dados_Codigo_Categoria:
+					Main_Codigo_Categoria(Modo);
+				break;
+
+				case Dados_Produtos:
+				break;
+
+				case Dados_Fornecedores:
+				break;
+
+				case Dados_Funcionarios:
+				break;
+
+				default:
+				break;
+			}
 		}
 	}
-
 }

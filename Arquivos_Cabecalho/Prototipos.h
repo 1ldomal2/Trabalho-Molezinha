@@ -26,6 +26,7 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
 void Ler_Hotel_Bin();
 void Ler_Hotel_Memoria(DADOS_HOTEL Hotel);
 void Ler_Hotel_Txt(char Url[99]);
+void Main_Hotel(MODO Modo);
 //Hospede
 DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
@@ -36,6 +37,7 @@ void Gravar_Hospede_Txt(char Url[99],DADOS_HOSPEDE *Hospede);
 void Ler_Hospede_Bin();
 void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede);
 void Ler_Hospede_Txt(char Url[99]);
+void Main_Hospede(MODO Modo);
 //Codigo_Categoria
 CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
 int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
@@ -46,6 +48,7 @@ void Gravar_Codigo_Categoria_Txt(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria
 void Ler_Codigo_Categoria_Bin();
 void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria);
 void Ler_Codigo_Categoria_Txt(char Url[99]);
+void Main_Codigo_Categoria(MODO Modo);
 //Acomodacoes
 ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
 int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
@@ -57,6 +60,7 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes);
 void Ler_Acomodacoes_Bin();
 void Ler_Acomodacoes_Memoria(ACOMODACOES Acomodacoes);
 void Ler_Acomodacoes_Txt(char Url[99]);
-int Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
+void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
+void Main_Acomodacoes(MODO Modo);
 
 #endif
