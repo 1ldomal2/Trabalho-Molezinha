@@ -50,7 +50,7 @@ void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria);
 void Ler_Codigo_Categoria_Txt(char Url[99]);
 void Main_Codigo_Categoria(MODO Modo);
 //Acomodacoes
-ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
+//ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
 int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura);
 void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);

@@ -68,7 +68,7 @@ int main(int argc, char const *argv[])
 
 */
 	while(1){
-		int Enum_Manipulacao;
+		int Enum_Manipulacao,Sair = 0;
 		MODO Modo;
 
 		Enum_Manipulacao=Modo_Manipulacao();//Retorna um inteiro referente ao modo de manipulação
@@ -76,7 +76,7 @@ int main(int argc, char const *argv[])
 
 		//LOGAR 
 
-		while(1){
+		while(Sair == 0){
 			int Opcao_Menu_Inicial;
 
 			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case
@@ -106,6 +106,10 @@ int main(int argc, char const *argv[])
 				break;
 
 				case Dados_Funcionarios:
+				break;
+
+				case 0:
+					Sair = 1;
 				break;
 
 				default:
