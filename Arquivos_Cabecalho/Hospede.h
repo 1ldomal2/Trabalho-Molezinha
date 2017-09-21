@@ -30,59 +30,78 @@ void Main_Hospede(MODO Modo){
 		
 		switch (Acao){
 			case Ler:
-				if (Modo.Modo_de_Abertura == Arquivo_Binario)
-				{
-					Ler_Hospede_Bin("Arquivos/Hospede.bin");
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					Ler_Hospede_Txt("Arquivos/Hospede.txt");
-				}else if(Modo.Modo_de_Abertura==Memoria){
-					if(Hospede.Codigo == 1){
-						Ler_Hospede_Memoria(Hospede);
-					}else{
-						printf("Não existe nenhum dado na memória");
+				if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
+
+					if (Modo.Modo_de_Abertura == Arquivo_Binario)
+					{
+						Ler_Hospede_Bin("Arquivos/Hospede.bin");
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						Ler_Hospede_Txt("Arquivos/Hospede.txt");
+					}else if(Modo.Modo_de_Abertura==Memoria){
+						if(Hospede.Codigo == 1){
+							Ler_Hospede_Memoria(Hospede);
+						}else{
+							printf("Não existe nenhum dado na memória");
+						}
 					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 
 			case Criar:
-				if(Modo.Modo_de_Abertura == Memoria){
-					printf("!!!ATENÇÂO!!!\n"
-					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-					if(Confirmacao()){
-						Retorna_Struct_Hospede_Grava_Memoria(&Hospede);
-						printf("Salvo com sucesso na memória");
+				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
+
+					if(Modo.Modo_de_Abertura == Memoria){
+						printf("!!!ATENÇÂO!!!\n"
+						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
+						if(Confirmacao()){
+							Retorna_Struct_Hospede_Grava_Memoria(&Hospede);
+							printf("Salvo com sucesso na memória");
+						}
+						
+						break;
+					}else{
+						Criar_Modificar_Hospede(Modo.Modo_de_Abertura,0);	
 					}
-					
-					break;
 				}else{
-					Criar_Modificar_Hospede(Modo.Modo_de_Abertura,0);	
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;	
 
 			case Editar:
-				if(Modo.Modo_de_Abertura == Arquivo_Binario){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,1,Modo);
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hospede.txt",Codigo,1,Modo,Dados_Hospede);
+				if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15)){
+
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,1,Modo);
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar("Arquivos/Hospede.txt",Codigo,1,Modo,Dados_Hospede);
+					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
-				
-			break;
+				break;
 
 			case Apagar:
-			if(Modo.Modo_de_Abertura == Arquivo_Binario){
-				printf("Digite o codigo a ser apagado: ");
-				scanf("%d",&Codigo);
-				Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,0,Modo);
-			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-				printf("Digite o codigo a ser apagado: ");
-				scanf("%d",&Codigo);
-				Apagar_Modificar("Arquivos/Hospede.txt",Codigo,0,Modo,Dados_Hospede);
-			}
-			break;
+				if ((Modo.Nivel_De_Permissao%2)){//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
+
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+						printf("Digite o codigo a ser apagado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar_Hospede_Bin("Arquivos/Hospede.bin",Codigo,0,Modo);
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						printf("Digite o codigo a ser apagado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar("Arquivos/Hospede.txt",Codigo,0,Modo,Dados_Hospede);
+					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+				}
+				break;
 			
 			default:
 				return;
