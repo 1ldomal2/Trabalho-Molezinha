@@ -17,16 +17,19 @@ Falta fazer :
 
 //Prototipos de Função
 /*
-void Apagar_Modificar(char Url[99], int Codigo,int Modificar);
+int Opcao_Acoes();
+int Main_All();
+void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
 int Confirmacao();
 int Intervalo_Vetor(int Vetor[],int Ultimo);
 int Modo_Manipulacao();
 void Quick_Sort(int vetor[], int inicio, int fim);
 int Retorna_Linha_Codigo(char Url[99], int Codigo);
-int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura);
+int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int Tipo_DADO);
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
+MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
+int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 */
-
 //Funçoes
 int Opcao_Acoes(){
 	int Acao;
@@ -150,6 +153,9 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 					case Dados_Produtos:
 					break;
 					case Dados_Fornecedores:
+						Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
 					case Dados_Funcionarios:
 					break;
@@ -327,6 +333,7 @@ int Retorna_Linha_Codigo(char Url[99], int Codigo){
 		fscanf(Arquivo,"%d",&Validador);
 		if(feof(Arquivo)){
 			return -1;
+			//Deu ruim
 			break;
 		}
 		if(Validador == Codigo){
@@ -347,6 +354,7 @@ int Retorna_Linha_Codigo(char Url[99], int Codigo){
 	fclose(Arquivo);
 	//Fecha o arquvio
 	return -1;
+	//Não encontrou o codigo
 }
 
 
@@ -580,5 +588,12 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura){
 	return Modo;
 	//Retorna a Struct
 }
-
+int Converter_Decimal_Binario(int n0,int n1,int n2,int n3){
+	n0=n0*pow(2,0);
+	n1=n1*pow(2,1);
+	n2=n2*pow(2,2);
+	n3=n3*pow(2,3);
+	int Binario = n0+n1+n2+n3;
+	return Binario;
+}
 #endif

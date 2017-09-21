@@ -21,6 +21,10 @@
 #include "Arquivos_Cabecalho/Hospede.h"
 #include "Arquivos_Cabecalho/Codigo_Categoria.h"
 #include "Arquivos_Cabecalho/Acomodacoes.h"
+#include "Arquivos_Cabecalho/Login.h"
+#include "Arquivos_Cabecalho/Funcionarios.h"
+
+
 
 
 //Macro
@@ -31,52 +35,39 @@
 
 int main(int argc, char const *argv[])
 {
+	system("mkdir Arquivos");
+	//comando do s.os
+	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
+	//Cria os arquivos
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
+	//Cria os arquivos
+	Verificacao_Arquivo("Arquivos/Funcionarios.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Funcionarios.bin",Arquivo_Binario);
+	//Cria os arquivos
+	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
+	//Cria os arquivos
+	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
+	//Cria os arquivos
+	Verificacao_Arquivo("Arquivos/Login.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Login.bin",Arquivo_Binario);
+	//Cria os arquivos
+
 	system("clear");
 
-		//Limpa a tela
-
-	//SENHA 
-	/*char *password = getpass("Password: "); //PEGA SENHA SEM MOSTRAR AO USUARIO
-		char senha[99];
-		strcpy(senha,password);
-		for(int i=0;senha[i];i++){
-			if(i%2==0){
-				senha[i]= senha[i]+3;
-			}else{
-				senha[i]= senha[i]-7;
-			}
-			  // para criptografar "embaralhar"
-		}
-		for(int i=0;senha[i];i++)
-		{
-			senha[i] = senha[i]+1;	 code 
-		}
-		printf("%s\n",senha);
-		for(int i=0; senha[i];i++)
-		{
-			senha[i] = senha[i]-1;	
-		}
-	
-	for(int i=0;senha[i];i++){
-		if(i%2==0){
-			senha[i]= senha[i]-3;
-		}else{
-			senha[i]= senha[i]+7;
-		}
-	}	
-	printf("DEPOIS   %s\n",senha );
-
-*/
 	while(1){
-		int Enum_Manipulacao,Sair = 0;
+		int Enum_Manipulacao;
 		MODO Modo;
 
 		Enum_Manipulacao=Modo_Manipulacao();//Retorna um inteiro referente ao modo de manipulação
 		Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);//Retorna uma struct com os modos txt ou bin
+		int Per = Login(Modo);
+		//LOGIN retorna o tipo de permissao de 1 a 15
 
-		//LOGAR 
-
-		while(Sair == 0){
+		while(1){
 			int Opcao_Menu_Inicial;
 
 			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case
@@ -106,10 +97,7 @@ int main(int argc, char const *argv[])
 				break;
 
 				case Dados_Funcionarios:
-				break;
-
-				case 0:
-					Sair = 1;
+					Main_Funcionarios(Modo);
 				break;
 
 				default:

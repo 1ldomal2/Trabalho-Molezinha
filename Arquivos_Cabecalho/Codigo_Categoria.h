@@ -196,8 +196,8 @@ void Gravar_Codigo_Categoria_Txt(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria
 	}
 	fprintf(Arquivo,"%d;",Codigo_Categoria->Codigo);
 	fprintf(Arquivo,"%s;",Codigo_Categoria->Descricao);
-	fprintf(Arquivo,"%.2f;",Codigo_Categoria->Valor_Diaria);
-	fprintf(Arquivo,"%d;",Codigo_Categoria->Capacidade_Adulto);
+	fprintf(Arquivo,"%f;",Codigo_Categoria->Valor_Diaria);
+	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade_Adulto);
 	fprintf(Arquivo,"%d;\n",Codigo_Categoria->Capacidade_Crianca);
 		//Salva um struct por Linha
 
@@ -345,93 +345,61 @@ int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo){
 }
 
 void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo){
-	
-
 	if(Modo.Modo_de_Abertura == Arquivo_Binario){
-		FILE *Arquivo_Acomodacoes;
-		ACOMODACOES Acomodacao;
+		CODIGO_CATEGORIA Codigo_Categoria;
+		//Cria uma Variavel do tipo Dados_Codigo_Categoria
+		FILE *Arquivo, *Arquivo_Temporario;
+		//Cria 2ponteiros do tipo FILE
+		Arquivo=fopen(Url,Modo.Leitura);
+		//Abre o aqruivo principal em modo leitura
+		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
+		//Abre o arquivo que sera apagado em modo de concatenacao
+		int Campo_Struct = Retorna_Campo_Struct_Codigo_Categoria(Url, Codigo);
+		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
+		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
+			printf("O codigo digitado não foi encontrado");
+		}else{
+			if(Confirmacao()){//Se a confirmacao retornar 1 
+				for(int i=1;i<Campo_Struct;i++){
+					//Vai ate o campo do codigo
+					fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+					fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
+					//Escreve no Arquivo temporario
+				}
 
-		int Existe_Ja_Cadatrado=0;
-		Arquivo_Acomodacoes=fopen("Arquivos/Acomodacoes.bin","rb");
-		
-
-		while(!feof(Arquivo_Acomodacoes)){
-			fread(&Acomodacao, sizeof(ACOMODACOES),1,Arquivo_Acomodacoes);
-			//Passa do bin poara at
-			if(feof(Arquivo_Acomodacoes)){
-				break;
-				//sai do while
-			}
-
-			if(Acomodacao.Cod_Categoria == Codigo){
-				Existe_Ja_Cadatrado=1;
-				//Variavel auxiliar 
-			}
-		}
-		fclose(Arquivo_Acomodacoes);
-		//Evita errp no Arquivo
-
-
-
-		if(Existe_Ja_Cadatrado==0){
-			CODIGO_CATEGORIA Codigo_Categoria;
-			//Cria uma Variavel do tipo Dados_Codigo_Categoria
-			FILE *Arquivo, *Arquivo_Temporario;
-			//Cria 2ponteiros do tipo FILE
-			Arquivo=fopen(Url,Modo.Leitura);
-			//Abre o aqruivo principal em modo leitura
-			Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
-			//Abre o arquivo que sera apagado em modo de concatenacao
-			int Campo_Struct = Retorna_Campo_Struct_Codigo_Categoria(Url, Codigo);
-			//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
-
-			if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
-				printf("O codigo digitado não foi encontrado");
-			}else{
-				if(Confirmacao()){//Se a confirmacao retornar 1 
-					for(int i=1;i<Campo_Struct;i++){
-						//Vai ate o campo do codigo
-						fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
-						fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
-						//Escreve no Arquivo temporario
+				fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo); 
+				//Le o arquivo Arquivo Binario e passa dados para struct
+				if(Modificar==1){
+					//Entra no modo Editar
+					Criar_Modificar_Codigo_Categoria(Arquivo_Binario, Codigo);
+					//Chama a funcao para editar o arquivo
+					printf("\nEditado com Sucesso");
+					system("clear");
+					//Limpa tela
+				}
+				//Se nao entrar no if so apaga o dado
+				while(!feof(Arquivo)){
+					//Vai ate o Final do Arquivo
+					fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+					if(feof(Arquivo)){
+						//Sai caso esteja no fim do arquivo;
+						break;
 					}
-
-					fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo); 
-					//Le o arquivo Arquivo Binario e passa dados para struct
-					if(Modificar==1){
-						//Entra no modo Editar
-						Criar_Modificar_Codigo_Categoria(Arquivo_Binario, Codigo);
-						//Chama a funcao para editar o arquivo
-						printf("\nEditado com Sucesso");
-						system("clear");
-						//Limpa tela
-					}
-					//Se nao entrar no if so apaga o dado
-					while(!feof(Arquivo)){
-						//Vai ate o Final do Arquivo
-						fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
-						if(feof(Arquivo)){
-							//Sai caso esteja no fim do arquivo;
-							break;
-						}
-						fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
-							//Printa no Arquivo Temporario
-					}
-					fclose(Arquivo_Temporario);
-					fclose(Arquivo);
-						//Fecha ambos os Arquivos
-					remove(Url);
-						//Remove o Arquivo Original
-					rename("Arquivos/Temp",Url);
-						//Renomeia o Arquivo
-					if(Modificar==0){
-						printf("\nExcluído com Sucesso");
-						//Mostra que foi apagado com sucesso
-					}
+					fwrite(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo_Temporario); 
+						//Printa no Arquivo Temporario
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+					//Fecha ambos os Arquivos
+				remove(Url);
+					//Remove o Arquivo Original
+				rename("Arquivos/Temp",Url);
+					//Renomeia o Arquivo
+				if(Modificar==0){
+					printf("\nExcluído com Sucesso");
+					//Mostra que foi apagado com sucesso
 				}
 			}
-		}else{
-			printf("\nA Categoria está vinculada com alguma acomodação, tornando impossivel remove-la se mantes apagar ou modifcar a acomodação");
 		}
 	}
 }

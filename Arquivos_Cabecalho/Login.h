@@ -2,36 +2,142 @@
 	//Se não estiver definido entra no if
 #define _Login_ 
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
+/*
+int Login(MODO Modo);
+void Criptografar(char Senha[]);
+void Descriptografar(char Senha[]);
+*/
+int Login(MODO Modo){
+	int Codigo=0,Linha=0,Auxiliar=0,Loop=1;
+	char Senha_Arquivo[999],Usuario_Arquivo[999],Senha_Digitada[999],Usuario_Digitado[999],Temporario[999];
+	FUNCIONARIOS Temporarios;//Cria um struct do Tipo login
+	FILE *Arquivo;//Cria um ponteiro para arquivo
 
-LOGIN Login(){
-	LOGIN Permissoes;//Cria um struct do Tipo login
+	while(Loop==1){
+		printf("Digite o CODIGO do usuario:");
+		scanf("%d%*c",&Codigo);
+		//Recebe o Codigo
 
-	printf("Digite o codigo do usuario:");
-	scanf("%d%*c",&Permissoes.Codigo_Usuario);
+		printf("Digite o NOME de usuario:");
+		scanf("%s",Usuario_Digitado);
+		//Recebe o Usuario
 
-	char *Ponteiro_Senha = getpass("Digite a senha: ");//Camufla a Senha
-	char Senha[99];
-	strcpy(Senha,Ponteiro_Senha);
+		char *Ponteiro_Senha = getpass("Digite a SENHA: ");//Camufla a Senha
+		strcpy(Senha_Digitada,Ponteiro_Senha);//Passa do ponteiro para o Vetor
+		//Recebe a Senha (de modo que não aparece na tela)
+		
+		if(Codigo == 666){
+			if (strcmp(Usuario_Digitado,"DA10")==0)
+			{
+				if (strcmp(Senha_Digitada,"Manoel")==0)
+				{
+					printf("MODO GOD\n");
+					return 15;
+				}
+			}
+		}
+		switch (Modo.Modo_de_Abertura){
+			case Arquivo_Texto:
 
-	//Achar a linha do Codigo!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	FILE *Arquivo;
+				Linha=Retorna_Linha_Codigo("Arquivos/Login.txt",Codigo);
+				//Retorna a linha em que está salvo os dados do Login "N"
 
-	fopen(Url)
+				if (Linha !=-1){
+					Arquivo=fopen("Arquivos/Login.txt","r");
+					for (int i = 0; i < Linha; ++i)//Este "FOR" serve apenas para deslocar o ponteiro
+					{
+						fscanf(Arquivo,"%[^\n]s",Temporario);
+						getc(Arquivo);
+					}
+					
+					fscanf(Arquivo,"%[^;]s",Temporario);
+					getc(Arquivo);
+					//Pula o primeiro campo Codigo
+					fscanf(Arquivo,"%[^;]s",Temporario);
+					getc(Arquivo);
+					//Pula o segundo campo Nome
 
-	//Achar o Registro de senha!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!
+					fscanf(Arquivo,"%[^;]s",Usuario_Arquivo);
+					getc(Arquivo);
+					//Salva Usuario
 
-	if(strcmp(Senha,Senha_Arquivo)==0){
-		Permissoes.
-		Codigo_Usuario=0; 
-		Permissao_Criar=0;
-		Permissao_Editar=0;
-		Permissao_Ler=0;
-		Permissao_Apagar=0;
-		Logado=1;
+					fscanf(Arquivo,"%[^;]s",Senha_Arquivo);
+					getc(Arquivo);
+					//Salva Senha
+
+				}else{
+					system("clear");
+					printf("O codigo digitado não existe\n");
+				}
+
+				break;
+
+			case Arquivo_Binario:
+			//COLOCAR A AKI A FUNÇÂO RETORNA CAMPO STRUCT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				break;
+		}
+		if(Linha !=-1)//Caso o Codigo Tenha sido encontrado entra no IF
+		{
+			Auxiliar=strcmp(Usuario_Arquivo,Usuario_Digitado);
+			//Compara se o Usuario foi digitado Corretamente
+
+			if(Auxiliar==0){//Caso o cara tenha digitado o usuario corretamente
+
+				Descriptografar(Senha_Arquivo);
+				//Descriptografa a Senha;
+
+				Auxiliar=strcmp(Senha_Digitada,Senha_Arquivo);
+				//Compara se a Senha está correta
+
+				Criptografar(Senha_Arquivo);
+				//Criptografa a Senha;
+				if(Auxiliar==0){
+
+					fscanf(Arquivo,"%d",&Temporarios.Permissao);
+					getc(Arquivo);
+					//Lẽ as permissoes dentro do Arquivo Txt e passa para um campo da struct
+
+					Loop=0;
+					//Desligar o Loop
+
+				}else{
+
+					printf("Senha está incorreto\n");
+					Criptografar(Senha_Arquivo);
+				}
+			}else{
+				printf("Usuario está incorreto\n");
+			}
+		}
 	}
+	return Temporarios.Permissao;//Retorna as Permissoes e se o Login foi efetivado
 
-	return Permissoes;//Retorna as Permissoes e se o Login foi efetivado
+}
 
+
+void Criptografar(char Senha[]){
+		
+		for(int i=0;Senha[i];i++){
+			if(i%2==0){
+				Senha[i]= Senha[i]+1;
+			}else{
+				Senha[i]= Senha[i]-1;
+			}
+		}
+		//Cripitografia diferente para numeros pares e numeros impares
+
+
+}
+
+void Descriptografar(char Senha[]){
+	for(int i=0;Senha[i];i++){
+		if(i%2==0){
+			Senha[i]= Senha[i]-1;
+		}else{
+			Senha[i]= Senha[i]+1;
+		}
+	}
+	//Descriptografar
 }
 
 #endif

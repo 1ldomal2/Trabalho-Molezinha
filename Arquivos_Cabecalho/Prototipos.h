@@ -9,6 +9,7 @@
 //Funçoes
 //void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
 int Confirmacao();
+int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Intervalo_Vetor(int Vetor[],int Ultimo);
 int Modo_Manipulacao();
 int Retorna_Linha_Codigo(char Url[99], int Codigo);
@@ -50,7 +51,7 @@ void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria);
 void Ler_Codigo_Categoria_Txt(char Url[99]);
 void Main_Codigo_Categoria(MODO Modo);
 //Acomodacoes
-//ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
+ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
 int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura);
 void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
@@ -62,5 +63,19 @@ void Ler_Acomodacoes_Memoria(ACOMODACOES Acomodacoes);
 void Ler_Acomodacoes_Txt(char Url[99]);
 void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura);
 void Main_Acomodacoes(MODO Modo);
+//Login
+int Login(MODO Modo);
+void Criptografar(char Senha[]);
+void Descriptografar(char Senha[]);
+//Funcionarios
+void Ler_Funcionarios_Txt(char Url[99]);
+void Ler_Funcionarios_Bin();
+void Ler_Funcionarios_Memoria(FUNCIONARIOS Funcionarios);
+void Gravar_Funcionarios_Txt(char Url[99],FUNCIONARIOS *Funcionarios);
+void Gravar_Funcionarios_Bin(char Url[99],FUNCIONARIOS *Funcionarios);
+void Criar_Modificar_Funcionarios(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Funcionarios(char Url[99], int Codigo);
+void Apagar_Modificar_Funcionarios_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+FUNCIONARIOS Retorna_Struct_Funcionarios_Grava_Memoria(FUNCIONARIOS *Funcionarios);
 
 #endif

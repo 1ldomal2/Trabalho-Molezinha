@@ -27,15 +27,6 @@ typedef struct Modo{
 	int Modo_de_Abertura;
 }MODO;
 	
-typedef struct Login{
-	int Codigo_Usuario;
-	int Permissao_Criar;
-	int Permissao_Editar;
-	int Permissao_Ler;
-	int Permissao_Apagar;
-	int Logado;
-}LOGIN;
-	
 typedef struct Endereco{
 	char Logradouro[Tamanho1];
 	char Numero[Tamanho1];
@@ -117,6 +108,7 @@ typedef struct Fornecedores{
 
 typedef struct Funcionarios{
 	int Codigo;
+	char Nome[Tamanho1];
 	char Usuario[Tamanho1];
 	char Senha[Tamanho1];
 	int Permissao;
