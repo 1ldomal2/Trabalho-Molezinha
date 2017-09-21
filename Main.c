@@ -39,35 +39,28 @@ int main(int argc, char const *argv[])
 	//comando do s.os
 	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
-	//Cria os arquivos
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
-	//Cria os arquivos
 	Verificacao_Arquivo("Arquivos/Funcionarios.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Funcionarios.bin",Arquivo_Binario);
-	//Cria os arquivos
 	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
-	//Cria os arquivos
 	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
 	//Cria os arquivos
-	Verificacao_Arquivo("Arquivos/Login.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Login.bin",Arquivo_Binario);
-	//Cria os arquivos
-
 	system("clear");
+	//Limpa a tela
 
 	while(1){
-		int Enum_Manipulacao;
+		int Enum_Manipulacao,Loop=1;
 		MODO Modo;
 
 		Enum_Manipulacao=Modo_Manipulacao();//Retorna um inteiro referente ao modo de manipulação
 		Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);//Retorna uma struct com os modos txt ou bin
-		int Per = Login(Modo);
+		Modo.Nivel_De_Permissao = Login(Modo);
 		//LOGIN retorna o tipo de permissao de 1 a 15
 
-		while(1){
+		while(Loop){
 			int Opcao_Menu_Inicial;
 
 			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case
@@ -100,9 +93,11 @@ int main(int argc, char const *argv[])
 					Main_Funcionarios(Modo);
 				break;
 
-				default:
+				case 0:
+					Loop=0;
 				break;
 			}
 		}
 	}
+	return 1;
 }

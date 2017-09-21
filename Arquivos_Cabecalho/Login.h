@@ -12,7 +12,7 @@ int Login(MODO Modo){
 	char Senha_Arquivo[999],Usuario_Arquivo[999],Senha_Digitada[999],Usuario_Digitado[999],Temporario[999];
 	FUNCIONARIOS Temporarios;//Cria um struct do Tipo login
 	FILE *Arquivo;//Cria um ponteiro para arquivo
-
+ 
 	while(Loop==1){
 		printf("Digite o CODIGO do usuario:");
 		scanf("%d%*c",&Codigo);
@@ -25,34 +25,43 @@ int Login(MODO Modo){
 		char *Ponteiro_Senha = getpass("Digite a SENHA: ");//Camufla a Senha
 		strcpy(Senha_Digitada,Ponteiro_Senha);//Passa do ponteiro para o Vetor
 		//Recebe a Senha (de modo que não aparece na tela)
+
+		printf("\n");
+
+		system("clear");
 		
 		if(Codigo == 666){
-			if (strcmp(Usuario_Digitado,"DA10")==0)
+			if (strcmp(Usuario_Digitado,"Da10")==0)
 			{
 				if (strcmp(Senha_Digitada,"Manoel")==0)
 				{
 					printf("MODO GOD\n");
 					return 15;
+					//Modo god tem todas as permiossoes
 				}
 			}
 		}
 		switch (Modo.Modo_de_Abertura){
 			case Arquivo_Texto:
 
-				Linha=Retorna_Linha_Codigo("Arquivos/Login.txt",Codigo);
+				Linha=Retorna_Linha_Codigo("Arquivos/Funcionarios.txt",Codigo);
 				//Retorna a linha em que está salvo os dados do Login "N"
 
 				if (Linha !=-1){
-					Arquivo=fopen("Arquivos/Login.txt","r");
-					for (int i = 0; i < Linha; ++i)//Este "FOR" serve apenas para deslocar o ponteiro
-					{
-						fscanf(Arquivo,"%[^\n]s",Temporario);
-						getc(Arquivo);
-					}
+					Arquivo=fopen("Arquivos/Funcionarios.txt","r");
 					
+					
+						for (int i = 0; i < Linha-1; ++i)//Este "FOR" serve apenas para deslocar o ponteiro
+						{
+							fscanf(Arquivo,"%[^\n]s",Temporario);
+							getc(Arquivo);
+						}
+					
+
 					fscanf(Arquivo,"%[^;]s",Temporario);
 					getc(Arquivo);
 					//Pula o primeiro campo Codigo
+
 					fscanf(Arquivo,"%[^;]s",Temporario);
 					getc(Arquivo);
 					//Pula o segundo campo Nome
@@ -64,6 +73,7 @@ int Login(MODO Modo){
 					fscanf(Arquivo,"%[^;]s",Senha_Arquivo);
 					getc(Arquivo);
 					//Salva Senha
+
 
 				}else{
 					system("clear");
@@ -82,13 +92,13 @@ int Login(MODO Modo){
 			//Compara se o Usuario foi digitado Corretamente
 
 			if(Auxiliar==0){//Caso o cara tenha digitado o usuario corretamente
-
+				
 				Descriptografar(Senha_Arquivo);
 				//Descriptografa a Senha;
 
 				Auxiliar=strcmp(Senha_Digitada,Senha_Arquivo);
 				//Compara se a Senha está correta
-
+				
 				Criptografar(Senha_Arquivo);
 				//Criptografa a Senha;
 				if(Auxiliar==0){
@@ -102,7 +112,7 @@ int Login(MODO Modo){
 
 				}else{
 
-					printf("Senha está incorreto\n");
+					printf("Senha está incorreta\n");
 					Criptografar(Senha_Arquivo);
 				}
 			}else{

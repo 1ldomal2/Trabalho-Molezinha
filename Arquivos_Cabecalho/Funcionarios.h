@@ -239,7 +239,9 @@ void Recebe_Dados_Funcionarios(FUNCIONARIOS *Funcionarios){
 	Criptografar(Senha);
 	strcpy(Funcionarios->Senha,Senha);
 	int Ler=2,Editar=2,Criar=2,Apagar=2;
-	while((Ler>1||Ler<0)||(Criar>1||Criar<0) || (Editar>1 || Editar < 0) || (Apagar >1 || Apagar <0)){
+	int Decimal = 0;
+
+	while(((Ler>1||Ler<0)||(Criar>1||Criar<0) || (Editar>1 || Editar < 0) || (Apagar >1 || Apagar <0)) || Decimal == 0){
 		printf("\nDigite 1 para permitir e 0 para negar");
 		printf("\nPermissao para Ler:");
 		scanf("%d",&Ler);
@@ -249,39 +251,64 @@ void Recebe_Dados_Funcionarios(FUNCIONARIOS *Funcionarios){
 		scanf("%d",&Editar);
 		printf("\nPermissao para Apagar:");
 		scanf("%d",&Apagar);
-	}
-	int Decimal = Converter_Decimal_Binario(Ler,Criar,Editar,Apagar);
-	Funcionarios->Permissao = Decimal;
-		if(Decimal==1){printf("\n Permissão nivel  1 - Apagar");}else{
-			if(Decimal==2){printf("\n Permissão nivel  2 - Editar");}else{
-				if(Decimal==3){printf("\n Permissão nivel  3 - Apagar e Editar");}else{
-					if(Decimal==4){printf("\n Permissão nivel  4 - Criar");}else{
-						if(Decimal==5){printf("\n Permissão nivel  5 - Criar e Apagar");}else{
-							if(Decimal==6){printf("\n Permissão nivel  6 - Criar e Editar");}else{
-								if(Decimal==7){printf("\n Permissão nivel  7 - Criar, Editar e Apagar");}else{
-									if(Decimal==8){printf("\n Permissão nivel  8 - Ler");}else{
-										if(Decimal==9){printf("\n Permissão nivel  9 - Ler e Apagar");}else{
-											if(Decimal==10){printf("\n Permissão nivel  10 - Ler e Editar");}else{
-												if(Decimal==11){printf("\n Permissão nivel  11 - Ler, Editar e Apagar");}else{
-													if(Decimal==12){printf("\n Permissão nivel  12 - Ler e Criar");}else{
-														if(Decimal==13){printf("\n Permissão nivel  13 - Ler, Criar e Apagar");}else{
-															if(Decimal==14){printf("\n Permissão nivel  14 - Ler, Criar e Editar");}else{
-																if(Decimal==15){printf("\n Permissão nivel  15 - Ler, Criar, Editar e Apagar");}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+		Decimal = Converter_Decimal_Binario(Ler,Criar,Editar,Apagar);
+		system("clear");
+		if (Decimal == 0)
+		{
+			printf("O usuario precisa ter pelo menos uma permissao\n");
+		}else if((Ler>1||Ler<0)||(Criar>1||Criar<0) || (Editar>1 || Editar < 0) || (Apagar >1 || Apagar <0)){
+			printf("Digite apenas 1 ou 0 para marcar a permissao\n");
 		}
-	
+	}
+	Funcionarios->Permissao = Decimal;
+
+	switch (Decimal){
+		case 1 :
+			printf("\n Permissão nivel  1 - Apagar");
+			break;
+		case 2 :
+			printf("\n Permissão nivel  2 - Editar");
+			break;
+		case 3 :
+			printf("\n Permissão nivel  3 - Apagar e Editar");
+			break;
+		case 4 :
+			printf("\n Permissão nivel  4 - Criar");
+			break;
+		case 5 :
+			printf("\n Permissão nivel  5 - Criar e Apagar");
+			break;
+		case 6 :
+			printf("\n Permissão nivel  6 - Criar e Editar");
+			break;
+		case 7 :
+			printf("\n Permissão nivel  7 - Criar, Editar e Apagar");
+			break;
+		case 8 :
+			printf("\n Permissão nivel  8 - Ler");
+			break;
+		case 9 :
+			printf("\n Permissão nivel  9 - Ler e Apagar");
+			break;
+		case 10 :
+			printf("\n Permissão nivel  10 - Ler e Editar");
+			break;
+		case 11 :
+			printf("\n Permissão nivel  11 - Ler, Editar e Apagar");
+			break;
+		case 12 :
+			printf("\n Permissão nivel  12 - Ler e Criar");
+			break;
+		case 13 :
+			printf("\n Permissão nivel  13 - Ler, Criar e Apagar");
+			break;
+		case 14 :
+			printf("\n Permissão nivel  14 - Ler, Criar e Editar");
+			break;
+		case 15 :
+			printf("\n Permissão nivel  15 - Ler, Criar, Editar e Apagar");
+			break;
+	}
 	//Le os outros dados
 }
 

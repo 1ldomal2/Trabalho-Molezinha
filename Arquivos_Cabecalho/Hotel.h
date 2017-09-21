@@ -5,15 +5,16 @@
 
 	//Inclui arquivos de cabeçalho
 /*
-void Ler_Hotel_Txt(char Url[99]);
-void Ler_Hotel_Bin();
-void Ler_Hotel_Memoria(DADOS_HOTEL Hotel);
-void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
-void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
-void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
+DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
+void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
+void Gravar_Hotel_Bin(char Url[99],DADOS_HOTEL *Hotel);
+void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel);
+void Ler_Hotel_Bin();
+void Ler_Hotel_Memoria(DADOS_HOTEL Hotel);
+void Ler_Hotel_Txt(char Url[99]);
+void Main_Hotel(MODO Modo);
 */
 void Main_Hotel(MODO Modo){
 	DADOS_HOTEL Hotel;
@@ -21,6 +22,7 @@ void Main_Hotel(MODO Modo){
 
 	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
+	//Verifica se ja existe os arquivos
 
 	while(1){
 
@@ -30,57 +32,74 @@ void Main_Hotel(MODO Modo){
 
 		switch (Acao){
 			case Ler:
-			if (Modo.Modo_de_Abertura == Arquivo_Binario)
-			{
-				Ler_Hotel_Bin("Arquivos/Hotel.bin");
-			}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-				Ler_Hotel_Txt("Arquivos/Hotel.txt");
-			}else if(Modo.Modo_de_Abertura==Memoria){
-				if(Hotel.Codigo == 1){
-					Ler_Hotel_Memoria(Hotel);
-				}else{
-					printf("Não existe nenhum dado na memória");
-				}
-			}
-				break;
-
-			case Criar:
-				if(Modo.Modo_de_Abertura == Memoria){
-					printf("!!!ATENÇÂO!!!\n"
-					"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-					if(Confirmacao()){
-						Retorna_Struct_Hotel_Grava_Memoria(&Hotel);
-						printf("Salvo com sucesso na memória");
+				if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
+					if (Modo.Modo_de_Abertura == Arquivo_Binario)
+					{
+						Ler_Hotel_Bin("Arquivos/Hotel.bin");
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						Ler_Hotel_Txt("Arquivos/Hotel.txt");
+					}else if(Modo.Modo_de_Abertura==Memoria){
+						if(Hotel.Codigo == 1){
+							Ler_Hotel_Memoria(Hotel);
+						}else{
+							printf("Não existe nenhum dado na memória");
+						}
 					}
-					
-					break;
 				}else{
-					Criar_Modificar_Hotel(Modo.Modo_de_Abertura,0);	
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+				}
+				break;
+			case Criar:
+				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15))
+				{
+					if(Modo.Modo_de_Abertura == Memoria){
+						printf("!!!ATENÇÂO!!!\n"
+						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
+						if(Confirmacao()){
+							Retorna_Struct_Hotel_Grava_Memoria(&Hotel);
+							printf("Salvo com sucesso na memória");
+						}
+						
+						break;
+					}else{
+						Criar_Modificar_Hotel(Modo.Modo_de_Abertura,0);	
+					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;	
 
 			case Editar:
-				if(Modo.Modo_de_Abertura == Arquivo_Binario){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,1,Modo);
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo,Dados_Hotel);
+				if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15))
+				{
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,1,Modo);
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar("Arquivos/Hotel.txt",Codigo,1,Modo,Dados_Hotel);
+					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
-				
 				break;
 
 			case Apagar:
-				if(Modo.Modo_de_Abertura == Arquivo_Binario){
-					printf("Digite o codigo a ser apagado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,0,Modo);
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					printf("Digite o codigo a ser apagado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo,Dados_Hotel);
+				if ((Modo.Nivel_De_Permissao%2))//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
+					{
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+						printf("Digite o codigo a ser apagado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar_Hotel_Bin("Arquivos/Hotel.bin",Codigo,0,Modo);
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						printf("Digite o codigo a ser apagado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar("Arquivos/Hotel.txt",Codigo,0,Modo,Dados_Hotel);
+					}
+				}else{
+					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 

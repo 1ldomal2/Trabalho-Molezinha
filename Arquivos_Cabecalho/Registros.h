@@ -24,6 +24,7 @@ typedef struct Modo{
 	char Leitura[4];
 	char Escrita[4];
 	char Concatenacao[4];
+	int Nivel_De_Permissao;
 	int Modo_de_Abertura;
 }MODO;
 	
