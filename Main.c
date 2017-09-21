@@ -23,6 +23,7 @@
 #include "Arquivos_Cabecalho/Acomodacoes.h"
 #include "Arquivos_Cabecalho/Login.h"
 #include "Arquivos_Cabecalho/Funcionarios.h"
+#include "Arquivos_Cabecalho/Fornecedores.h"
 
 
 
@@ -50,7 +51,7 @@ int main(int argc, char const *argv[])
 	//Cria os arquivos
 	system("clear");
 	//Limpa a tela
-	
+
 	while(1){
 		int Enum_Manipulacao,Loop=1;
 		MODO Modo;
@@ -89,6 +90,7 @@ int main(int argc, char const *argv[])
 				break;
 
 				case Dados_Fornecedores:
+					Main_Fornecedores(Modo);
 				break;
 
 				case Dados_Funcionarios:

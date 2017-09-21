@@ -170,11 +170,11 @@ void Ler_Funcionarios_Txt(char Url[99]){
 
 void Ler_Funcionarios_Memoria(FUNCIONARIOS Funcionarios){
 	//Recebe por parametro Struct de Funcionarios
-	printf("Codigo:\t\t\t%d\n",Funcionarios.Codigo);
+	printf("Codigo:\t\t%d\n",Funcionarios.Codigo);
 	printf("Nome:\t\t%s\n",Funcionarios.Nome);
 	printf("Usuario:\t\t%s\n",Funcionarios.Usuario);
-	printf("Senha\t%s\n",Funcionarios.Senha);
-	printf("Pemissao:\t\t\t%d\n",Funcionarios.Permissao);
+	printf("Senha\t\t%s\n",Funcionarios.Senha);
+	printf("Pemissao:\t\t%d\n",Funcionarios.Permissao);
 	printf("____________________________________________________\n");
 	//Mostra dados do Funcionarios cadastrado na memoria
 }

@@ -29,6 +29,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
+int Arquivo_Texto_Vazio(char Url[],int Leitura);
 */
 //Funçoes
 int Configuracoes(){
@@ -36,7 +37,7 @@ int Configuracoes(){
 	FILE *Arquivo;
 	Arquivo = fopen("Arquivos/Configuracoes.txt","r");
 	if(Arquivo == NULL){
-		Verificacao_Arquivo("Arquivos/Configuracoes.txt", Arquivo_Texto);		
+		Verificacao_Arquivo("Arquivos/Configuracoes.txt",Arquivo_Texto);		
 		Enum_Manipulacao = Modo_Manipulacao();
 		Arquivo = fopen("Arquivos/Configuracoes.txt","w");
 		fprintf(Arquivo,"%d",Enum_Manipulacao);
@@ -47,6 +48,71 @@ int Configuracoes(){
 	fclose(Arquivo);
 	return Enum_Manipulacao;
 }
+
+int Arquivo_Texto_Vazio(char Url[]){
+	FILE *Arquivo;
+	int Posicao=0;
+	char Temp;
+	Arquivo=fopen(Url,"r");
+	//Abre o Arquivo
+
+	while(1){//Repete ate que chegue a um break
+		Temp=getc(Arquivo);
+		//Passa o char do Arquivo para Temp e automaticamente desloca o ponteiro uma posição
+
+		if(feof(Arquivo)||Posicao>1){//Repete até chegar no final do arquivo ou até capturar 2 char ou seja  com 2 leituras da para saber se chagamos ou não ao final do arquivo
+			break;
+		}
+
+		Posicao++;
+		//Adiciona 1 A posição ou seja se 0 o arquivo chegou a Eof na primeira busca
+	}
+
+	fclose(Arquivo);
+	//Fecha o arquivo para evitar erros
+
+	if(Posicao==0){
+		return 1;
+		//Retorna um caso o arquivo esteja vazio
+	}else{
+		return 0;
+		//Retorna 0 caso o arquivo não esteja vazio
+	}
+
+}
+int Arquivo_Binario_Vazio(char Url[]){
+	FILE *Arquivo;
+	int Posicao=0;
+	char Temp;
+	Arquivo=fopen(Url,"rb");
+	//Abre o Arquivo
+
+	while(1){//Repete ate que chegue a um break
+		Temp=getc(Arquivo);
+		//Passa o char do Arquivo para Temp e automaticamente desloca o ponteiro uma posição
+
+		if(feof(Arquivo)||Posicao>1){//Repete até chegar no final do arquivo ou até capturar 2 char ou seja  com 2 leituras da para saber se chagamos ou não ao final do arquivo
+			break;
+		}
+
+		Posicao++;
+		//Adiciona 1 A posição ou seja se 0 o arquivo chegou a Eof na primeira busca
+	}
+
+	fclose(Arquivo);
+	//Fecha o arquivo para evitar erros
+
+	if(Posicao==0){
+		return 1;
+		//Retorna um caso o arquivo esteja vazio
+	}else{
+		return 0;
+		//Retorna 0 caso o arquivo não esteja vazio
+	}
+
+}
+
+
 void OrdenaValoresTxt(){
 	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
 	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");
@@ -177,11 +243,14 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 					case Dados_Produtos:
 					break;
 					case Dados_Fornecedores:
-						Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
+						Criar_Modificar_Fornecedores(Arquivo_Texto, Codigo);
 						printf("\nEditado com Sucesso");
 						system("clear");
 					break;
 					case Dados_Funcionarios:
+						Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
 
 				}

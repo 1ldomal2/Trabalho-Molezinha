@@ -18,93 +18,105 @@ ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes);
 */
 void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
-	int Acao,Codigo=0;
+	int Acao,Codigo=0,Vazio=0;
 
-	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
+	switch (Modo.Modo_de_Abertura){
+		case Arquivo_Binario:
+			Vazio=Arquivo_Binario_Vazio("Arquivos/Codigo_Categoria.bin");
+		break;
+
+		case Arquivo_Texto:
+			Vazio=Arquivo_Texto_Vazio("Arquivos/Codigo_Categoria.txt");
+		break;
+	}
 	
-	while(1){
-		OrdenaValoresTxt();
-		Acao = Opcao_Acoes();
-		//Retorna um inteiro referente a Ação (Case)
-		//limpa a tela
+	if (Vazio==1)
+	{
+		printf("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas\n");
+	}else{
+		while(1){
+			OrdenaValoresTxt();
+			Acao = Opcao_Acoes();
+			//Retorna um inteiro referente a Ação (Case)
+			//limpa a tela
 
-		switch (Acao){
-			case Ler:
-			if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
-				if (Modo.Modo_de_Abertura == Arquivo_Binario)
-				{
-					Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");
-				}else if(Modo.Modo_de_Abertura==Memoria){
-					if(Acomodacoes.Codigo == 1){
-						Ler_Acomodacoes_Memoria(Acomodacoes);
-					}else{
-						printf("Não existe nenhum dado na memória");
-					}
-				}
-			}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
-				}
-				break;
-
-			case Criar:
-				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo.Modo_de_Abertura);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
-						Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);	
-					}
-				}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
-				}
-				break;	
-
-			case Editar:
-			if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15)){
-				if(Modo.Modo_de_Abertura == Arquivo_Binario){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,1,Modo);
-				}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-					printf("Digite o codigo a ser editado: ");
-					scanf("%d",&Codigo);
-					Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,1,Modo,Dados_Acomodacoes);
-				}
-			}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
-				}
-				break;
-
-			case Apagar:
-				if ((Modo.Nivel_De_Permissao%2)){//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
-
-					if(Modo.Modo_de_Abertura == Arquivo_Binario){
-						printf("Digite o codigo a ser apagado: ");
-						scanf("%d",&Codigo);
-						Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,0,Modo);
+			switch (Acao){
+				case Ler:
+				if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
+					if (Modo.Modo_de_Abertura == Arquivo_Binario)
+					{
+						Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-						printf("Digite o codigo a ser apagado: ");
-						scanf("%d",&Codigo);
-						Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,0,Modo,Dados_Acomodacoes);
+						Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");
+					}else if(Modo.Modo_de_Abertura==Memoria){
+						if(Acomodacoes.Codigo == 1){
+							Ler_Acomodacoes_Memoria(Acomodacoes);
+						}else{
+							printf("Não existe nenhum dado na memória");
+						}
 					}
-					
 				}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}
-				break;
+					break;
 
-			default:
-				return;
-				break;
+				case Criar:
+					if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
+						if(Modo.Modo_de_Abertura == Memoria){
+							printf("!!!ATENÇÂO!!!\n"
+							"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
+							if(Confirmacao()){
+								Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo.Modo_de_Abertura);
+								printf("Salvo com sucesso na memória");
+							}
+							
+							break;
+						}else{
+							Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);	
+						}
+					}else{
+						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					}
+					break;	
+
+				case Editar:
+				if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15)){
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,1,Modo);
+					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						printf("Digite o codigo a ser editado: ");
+						scanf("%d",&Codigo);
+						Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,1,Modo,Dados_Acomodacoes);
+					}
+				}else{
+						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					}
+					break;
+
+				case Apagar:
+					if ((Modo.Nivel_De_Permissao%2)){//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
+
+						if(Modo.Modo_de_Abertura == Arquivo_Binario){
+							printf("Digite o codigo a ser apagado: ");
+							scanf("%d",&Codigo);
+							Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,0,Modo);
+						}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+							printf("Digite o codigo a ser apagado: ");
+							scanf("%d",&Codigo);
+							Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,0,Modo,Dados_Acomodacoes);
+						}
+						
+					}else{
+							printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+						}
+					break;
+
+				default:
+					return;
+					break;
+			}
 		}
 	}
 }
@@ -306,7 +318,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
-		Arquivo=fopen("Arquivos/Acomodacoes.txt","r");
+		Arquivo=fopen("Arquivos/Codigo_Categoria.txt","r");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -315,7 +327,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		}
 		break;
 		case Arquivo_Binario:
-		Arquivo=fopen("Arquivos/Acomodacoes.bin","rb");
+		Arquivo=fopen("Arquivos/Codigo_Categoria.bin","rb");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -324,6 +336,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		}
 		break;
 	}		
+
 	int Contador1=0, Vetor_Codigos[9999];
 		//Evita lixo de memoria
 	if (Modo_de_Abertura == Arquivo_Texto)
@@ -350,26 +363,36 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
 		ACOMODACOES Tipo_Acomodacoes;
+		CODIGO_CATEGORIA Codigo_Categoria;
 		Contador1=0;
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
-			fread(&Tipo_Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
+			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){
 				break;
 				//Se estiver no fim do arquivo sai do loop
 			}
 
-			Vetor_Codigos[Contador1] = Tipo_Acomodacoes.Cod_Categoria;
+			Vetor_Codigos[Contador1] = Codigo_Categoria.Codigo;
 			Contador1++;
 			//Soma no contador de contador
 		}
 	}
-
-	Quick_Sort(Vetor_Codigos,0,Contador1);
+	if(Contador1!=1){
+		Quick_Sort(Vetor_Codigos,0,Contador1);
 		//Ordena o Vetor;
+	}
+	printf("\n\n%d\n",Contador1);
+
+	for (int i = 0; i < Contador1; ++i)
+		{
+			printf("Valor = %d - Posicao = %d\n",Vetor_Codigos[i],i);
+			
+		}
 		for (int i = 0; i < Contador1; ++i)
 		{
+			printf("Valor = %d - Posicao = %d\n",Vetor_Codigos[i],i);
 			if (Codigo == Vetor_Codigos[i])
 			{
 				return 1;

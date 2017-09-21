@@ -17,6 +17,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura,int 
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 void Quick_Sort(int vetor[], int inicio, int fim);
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
+int Arquivo_Texto_Vazio(char Url[]);
 //Hotel
 DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
@@ -77,5 +78,15 @@ void Criar_Modificar_Funcionarios(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Funcionarios(char Url[99], int Codigo);
 void Apagar_Modificar_Funcionarios_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 FUNCIONARIOS Retorna_Struct_Funcionarios_Grava_Memoria(FUNCIONARIOS *Funcionarios);
-
+//Fornecedores
+FORNECEDORES Retorna_Struct_Fornecedores_Grava_Memoria(FORNECEDORES *Fornecedores);
+int Retorna_Campo_Struct_Fornecedores(char Url[99], int Codigo);
+void Apagar_Modificar_Fornecedores_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+void Criar_Modificar_Fornecedores(int Modo_de_Abertura,int Manter_Codigo);
+void Gravar_Fornecedores_Bin(char Url[99],FORNECEDORES *Fornecedores);
+void Gravar_Fornecedores_Txt(char Url[99],FORNECEDORES *Fornecedores);
+void Ler_Fornecedores_Bin();
+void Ler_Fornecedores_Memoria(FORNECEDORES Fornecedores);
+void Ler_Fornecedores_Txt(char Url[99]);
+void Main_Fornecedores(MODO Modo);
 #endif
