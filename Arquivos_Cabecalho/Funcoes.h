@@ -31,6 +31,22 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 */
 //Funçoes
+int Configuracoes(){
+	int Enum_Manipulacao = 0; 
+	FILE *Arquivo;
+	Arquivo = fopen("Arquivos/Configuracoes.txt","r");
+	if(Arquivo == NULL){
+		Verificacao_Arquivo("Arquivos/Configuracoes.txt", Arquivo_Texto);		
+		Enum_Manipulacao = Modo_Manipulacao();
+		Arquivo = fopen("Arquivos/Configuracoes.txt","w");
+		fprintf(Arquivo,"%d",Enum_Manipulacao);
+	}else{
+		fscanf(Arquivo,"%d",&Enum_Manipulacao);
+		getc(Arquivo);
+	}
+	fclose(Arquivo);
+	return Enum_Manipulacao;
+}
 void OrdenaValoresTxt(){
 	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
 	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");

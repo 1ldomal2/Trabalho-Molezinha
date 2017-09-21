@@ -55,7 +55,7 @@ int main(int argc, char const *argv[])
 		int Enum_Manipulacao,Loop=1;
 		MODO Modo;
 
-		Enum_Manipulacao=Modo_Manipulacao();//Retorna um inteiro referente ao modo de manipulação
+		Enum_Manipulacao=Configuracoes();//Retorna um inteiro referente ao modo de manipulação
 		Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);//Retorna uma struct com os modos txt ou bin
 		Modo.Nivel_De_Permissao = Login(Modo);
 		//LOGIN retorna o tipo de permissao de 1 a 15
