@@ -50,7 +50,7 @@ int main(int argc, char const *argv[])
 	//Cria os arquivos
 	system("clear");
 	//Limpa a tela
-
+	
 	while(1){
 		int Enum_Manipulacao,Loop=1;
 		MODO Modo;
@@ -61,6 +61,8 @@ int main(int argc, char const *argv[])
 		//LOGIN retorna o tipo de permissao de 1 a 15
 
 		while(Loop){
+			OrdenaValoresTxt();
+			//Cria os arquivos
 			int Opcao_Menu_Inicial;
 
 			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case

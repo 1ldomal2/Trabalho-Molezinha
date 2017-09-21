@@ -16,7 +16,6 @@ void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modifica
 CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
 */
 void Main_Codigo_Categoria(MODO Modo){
-
 	CODIGO_CATEGORIA Codigo_Categoria;
 	int Acao,Codigo=0;
 
@@ -24,7 +23,7 @@ void Main_Codigo_Categoria(MODO Modo){
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
 	
 	while(1){
-		
+		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela

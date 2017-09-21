@@ -25,7 +25,7 @@ void Main_Hotel(MODO Modo){
 	//Verifica se ja existe os arquivos
 
 	while(1){
-
+		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela

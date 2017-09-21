@@ -31,6 +31,13 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 */
 //Funçoes
+void OrdenaValoresTxt(){
+	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
+	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");
+	system("sort -n --output=Arquivos/Funcionarios.txt Arquivos/Funcionarios.txt");
+	system("sort -n --output=Arquivos/Hospede.txt Arquivos/Hospede.txt");
+	system("sort -n --output=Arquivos/Hotel.txt Arquivos/Hotel.txt");
+}
 int Opcao_Acoes(){
 	int Acao;
 	printf("\nDigite:"

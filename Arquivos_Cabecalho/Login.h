@@ -1,14 +1,16 @@
 #ifndef _Login_ 
 	//Se não estiver definido entra no if
 #define _Login_ 
+
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 /*
 int Login(MODO Modo);
 void Criptografar(char Senha[]);
 void Descriptografar(char Senha[]);
 */
+
 int Login(MODO Modo){
-	int Codigo=0,Linha=0,Auxiliar=0,Loop=1;
+	int Codigo=0,Linha=0,Auxiliar=0,Loop=1,Campo_Struct = 0;
 	char Senha_Arquivo[999],Usuario_Arquivo[999],Senha_Digitada[999],Usuario_Digitado[999],Temporario[999];
 	FUNCIONARIOS Temporarios;//Cria um struct do Tipo login
 	FILE *Arquivo;//Cria um ponteiro para arquivo
@@ -23,9 +25,10 @@ int Login(MODO Modo){
 		//Recebe o Usuario
 
 		char *Ponteiro_Senha = getpass("Digite a SENHA: ");//Camufla a Senha
+		printf("%s",Ponteiro_Senha);
 		strcpy(Senha_Digitada,Ponteiro_Senha);//Passa do ponteiro para o Vetor
 		//Recebe a Senha (de modo que não aparece na tela)
-
+		
 		printf("\n");
 
 		system("clear");
@@ -41,6 +44,7 @@ int Login(MODO Modo){
 				}
 			}
 		}
+		
 		switch (Modo.Modo_de_Abertura){
 			case Arquivo_Texto:
 
@@ -80,11 +84,24 @@ int Login(MODO Modo){
 					printf("O codigo digitado não existe\n");
 				}
 
-				break;
-
+			break;
 			case Arquivo_Binario:
-			//COLOCAR A AKI A FUNÇÂO RETORNA CAMPO STRUCT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				break;
+				Arquivo = fopen("Arquivos/Funcionarios.bin",Modo.Leitura);				
+				//COLOCAR A AKI A FUNÇÂO RETORNA CAMPO STRUCT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				Campo_Struct = Retorna_Campo_Struct_Funcionarios("Arquivos/Funcionarios.bin",Codigo);
+				if(Campo_Struct != -1){
+					for(int i=1;i<Campo_Struct;i++){
+						//Vai ate o campo do codigo
+						fread(&Temporarios, sizeof(FUNCIONARIOS),1,Arquivo);
+					}
+					fread(&Temporarios, sizeof(FUNCIONARIOS),1,Arquivo); 
+					strcpy(Usuario_Arquivo,Temporarios.Usuario);
+					strcpy(Senha_Arquivo,Temporarios.Senha);
+				}else{
+					system("clear");
+					printf("O codigo digitado não existe\n");
+				}
+			break;
 		}
 		if(Linha !=-1)//Caso o Codigo Tenha sido encontrado entra no IF
 		{

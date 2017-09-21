@@ -16,6 +16,7 @@ void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Mo
 DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 */
 void Main_Hospede(MODO Modo){
+	OrdenaValoresTxt();
 	DADOS_HOSPEDE Hospede;
 	
 	int Acao,Codigo=0;
@@ -23,7 +24,7 @@ void Main_Hospede(MODO Modo){
 	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
 	
 	while(1){
-
+		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela

@@ -24,7 +24,7 @@ void Main_Acomodacoes(MODO Modo){
 	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
 	
 	while(1){
-
+		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela

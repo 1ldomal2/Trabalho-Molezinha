@@ -23,7 +23,7 @@ void Main_Funcionarios(MODO Modo){
 	Verificacao_Arquivo("Arquivos/Funcionarios.txt",Arquivo_Texto);
 	
 	while(1){
-
+		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela
