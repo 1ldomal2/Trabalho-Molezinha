@@ -24,6 +24,8 @@
 #include "Arquivos_Cabecalho/Login.h"
 #include "Arquivos_Cabecalho/Funcionarios.h"
 #include "Arquivos_Cabecalho/Fornecedores.h"
+#include "Arquivos_Cabecalho/Produtos.h"
+
 
 
 
@@ -38,6 +40,8 @@ int main(int argc, char const *argv[])
 {
 	system("mkdir Arquivos");
 	//comando do s.os
+	Verificacao_Arquivo("Arquivos/Produtos.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Produtos.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
 	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
@@ -87,6 +91,7 @@ int main(int argc, char const *argv[])
 				break;
 
 				case Dados_Produtos:
+					Main_Produtos(Modo);
 				break;
 
 				case Dados_Fornecedores:

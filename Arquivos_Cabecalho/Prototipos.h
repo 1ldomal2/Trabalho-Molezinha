@@ -89,4 +89,14 @@ void Ler_Fornecedores_Bin();
 void Ler_Fornecedores_Memoria(FORNECEDORES Fornecedores);
 void Ler_Fornecedores_Txt(char Url[99]);
 void Main_Fornecedores(MODO Modo);
+//Produtos
+void Ler_Produtos_Txt(char Url[99]);
+void Ler_Produtos_Bin();
+void Ler_Produtos_Memoria(PRODUTOS Produtos);
+void Gravar_Produtos_Txt(char Url[99],PRODUTOS *Produtos);
+void Gravar_Produtos_Bin(char Url[99],PRODUTOS *Produtos);
+void Criar_Modificar_Produtos(int Modo_de_Abertura,int Manter_Codigo);
+int Retorna_Campo_Struct_Produtos(char Url[99], int Codigo);
+void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos);
 #endif

@@ -114,6 +114,7 @@ int Arquivo_Binario_Vazio(char Url[]){
 
 
 void OrdenaValoresTxt(){
+	system("sort -n --output=Arquivos/Produtos.txt Arquivos/Produtos.txt");
 	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
 	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");
 	system("sort -n --output=Arquivos/Funcionarios.txt Arquivos/Funcionarios.txt");
@@ -241,6 +242,9 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 						system("clear");
 					break;
 					case Dados_Produtos:
+						Criar_Modificar_Produtos(Arquivo_Texto, Codigo);
+						printf("\nEditado com Sucesso");
+						system("clear");
 					break;
 					case Dados_Fornecedores:
 						Criar_Modificar_Fornecedores(Arquivo_Texto, Codigo);

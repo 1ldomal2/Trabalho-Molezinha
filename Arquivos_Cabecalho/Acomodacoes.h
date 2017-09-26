@@ -18,21 +18,23 @@ ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes);
 */
 void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
-	int Acao,Codigo=0,Vazio=0;
+	int Acao,Codigo=0,Vazio_Hotel=0,Vazio_Categoria=0;
 
 	switch (Modo.Modo_de_Abertura){
 		case Arquivo_Binario:
-			Vazio=Arquivo_Binario_Vazio("Arquivos/Codigo_Categoria.bin");
+			Vazio_Categoria=Arquivo_Binario_Vazio("Arquivos/Codigo_Categoria.bin");
+			Vazio_Hotel=Arquivo_Binario_Vazio("Arquivos/Hotel.bin");
 		break;
-
 		case Arquivo_Texto:
-			Vazio=Arquivo_Texto_Vazio("Arquivos/Codigo_Categoria.txt");
+			Vazio_Categoria=Arquivo_Texto_Vazio("Arquivos/Codigo_Categoria.txt");
+			Vazio_Hotel=Arquivo_Binario_Vazio("Arquivos/Hotel.txt");
 		break;
 	}
-	
-	if (Vazio==1)
+	if(Vazio_Hotel == 1){
+		printf("Não é possivel Manipular as Acomodaçoes pois não há hotéis cadastradas \n");
+	}else if (Vazio_Categoria == 1)
 	{
-		printf("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas\n");
+		printf("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas \n");
 	}else{
 		while(1){
 			OrdenaValoresTxt();
@@ -174,6 +176,9 @@ void Ler_Acomodacoes_Txt(char Url[99]){
 			fscanf(Arquivo,"%d",&Acomodacoes.Cod_Categoria);
 				//Expreção Regular
 			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Acomodacoes.Cod_Hotel);
+			//Expreção Regular
+			getc(Arquivo);
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
 			Ler_Acomodacoes_Memoria(Acomodacoes);
@@ -199,7 +204,9 @@ void Ler_Acomodacoes_Memoria(ACOMODACOES Acomodacoes){
 	printf("Frigobar\t%d\n",Acomodacoes.Facilidades.Frigobar);
 	printf("Banheira\t%d\n",Acomodacoes.Facilidades.Banheira);
 	printf("Internet\t%d\n",Acomodacoes.Facilidades.Internet);
-	printf("Cod_Categoria:\t%d\n",Acomodacoes.Cod_Categoria);
+	printf("Codigo da Categoria:\t%d\n",Acomodacoes.Cod_Categoria);
+	printf("Codigo do Hotel:\t%d\n",Acomodacoes.Cod_Hotel);
+	
 	printf("____________________________________________________\n");
 	//Mostra dados do Acomodacoes cadastrado na memoria
 }
@@ -254,6 +261,7 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Internet);
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Banheira);
 		fprintf(Arquivo,"%d;\n",Acomodacoes->Cod_Categoria);
+		fprintf(Arquivo,"%d;\n",Acomodacoes->Cod_Hotel);
 			//Salva um struct por Linha
 
 		fclose(Arquivo);
@@ -296,20 +304,128 @@ void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 	scanf("%d",&Acomodacoes->Facilidades.Internet);
 	printf("Banheira:");
 	scanf("%d",&Acomodacoes->Facilidades.Banheira);
-	int Codigo_Categoria_A_Ser_Validado,Auxiliar=0;
+	int Codigo_Categoria_A_Ser_Validado,Codigo_Hotel_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
 
 	while(Auxiliar == 0){
-		printf("Cod_Categoria:");
+		printf("Codigo da Categoria:");
 		scanf("%d",&Codigo_Categoria_A_Ser_Validado);
 		if (Valida_Codigo_Categoria_Acomodacoes(Codigo_Categoria_A_Ser_Validado,Modo_de_Abertura))
 		{
-			Auxiliar = 1;
+			Acomodacoes->Cod_Categoria = Codigo_Categoria_A_Ser_Validado;
+			Auxiliar = 1;			
 		}else{
 			printf("\nCodigo não cadastrado\n\n");
+			printf("Deseja sair sem efetuar o cadastro?(1 - Sim)");
+			scanf("%d",&Sair_Da_Validacao);
+			if(Sair_Da_Validacao == 1){
+				Auxiliar = 1;
+			}
+			
 		}
 	}
-	Acomodacoes->Cod_Categoria = Codigo_Categoria_A_Ser_Validado;
+	Auxiliar = 0;
+
+	while(Auxiliar == 0){
+		printf("Codigo do Hotel:");
+		scanf("%d",&Codigo_Hotel_A_Ser_Validado);
+		if (Valida_Codigo_Categoria_Acomodacoes(Codigo_Hotel_A_Ser_Validado,Modo_de_Abertura))
+		{
+			Acomodacoes->Cod_Hotel = Codigo_Hotel_A_Ser_Validado;	
+			Auxiliar = 1;		
+		}else{
+			printf("\nCodigo não cadastrado\n\n");
+			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
+			scanf("%d",&Sair_Da_Validacao);
+			if(Sair_Da_Validacao == 1){
+				Auxiliar = 1;
+			}	
+		}
+	}
 }
+int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
+	
+		FILE *Arquivo;
+		char Temporario[9999];
+			//Ponteiro para Arquivo
+		switch(Modo_de_Abertura){
+			case Arquivo_Texto:
+			Arquivo=fopen("Arquivos/Hotel.txt","r");
+				//Abre o Arquivo em Modo Leitura
+			if(Arquivo==NULL){
+					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+				printf("Não há Hoteis\n");
+				return -1;
+			}
+			break;
+			case Arquivo_Binario:
+			Arquivo=fopen("Arquivos/Hotel.bin","rb");
+				//Abre o Arquivo em Modo Leitura
+			if(Arquivo==NULL){
+					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+				printf("Não há Hoteis\n");
+				return -1;		
+			}
+			break;
+		}		
+	
+		int Contador1=0, Vetor_Codigos[9999];
+			//Evita lixo de memoria
+		if (Modo_de_Abertura == Arquivo_Texto)
+		{
+			while(!feof(Arquivo)){
+	
+				fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				if(feof(Arquivo)){
+					//Verifica se chegou a ao fim do arquivo
+					break;
+					//sai do while
+				}
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				getc(Arquivo);
+				//Move o ponteiro até o proximo codigo
+				Contador1++;
+				//Adicione 1 ao contador ou seja adicione um ao numero do indice
+				
+			}
+	
+		}else if (Modo_de_Abertura == Arquivo_Binario)
+		{
+			DADOS_HOTEL Hotel;
+			Contador1=0;
+			//Zera contador de Codigos
+			while(!feof(Arquivo)){
+				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+				//Le arquivo e passac para a struct
+				if(feof(Arquivo)){
+					break;
+					//Se estiver no fim do arquivo sai do loop
+				}
+	
+				Vetor_Codigos[Contador1] = Hotel.Codigo;
+				Contador1++;
+				//Soma no contador de contador
+			}
+		}
+		if(Contador1!=1){
+			Quick_Sort(Vetor_Codigos,0,Contador1);
+			//Ordena o Vetor;
+		}
+		printf("\n\n%d\n",Contador1);
+	
+				
+		
+			for (int i = 0; i < Contador1; ++i)
+			{
+				if (Codigo == Vetor_Codigos[i])
+				{
+					return 1;
+				}
+			}
+			return 0;
+	}
 
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 
@@ -385,14 +501,8 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 	}
 	printf("\n\n%d\n",Contador1);
 
-	for (int i = 0; i < Contador1; ++i)
-		{
-			printf("Valor = %d - Posicao = %d\n",Vetor_Codigos[i],i);
-			
-		}
 		for (int i = 0; i < Contador1; ++i)
 		{
-			printf("Valor = %d - Posicao = %d\n",Vetor_Codigos[i],i);
 			if (Codigo == Vetor_Codigos[i])
 			{
 				return 1;

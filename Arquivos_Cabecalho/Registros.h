@@ -76,6 +76,7 @@ typedef struct Acomodacoes{
 	char Descricao[Tamanho2];
 	FACILIDADES Facilidades;
 	int Cod_Categoria;
+	int Cod_Hotel;
 }ACOMODACOES;
 
 typedef struct Codigo_Categoria{
@@ -91,7 +92,7 @@ typedef struct Produtos{
 	unsigned int Estoque;
 	unsigned int Estoque_Minimo;
 	char Descricao[Tamanho2];
-	float Preco_Codigo;
+	float Preco_Custo;
 	float Preco_Venda;
 }PRODUTOS;
 
