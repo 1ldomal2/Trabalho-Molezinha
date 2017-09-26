@@ -73,8 +73,8 @@ void Main_Acomodacoes(MODO Modo){
 							}
 							
 							break;
-						}else{
-							Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);	
+						}else{Criar_Modificar_Acomodacoes
+							(Modo.Modo_de_Abertura,0);	
 						}
 					}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -238,6 +238,7 @@ void Ler_Acomodacoes_Bin(char Url[99]){
 	}
 }
 
+
 void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	//Colocar com parametro não " " mas sim ;
 	FILE *Arquivo;
@@ -248,9 +249,8 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
 	
-	printf("%d\n",Acomodacoes->Cod_Categoria);
-
-	if(Acomodacoes->Cod_Categoria==0){
+	
+	if(Acomodacoes->Cod_Categoria == 0 || Acomodacoes->Cod_Hotel == 0){
 		printf("Erro\n");
 	}else{
 		fprintf(Arquivo,"%d;",Acomodacoes->Codigo);
@@ -260,7 +260,7 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Frigobar);
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Internet);
 		fprintf(Arquivo,"%d;",Acomodacoes->Facilidades.Banheira);
-		fprintf(Arquivo,"%d;\n",Acomodacoes->Cod_Categoria);
+		fprintf(Arquivo,"%d;",Acomodacoes->Cod_Categoria);
 		fprintf(Arquivo,"%d;\n",Acomodacoes->Cod_Hotel);
 			//Salva um struct por Linha
 
@@ -314,31 +314,36 @@ void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 			Acomodacoes->Cod_Categoria = Codigo_Categoria_A_Ser_Validado;
 			Auxiliar = 1;			
 		}else{
-			printf("\nCodigo não cadastrado\n\n");
-			printf("Deseja sair sem efetuar o cadastro?(1 - Sim)");
+			printf("\nCodigo não cadastrado\n");
+
+
+
+			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 			scanf("%d",&Sair_Da_Validacao);
 			if(Sair_Da_Validacao == 1){
-				Auxiliar = 1;
+				break;
 			}
 			
 		}
 	}
-	Auxiliar = 0;
+	if(Auxiliar==1){
+		Auxiliar = 0;
 
-	while(Auxiliar == 0){
-		printf("Codigo do Hotel:");
-		scanf("%d",&Codigo_Hotel_A_Ser_Validado);
-		if (Valida_Codigo_Categoria_Acomodacoes(Codigo_Hotel_A_Ser_Validado,Modo_de_Abertura))
-		{
-			Acomodacoes->Cod_Hotel = Codigo_Hotel_A_Ser_Validado;	
-			Auxiliar = 1;		
-		}else{
-			printf("\nCodigo não cadastrado\n\n");
-			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
-			scanf("%d",&Sair_Da_Validacao);
-			if(Sair_Da_Validacao == 1){
-				Auxiliar = 1;
-			}	
+		while(Auxiliar == 0){
+			printf("Codigo do Hotel:");
+			scanf("%d",&Codigo_Hotel_A_Ser_Validado);
+			if (Valida_Codigo_Hotel(Codigo_Hotel_A_Ser_Validado,Modo_de_Abertura))
+			{
+				Acomodacoes->Cod_Hotel = Codigo_Hotel_A_Ser_Validado;	
+				Auxiliar = 1;		
+			}else{
+				printf("\nCodigo não cadastrado\n\n");
+				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
+				scanf("%d",&Sair_Da_Validacao);
+				if(Sair_Da_Validacao == 1){
+					break;
+				}	
+			}
 		}
 	}
 }
@@ -413,7 +418,6 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 			Quick_Sort(Vetor_Codigos,0,Contador1);
 			//Ordena o Vetor;
 		}
-		printf("\n\n%d\n",Contador1);
 	
 				
 		
@@ -499,8 +503,6 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		Quick_Sort(Vetor_Codigos,0,Contador1);
 		//Ordena o Vetor;
 	}
-	printf("\n\n%d\n",Contador1);
-
 		for (int i = 0; i < Contador1; ++i)
 		{
 			if (Codigo == Vetor_Codigos[i])

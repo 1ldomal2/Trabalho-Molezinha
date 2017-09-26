@@ -192,98 +192,116 @@ int Main_All(){
 }
 void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro){
 	int Linha = Retorna_Linha_Codigo(Url,Codigo);
+	int Auxiliar = 0;
+
 		//Retorna qual linha deve ser apagada
 	if(Linha == -1){
 		//Caso o codigo nãp esteja presente dentro do arquivo
 		printf("Codigo inexistente");
 	}else{
-		if(Confirmacao()){
-			char Temporario[9999];
-					//Somente é declara para alocação do ponteiro dentro do arquivo		
-			FILE *Arquivo, *Arquivo_Temporario;
-					//Ponteiros para Arquivos
-			Arquivo = fopen(Url,Modo.Leitura);
-					//Abre em modo Leitura
-			Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
-					//Abre para Editar
+		if(Registro == Dados_Codigo_Categoria ){
+			Auxiliar = Valida_Acomadacao_Codigo_Categoria(Codigo, Modo.Modo_de_Abertura);
+			//Auxiliar igual a 1 caso exista codigo presente dentro de alguma acomodacao tornando impossivel apagar
 
-			for(int i=1;i<Linha;i++){
-					//Vai ate a linha do codigo
-				fscanf(Arquivo,"%[^\n]s",Temporario);
-				fprintf(Arquivo_Temporario,"%s\n",Temporario);
-				getc(Arquivo);
-			}
+		}else if(Registro == Dados_Hotel){
+			Auxiliar = Valida_Acomadacao_Hotel(Codigo, Modo.Modo_de_Abertura);
+			//Auxiliar igual a 1 caso exista codigo presente dentro de alguma acomodacao tornando impossivel apagar
+		}
+		if(Auxiliar == 0){
+			if(Confirmacao()){
+				char Temporario[9999];
+						//Somente é declara para alocação do ponteiro dentro do arquivo		
+				FILE *Arquivo, *Arquivo_Temporario;
+						//Ponteiros para Arquivos
+				Arquivo = fopen(Url,Modo.Leitura);
+						//Abre em modo Leitura
+				Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
+						//Abre para Editar
 
-			fscanf(Arquivo,"%[^;]s",Temporario);
-				//Pula a Linha do Codigo
-
-			if(Modificar==1){
-					//Se for 1 a função serve para modificar caso contraria apenas apaga
-					//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
-				switch(Registro){
-					case Dados_Hotel:
-						Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Hospede:
-						Criar_Modificar_Hospede(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Acomodacoes:
-						Criar_Modificar_Acomodacoes(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Codigo_Categoria:
-						Criar_Modificar_Codigo_Categoria(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Produtos:
-						Criar_Modificar_Produtos(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Fornecedores:
-						Criar_Modificar_Fornecedores(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-					case Dados_Funcionarios:
-						Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
-						printf("\nEditado com Sucesso");
-						system("clear");
-					break;
-
+				for(int i=1;i<Linha;i++){
+						//Vai ate a linha do codigo
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					fprintf(Arquivo_Temporario,"%s\n",Temporario);
+					getc(Arquivo);
 				}
-				
-			}
-			fscanf(Arquivo,"%[^\n]s",Temporario);
-			getc(Arquivo);
 
-			while(!feof(Arquivo)){
-					//Vai ate o Final do Arquivo
-				fscanf(Arquivo,"%[^\n]s",Temporario);
-				if(feof(Arquivo)){
-						//Sai caso esteja no fim do arquivo;
-					break;
+				fscanf(Arquivo,"%[^;]s",Temporario);
+					//Pula a Linha do Codigo
+
+				if(Modificar==1){
+						//Se for 1 a função serve para modificar caso contraria apenas apaga
+						//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1!!!!!!!!!!!!!!!!!!SWITCH GRANDAO
+					switch(Registro){
+						case Dados_Hotel:
+							Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Hospede:
+							Criar_Modificar_Hospede(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Acomodacoes:
+							Criar_Modificar_Acomodacoes(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Codigo_Categoria:
+							Criar_Modificar_Codigo_Categoria(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Produtos:
+							Criar_Modificar_Produtos(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Fornecedores:
+							Criar_Modificar_Fornecedores(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+						case Dados_Funcionarios:
+							Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
+							printf("\nEditado com Sucesso");
+							system("clear");
+						break;
+
+					}
+					
 				}
-				fprintf(Arquivo_Temporario,"%s\n",Temporario);
-						//Printa no Arquivo Temporario
+				fscanf(Arquivo,"%[^\n]s",Temporario);
 				getc(Arquivo);
-						//Pula o \n
+
+				while(!feof(Arquivo)){
+						//Vai ate o Final do Arquivo
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					if(feof(Arquivo)){
+							//Sai caso esteja no fim do arquivo;
+						break;
+					}
+					fprintf(Arquivo_Temporario,"%s\n",Temporario);
+							//Printa no Arquivo Temporario
+					getc(Arquivo);
+							//Pula o \n
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+						//Fecha ambos os Arquivos
+				remove(Url);
+						//Remove o Arquivo Original
+				rename("Arquivos/Temp",Url);
+						//Renomeia o Arquivo
+				if(Modificar==0){
+					printf("\nExcluído com Sucesso");
+				}
 			}
-			fclose(Arquivo_Temporario);
-			fclose(Arquivo);
-					//Fecha ambos os Arquivos
-			remove(Url);
-					//Remove o Arquivo Original
-			rename("Arquivos/Temp",Url);
-					//Renomeia o Arquivo
-			if(Modificar==0){
-				printf("\nExcluído com Sucesso");
+		}else{
+			if(Registro == Dados_Codigo_Categoria ){
+				printf("Querido senhor(a) infelizmente não poderemos estar apagar/modificar essa categoria, pois o codigo %d esta presente no cadastro de acomodacoes", Codigo);
+			}else if(Registro == Dados_Hotel){
+				printf("Querido senhor(a) infelizmente não poderemos estar apagar/modificar esse hotel, pois o codigo %d esta presente no cadastro de acomodacoes", Codigo);			
 			}
 		}
 	}

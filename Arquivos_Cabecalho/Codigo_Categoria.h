@@ -14,6 +14,7 @@ void Criar_Modificar_Codigo_Categoria(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
 void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
+int Valida_Acomadacao_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
 */
 void Main_Codigo_Categoria(MODO Modo){
 	CODIGO_CATEGORIA Codigo_Categoria;
@@ -110,6 +111,87 @@ void Main_Codigo_Categoria(MODO Modo){
 
 		}
 	}
+}
+int Valida_Acomadacao_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
+	//Procura nas acomodacoes pelo codigo da categoria para que assim nao apague os que sao vinculados
+	FILE *Arquivo;
+	char Temporario[9999];
+		//Ponteiro para Arquivo
+	switch(Modo_de_Abertura){
+		case Arquivo_Texto:
+		Arquivo=fopen("Arquivos/Acomodacoes.txt","r");
+			//Abre o Arquivo em Modo Leitura
+		if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			printf("Não há Acomodacoes cadastradas\n");
+			return 0;
+		}
+		break;
+		case Arquivo_Binario:
+		Arquivo=fopen("Arquivos/Acomodacoes.bin","rb");
+			//Abre o Arquivo em Modo Leitura
+		if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			printf("Não há Acomodacoes cadastradas\n");
+			return 0;		
+		}
+		break;
+	}		
+
+	int Contador1=0, Vetor_Codigos[9999];
+		//Evita lixo de memoria
+	if (Modo_de_Abertura == Arquivo_Texto)
+	{
+		while(!feof(Arquivo)){
+
+			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
+				//Lê o Codigo
+			getc(Arquivo);
+				//lê/pula ';'
+			if(feof(Arquivo)){
+				//Verifica se chegou a ao fim do arquivo
+				break;
+				//sai do while
+			}
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+			//Move o ponteiro até o proximo codigo
+			Contador1++;
+			//Adicione 1 ao contador ou seja adicione um ao numero do indice
+			
+		}
+
+	}else if (Modo_de_Abertura == Arquivo_Binario)
+	{
+		ACOMODACOES Tipo_Acomodacoes;
+		ACOMODACOES Acomodacoes;
+		Contador1=0;
+		//Zera contador de Codigos
+		while(!feof(Arquivo)){
+			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
+			//Le arquivo e passac para a struct
+			if(feof(Arquivo)){
+				break;
+				//Se estiver no fim do arquivo sai do loop
+			}
+
+			Vetor_Codigos[Contador1] = Acomodacoes.Cod_Categoria;
+			Contador1++;
+			//Soma no contador de contador
+		}
+	}
+	if(Contador1!=1){
+		Quick_Sort(Vetor_Codigos,0,Contador1);
+		//Ordena o Vetor;
+	}
+		for (int i = 0; i < Contador1; ++i)
+		{
+			if (Codigo == Vetor_Codigos[i])
+			{
+				return 1;
+			}
+		}
+	return 0;
 }
 void Ler_Codigo_Categoria_Txt(char Url[99]){
 	CODIGO_CATEGORIA Codigo_Categoria;
