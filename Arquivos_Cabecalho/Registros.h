@@ -48,7 +48,7 @@ typedef struct Dados_Hotel{
 	char Telefone_Gerente[Tamanho1];
 	char Check_in[Tamanho1];
 	char Check_out[Tamanho1];
-	char Lucro[Tamanho1];
+	int Lucro;
 }DADOS_HOTEL;
 
 typedef struct Dados_Hospede{
@@ -94,6 +94,7 @@ typedef struct Produtos{
 	char Descricao[Tamanho2];
 	float Preco_Custo;
 	float Preco_Venda;
+	int Cod_Hotel;
 }PRODUTOS;
 
 typedef struct Fornecedores{

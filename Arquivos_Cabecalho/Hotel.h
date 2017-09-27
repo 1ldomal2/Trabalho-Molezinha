@@ -189,7 +189,7 @@ void Ler_Hotel_Txt(char Url[99]){
 				//Expreção Regular
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caractere
-			fscanf(Arquivo,"%[^;]s",Hotel.Lucro);
+			fscanf(Arquivo,"%d",&Hotel.Lucro);
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o ;)
 			getc(Arquivo);
@@ -225,7 +225,7 @@ void Ler_Hotel_Memoria(DADOS_HOTEL Hotel){
 	printf("Telefone gerente:\t%s\n",Hotel.Telefone_Gerente);
 	printf("Check in:\t\t%s\n",Hotel.Check_in);
 	printf("Check out:\t\t%s\n",Hotel.Check_out);
-	printf("%% de Lucro\t\t%s\n",Hotel.Lucro);
+	printf("Lucro de \t\t%d%%\n",Hotel.Lucro);
 	printf("____________________________________________________\n");
 	//Mostra dados do Hotel cadastrado na memoria
 }
@@ -281,7 +281,7 @@ void Gravar_Hotel_Txt(char Url[99],DADOS_HOTEL *Hotel){
 	fprintf(Arquivo,"%s;",Hotel->Telefone_Gerente);
 	fprintf(Arquivo,"%s;",Hotel->Check_in);
 	fprintf(Arquivo,"%s;",Hotel->Check_out);
-	fprintf(Arquivo,"%s;\n",Hotel->Lucro);
+	fprintf(Arquivo,"%d;\n",Hotel->Lucro);
 		//Salva um struct por Linha
 
 	fclose(Arquivo);
@@ -340,7 +340,7 @@ void Recebe_Dados_Hotel(DADOS_HOTEL *Hotel){
 	printf("Horário de check-out:");
 	scanf("%s",Hotel->Check_out);
 	printf("Margen de lucro de produtos vendidos:");
-	scanf("%s",Hotel->Lucro);
+	scanf("%d",&Hotel->Lucro);
 	//Le os outros dados
 }
 

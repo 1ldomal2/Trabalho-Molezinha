@@ -30,8 +30,12 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Arquivo_Texto_Vazio(char Url[],int Leitura);
+
 */
 //Funçoes
+
+
+
 int Configuracoes(){
 	int Enum_Manipulacao = 0; 
 	FILE *Arquivo;
@@ -123,6 +127,7 @@ void OrdenaValoresTxt(){
 }
 int Opcao_Acoes(){
 	int Acao;
+	
 	printf("\nDigite:"
 			"\n\t1\tPara Ler"
 			"\n\t2\tPara Criar"
@@ -132,6 +137,7 @@ int Opcao_Acoes(){
 		scanf("%d",&Acao);
 
 		system("clear");
+		
 	return Acao;
 }
 

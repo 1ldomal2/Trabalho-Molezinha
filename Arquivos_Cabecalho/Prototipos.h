@@ -102,4 +102,5 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Produtos(char Url[99], int Codigo);
 void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos);
+int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura);
 #endif

@@ -251,7 +251,12 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	
 	
 	if(Acomodacoes->Cod_Categoria == 0 || Acomodacoes->Cod_Hotel == 0){
-		printf("Erro\n");
+		if(Acomodacoes->Cod_Categoria == 0 ){
+			printf("Erro com Codigo da cateogira");
+		}
+		if( Acomodacoes->Cod_Hotel == 0 ){
+			printf("Erro com Codigo do Hotel");
+		}
 	}else{
 		fprintf(Arquivo,"%d;",Acomodacoes->Codigo);
 		fprintf(Arquivo,"%s;",Acomodacoes->Descricao);
@@ -428,8 +433,8 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 					return 1;
 				}
 			}
-			return 0;
-	}
+	return 0;
+}
 
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 

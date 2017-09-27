@@ -14,22 +14,25 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Produtos(char Url[99], int Codigo);
 void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos);
+int Retorna_Lucro_Txt(int Codigo);
 */
 void Main_Produtos(MODO Modo){
 	OrdenaValoresTxt();
 	PRODUTOS Produtos;
 	
-	int Acao,Codigo=0;
+	int Acao = 0,Codigo=0;
 	Verificacao_Arquivo("Arquivos/Produtos.bin",Arquivo_Binario);
 	Verificacao_Arquivo("Arquivos/Produtos.txt",Arquivo_Texto);
 	
 	while(1){
 		OrdenaValoresTxt();
 		Acao = Opcao_Acoes();
+			
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela
 		
 		switch (Acao){
+			
 			case Ler:
 				if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
 
@@ -62,8 +65,9 @@ void Main_Produtos(MODO Modo){
 						}
 						
 						break;
-					}else{
+					}else{							
 						Criar_Modificar_Produtos(Modo.Modo_de_Abertura,0);	
+						
 					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -156,6 +160,9 @@ void Ler_Produtos_Txt(char Url[99]){
 			fscanf(Arquivo,"%f",&Produtos.Preco_Venda);
 				//Expreção Regular
 			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Produtos.Cod_Hotel);
+			//Expreção Regular
+			getc(Arquivo);
 			getc(Arquivo);
 				//Pula o Ponteiro para o proximo caracte (pula o \n)
 			Ler_Produtos_Memoria(Produtos);
@@ -180,6 +187,7 @@ void Ler_Produtos_Memoria(PRODUTOS Produtos){
 	printf("Descrição:\t\t%s\n",Produtos.Descricao);
 	printf("Preço de Custo:\t\tR$%.2f\n",Produtos.Preco_Custo);
 	printf("Preço de Venda:\t\tR$%.2f\n",Produtos.Preco_Venda);
+	printf("Codigo do Hotel:\t\t%d\n",Produtos.Cod_Hotel);
 	printf("____________________________________________________\n");
 	//Mostra dados do Produtos cadastrado na memoria
 }
@@ -220,19 +228,26 @@ void Gravar_Produtos_Txt(char Url[99],PRODUTOS *Produtos){
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
-	fprintf(Arquivo,"%d;",Produtos->Codigo);
-	fprintf(Arquivo,"%u;",Produtos->Estoque);
-	fprintf(Arquivo,"%u;",Produtos->Estoque_Minimo);
-	fprintf(Arquivo,"%s;",Produtos->Descricao);
-	fprintf(Arquivo,"%.2f;",Produtos->Preco_Custo);
-	fprintf(Arquivo,"%.2f;",Produtos->Preco_Venda);
+	if(Produtos->Cod_Hotel == 0){
+		
+			printf("Erro com Codigo do Hotel");
+		
+	}else{
+		fprintf(Arquivo,"%d;",Produtos->Codigo);
+		fprintf(Arquivo,"%u;",Produtos->Estoque);
+		fprintf(Arquivo,"%u;",Produtos->Estoque_Minimo);
+		fprintf(Arquivo,"%s;",Produtos->Descricao);
+		fprintf(Arquivo,"%.2f;",Produtos->Preco_Custo);
+		fprintf(Arquivo,"%.2f;",Produtos->Preco_Venda);
+		fprintf(Arquivo,"%d;",Produtos->Cod_Hotel);
 		//Salva um struct por Linha
 
+		printf("\nArquivo Salvo em : %s",Url);
+	}
 	fclose(Arquivo);
 		//Fecha o o arquivo para evitar erros
 	
 
-	printf("\nArquivo Salvo em : %s",Url);
 }
 
 
@@ -254,18 +269,177 @@ void Gravar_Produtos_Bin(char Url[99],PRODUTOS *Produtos){
 	printf("\nArquivo Salvo 'Produtos.bin'");
    		//Mensagem de Confirmação
 }
+
+int Retorna_Lucro_Txt(int Codigo){
+	int Codigo_Hotel=0,Lucro=0;
+	char Temp[999];
+	if(!Arquivo_Texto_Vazio("Arquivos/Hotel.txt")){
+
+		FILE *Arquivo;
+		Arquivo=fopen("Arquivos/Hotel.txt","r");
+		DADOS_HOTEL Hotel;
+		while(Codigo_Hotel!=Codigo){
+			fscanf(Arquivo,"%d",&Codigo_Hotel);
+
+			if(Codigo_Hotel==Codigo){
+				for (int i = 0; i < 14; ++i)
+				{
+					fscanf(Arquivo,"%[^;]s",Temp);
+					getc(Arquivo);
+				}
+				fscanf(Arquivo,"%d",&Lucro);			
+				return Lucro;
+
+			}else{
+				fscanf(Arquivo,"%[^\n]s",Temp);
+				getc(Arquivo);
+			}
+		}
+	}
+	return 0;
+}
+
 void Recebe_PRODUTOS(PRODUTOS *Produtos){
-	printf("\nEstoque:");
-	scanf("%u",&Produtos->Estoque);
-	printf("Estoque Minimo:");
-	scanf("%u",&Produtos->Estoque_Minimo);
-	printf("Descrição:");
-	scanf("%s",Produtos->Descricao);
-	printf("Preço de Custo:R$");
-	scanf("%f",&Produtos->Preco_Custo);
-	printf("Preço de Venda:R$");
-	scanf("%f",&Produtos->Preco_Venda);
+	FILE *Arquivo,*Arquivo2;
+	//Cria os Ponteiros para fazer a manipulação dos arquivos
+	int Codigo_Hotel_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0,Modo_Abertura = 0;
+	//cria as variaveis para o bom funcionamento da função 
+	Arquivo = fopen("Arquivos/Configuracoes.txt", "r");
+	//Abre o Arquivo para ver o modo de manipulaçao que está salvo
+	fscanf(Arquivo,"%d",&Modo_Abertura);
+	MODO Modo = Modo_Bin_ou_Txt(Modo_Abertura);
+	//Adapta A variavel de acordo com o modo de abertura
+	while(Auxiliar == 0){
+		printf("Codigo do Hotel:");
+		scanf("%d",&Codigo_Hotel_A_Ser_Validado);
+		//Recebe o codigo de Hotel OBS O Codigo do hotel é importante para vincular o produto ao hotel alem de automatizar o preço de venda de acordo com a porcentagem de lucro cadastrada no hotel
+		if (Valida_Codigo_Hotel_Produtos(Codigo_Hotel_A_Ser_Validado, Modo.Modo_de_Abertura))
+		{//Verifica se o codigo do hotel está cadastro 
+			Produtos->Cod_Hotel = Codigo_Hotel_A_Ser_Validado;
+			//Atribui o codigo digitado a struct	
+			Auxiliar = 1;		
+			//Variavel para sair do loop
+		}else{
+			printf("\nCodigo não cadastrado\n\n");
+			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
+			scanf("%d",&Sair_Da_Validacao);
+			if(Sair_Da_Validacao == 1){
+				break;
+				//Sai do loop
+			}	
+		}
+	}
+	if(Auxiliar==1){
+		fscanf(Arquivo,"%d",&Modo_Abertura);// pra que ?
+		fclose(Arquivo);	
+		printf("\nEstoque:");
+		scanf("%u",&Produtos->Estoque);
+		printf("Estoque Minimo:");
+		scanf("%u",&Produtos->Estoque_Minimo);
+		printf("Descrição:");
+		scanf("%s",Produtos->Descricao);
+		printf("Preço de Custo:R$");
+		scanf("%f",&Produtos->Preco_Custo);
+		Produtos->Preco_Venda = (1+((float)((Retorna_Lucro_Txt(Codigo_Hotel_A_Ser_Validado)))/100))*Produtos->Preco_Custo;
+		//(1+(porcentagem de lucro/100))*Valor 
+		printf("Preço de Venda:R$%.2f",Produtos->Preco_Venda);
+		//Mostra na tela o valor  de venda do produto
+
+	}else{
+
+	}
+
+
+	
+	
+		
 	//Le os outros dados
+}
+
+int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura){
+		FILE *Arquivo;
+		char Temporario[9999];
+			//Ponteiro para Arquivo
+
+		switch(Modo_de_Abertura){
+			case Arquivo_Texto:
+			Arquivo=fopen("Arquivos/Hotel.txt","r");
+
+				//Abre o Arquivo em Modo Leitura
+			if(Arquivo==NULL){
+					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+				printf("Não há Hoteis\n");
+				return -1;
+			}
+			break;
+			case Arquivo_Binario:
+			Arquivo=fopen("Arquivos/Hotel.bin","rb");
+				//Abre o Arquivo em Modo Leitura
+			if(Arquivo==NULL){
+					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+				printf("Não há Hoteis\n");
+				return -1;		
+			}
+			break;
+		}		
+	
+		int Contador1=0, Vetor_Codigos[9999];
+			//Evita lixo de memoria
+		if (Modo_de_Abertura == Arquivo_Texto)
+		{
+			while(!feof(Arquivo)){
+	
+				fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				if(feof(Arquivo)){
+					//Verifica se chegou a ao fim do arquivo
+					break;
+					//sai do while
+				}
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				getc(Arquivo);
+				//Move o ponteiro até o proximo codigo
+				Contador1++;
+				//Adicione 1 ao contador ou seja adicione um ao numero do indice
+				
+			}
+	
+		}else if (Modo_de_Abertura == Arquivo_Binario)
+		{
+			DADOS_HOTEL Hotel;
+			Contador1=0;
+			//Zera contador de Codigos
+			while(!feof(Arquivo)){
+				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+				//Le arquivo e passac para a struct
+				if(feof(Arquivo)){
+					break;
+					//Se estiver no fim do arquivo sai do loop
+				}
+	
+				Vetor_Codigos[Contador1] = Hotel.Codigo;
+				Contador1++;
+				//Soma no contador de contador
+			}
+		}
+		if(Contador1!=1){
+			Quick_Sort(Vetor_Codigos,0,Contador1);
+			//Ordena o Vetor;
+		}
+	
+				
+		
+			for (int i = 0; i < Contador1; ++i)
+			{
+
+				if (Codigo == Vetor_Codigos[i])
+				{
+					return 1;
+				}
+			}
+	return 0;
 }
 
 PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos){
@@ -290,6 +464,7 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura, int Manter_Codigo){
 		if (Manter_Codigo == 0)
 		{
 			Produtos.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Produtos);
+			
 		}else{
 			Produtos.Codigo = Manter_Codigo;
 		}
@@ -297,6 +472,7 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura, int Manter_Codigo){
 
 		case Arquivo_Binario:
 		strcpy(Url,"Arquivos/Produtos.bin");
+		
 		 	//Coloca o caminho na URL
 		if (Manter_Codigo == 0)
 		{
@@ -313,7 +489,10 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura, int Manter_Codigo){
 		break;
 
 	}
+
 	Recebe_PRODUTOS(&Produtos);
+	
+	
 	//Mostra Dados de Produtos salvos na struct
 	switch(Modo_de_Abertura){			
 		case Arquivo_Texto:
