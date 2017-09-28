@@ -187,7 +187,7 @@ void Ler_Produtos_Memoria(PRODUTOS Produtos){
 	printf("Descrição:\t\t%s\n",Produtos.Descricao);
 	printf("Preço de Custo:\t\tR$%.2f\n",Produtos.Preco_Custo);
 	printf("Preço de Venda:\t\tR$%.2f\n",Produtos.Preco_Venda);
-	printf("Codigo do Hotel:\t\t%d\n",Produtos.Cod_Hotel);
+	printf("Codigo do Hotel:\t%d\n",Produtos.Cod_Hotel);
 	printf("____________________________________________________\n");
 	//Mostra dados do Produtos cadastrado na memoria
 }
@@ -261,13 +261,19 @@ void Gravar_Produtos_Bin(char Url[99],PRODUTOS *Produtos){
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
-	fwrite(Produtos, sizeof(PRODUTOS), 1, Arquivo); 
-   		//Primeiro argumento é um ponteiro .... como proceder
+	if(Produtos->Cod_Hotel == 0){
+		
+			printf("Erro com Codigo do Hotel");
+		
+	}else{
+		fwrite(Produtos, sizeof(PRODUTOS), 1, Arquivo); 
+		printf("\nArquivo Salvo 'Produtos.bin'");
+		//Mensagem de Confirmação
+	}
 
 	fclose(Arquivo);
    		//Fecha o Arquivo Para evitar erro
-	printf("\nArquivo Salvo 'Produtos.bin'");
-   		//Mensagem de Confirmação
+	
 }
 
 int Retorna_Lucro_Txt(int Codigo){
@@ -298,6 +304,26 @@ int Retorna_Lucro_Txt(int Codigo){
 	}
 	return 0;
 }
+int Retorna_Lucro_Bin(int Codigo){
+	int Codigo_Hotel=0,Lucro=0;
+	char Temp[999];
+	if(!Arquivo_Texto_Vazio("Arquivos/Hotel.bin")){
+		FILE *Arquivo;
+		Arquivo=fopen("Arquivos/Hotel.bin","rb");
+		DADOS_HOTEL Hotel;
+		while(Codigo_Hotel!=Codigo){
+			fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
+			Codigo_Hotel = Hotel.Codigo;			
+			if(Codigo_Hotel==Codigo){
+				Lucro = Hotel.Lucro;	
+				return Lucro;
+
+			}
+		}
+	}
+	return 0;
+}
+
 
 void Recebe_PRODUTOS(PRODUTOS *Produtos){
 	FILE *Arquivo,*Arquivo2;
@@ -330,8 +356,6 @@ void Recebe_PRODUTOS(PRODUTOS *Produtos){
 		}
 	}
 	if(Auxiliar==1){
-		fscanf(Arquivo,"%d",&Modo_Abertura);// pra que ?
-		fclose(Arquivo);	
 		printf("\nEstoque:");
 		scanf("%u",&Produtos->Estoque);
 		printf("Estoque Minimo:");
@@ -340,19 +364,20 @@ void Recebe_PRODUTOS(PRODUTOS *Produtos){
 		scanf("%s",Produtos->Descricao);
 		printf("Preço de Custo:R$");
 		scanf("%f",&Produtos->Preco_Custo);
-		Produtos->Preco_Venda = (1+((float)((Retorna_Lucro_Txt(Codigo_Hotel_A_Ser_Validado)))/100))*Produtos->Preco_Custo;
+		if(Modo_Abertura == Arquivo_Texto){
+			Produtos->Preco_Venda = (1+((float)((Retorna_Lucro_Txt(Codigo_Hotel_A_Ser_Validado)))/100))*Produtos->Preco_Custo;			
+		}else{
+			Produtos->Preco_Venda = (1+((float)((Retorna_Lucro_Bin(Codigo_Hotel_A_Ser_Validado)))/100))*Produtos->Preco_Custo;			
+			
+		}
 		//(1+(porcentagem de lucro/100))*Valor 
 		printf("Preço de Venda:R$%.2f",Produtos->Preco_Venda);
 		//Mostra na tela o valor  de venda do produto
-
+		fclose(Arquivo);	
+		
 	}else{
 
-	}
-
-
-	
-	
-		
+	}	
 	//Le os outros dados
 }
 
@@ -414,23 +439,23 @@ int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura){
 			while(!feof(Arquivo)){
 				fread(&Hotel, sizeof(DADOS_HOTEL),1,Arquivo);
 				//Le arquivo e passac para a struct
+				Vetor_Codigos[Contador1] = Hotel.Codigo;
+				Contador1++;
+				//Soma no contador de contador
 				if(feof(Arquivo)){
 					break;
 					//Se estiver no fim do arquivo sai do loop
 				}
 	
-				Vetor_Codigos[Contador1] = Hotel.Codigo;
-				Contador1++;
-				//Soma no contador de contador
+				
 			}
 		}
 		if(Contador1!=1){
-			Quick_Sort(Vetor_Codigos,0,Contador1);
+			Quick_Sort(Vetor_Codigos,0,Contador1-1);
+			//COntador -1 para poder ler o vetor inteiro e não perder ultimo valor 
+			//NAO SEI O PQ MAS ASSIM FUNCIONAAA TESTEI BIN E TXT COM VARIOS HOTEIS... MOSTRAR LUCAS
 			//Ordena o Vetor;
-		}
-	
-				
-		
+		}	
 			for (int i = 0; i < Contador1; ++i)
 			{
 
