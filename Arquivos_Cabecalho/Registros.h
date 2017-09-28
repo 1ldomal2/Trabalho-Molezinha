@@ -117,4 +117,32 @@ typedef struct Funcionarios{
 	int Permissao;
 		//Elaborar
 }FUNCIONARIOS;
+typedef struct Reserva{
+	int Codigo;
+	char Nome_Hospede[Tamanho1];
+	int Codigo_Hospede;
+	int Cod_Acomodacao;
+	char Data_Entrada;
+	char Data_Saida;
+	char Data_Vencimento_Fatura;
+	float Valor_Fatura;
+	int Pago;//boolean
+	float Valor_Conta;
+	int Modo_Pagamento;//Fazer um Enum
+	int Produtos[3][999];//L1 Cod_Produto	L2 Quantidade Produto	L3 Avista ou a prazo
+
+
+
+}RESERVA;
+
+typedef struct Faturamento{
+	int Codigo;
+	int Codigo_Hotel;
+	float Valor_Caixa;
+	float Valor_Receber;
+	//Fazer um Arquivo so para relatorio do fluxo de caixa
+
+
+
+}FATURAMENTO;
 #endif

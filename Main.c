@@ -17,14 +17,14 @@
 
 //Funções
 #include "Arquivos_Cabecalho/Funcoes.h"
-#include "Arquivos_Cabecalho/Hotel.h"
-#include "Arquivos_Cabecalho/Hospede.h"
-#include "Arquivos_Cabecalho/Codigo_Categoria.h"
-#include "Arquivos_Cabecalho/Acomodacoes.h"
-#include "Arquivos_Cabecalho/Login.h"
-#include "Arquivos_Cabecalho/Funcionarios.h"
-#include "Arquivos_Cabecalho/Fornecedores.h"
-#include "Arquivos_Cabecalho/Produtos.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Hotel.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Hospede.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Codigo_Categoria.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Acomodacoes.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Login.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Funcionarios.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Fornecedores.h"
+#include "Arquivos_Cabecalho/Modulo_Registro/Produtos.h"
 
 
 
