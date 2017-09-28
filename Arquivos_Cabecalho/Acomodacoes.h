@@ -19,17 +19,20 @@ ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes);
 void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
 	int Acao,Codigo=0,Vazio_Hotel=0,Vazio_Categoria=0;
-
+	//Variaveis e struct
 	switch (Modo.Modo_de_Abertura){
 		case Arquivo_Binario:
 			Vazio_Categoria=Arquivo_Binario_Vazio("Arquivos/Codigo_Categoria.bin");
 			Vazio_Hotel=Arquivo_Binario_Vazio("Arquivos/Hotel.bin");
+			//Caso binario verifica se arquivos estao criados e se estao vazios
 		break;
 		case Arquivo_Texto:
 			Vazio_Categoria=Arquivo_Texto_Vazio("Arquivos/Codigo_Categoria.txt");
 			Vazio_Hotel=Arquivo_Binario_Vazio("Arquivos/Hotel.txt");
+			//Caso TXT verifica se arquivos estao criados e se estao vazios
 		break;
 	}
+	//Caso algum esteja vazio indica que nao é possivel manipular dados hotel
 	if(Vazio_Hotel == 1){
 		printf("Não é possivel Manipular as Acomodaçoes pois não há hotéis cadastradas \n");
 	}else if (Vazio_Categoria == 1)
@@ -40,84 +43,94 @@ void Main_Acomodacoes(MODO Modo){
 			OrdenaValoresTxt();
 			Acao = Opcao_Acoes();
 			//Retorna um inteiro referente a Ação (Case)
-			//limpa a tela
-
 			switch (Acao){
 				case Ler:
+				//Caso ler
 				if(Modo.Nivel_De_Permissao>=8 && Modo.Nivel_De_Permissao <=15){
-					if (Modo.Modo_de_Abertura == Arquivo_Binario)
+					//Verifica permissao BINARIOS
+					if (Modo.Modo_de_Abertura == Arquivo_Binario)//MOdo de abertura binario
 					{
-						Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");
+						Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");//Chama funcao para ler acomodacoes
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-						Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Acomodacoes.Codigo == 1){
-							Ler_Acomodacoes_Memoria(Acomodacoes);
+						Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");//Caso txt chama funcao para ler em txt
+					}else if(Modo.Modo_de_Abertura==Memoria){//Caso memoria
+						if(Acomodacoes.Codigo == 1){//Verifica se codigo é 1 
+							Ler_Acomodacoes_Memoria(Acomodacoes);//chama funcao para ler na memoria
 						}else{
-							printf("Não existe nenhum dado na memória");
+							printf("Não existe nenhum dado na memória");//MOstra que nao existe nada salvo 
 						}
 					}
-				}else{
+				}else{//Caso o usuario nao tenha permissao para ler
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}
 					break;
 
-				case Criar:
+				case Criar://Caso criar
 					if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-						if(Modo.Modo_de_Abertura == Memoria){
+						//Verifica se usuario tem permissao para criar dados
+						if(Modo.Modo_de_Abertura == Memoria){	//Caso modo seja memoria
 							printf("!!!ATENÇÂO!!!\n"
 							"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-							if(Confirmacao()){
+							if(Confirmacao()){//Confirma se deseja continuar
 								Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo.Modo_de_Abertura);
 								printf("Salvo com sucesso na memória");
+								//Chama funcao e retorna confirmacao que gravou na memoria
 							}
-							
 							break;
-						}else{Criar_Modificar_Acomodacoes
-							(Modo.Modo_de_Abertura,0);	
+						}else{
+							Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);//chama funcao para criar ou modificar acomodacoes
 						}
 					}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
-					}
+					}//Mostra que usuario nao tem a permissao para a a acao
 					break;	
 
 				case Editar:
+				//Caso editar
 				if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15)){
-					if(Modo.Modo_de_Abertura == Arquivo_Binario){
+					//Verifica se o usuario tem permissao para a tarefa
+					if(Modo.Modo_de_Abertura == Arquivo_Binario){//Caso modo binario
 						printf("Digite o codigo a ser editado: ");
 						scanf("%d",&Codigo);
+						//Recebe codigo a ser editado
 						Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,1,Modo);
+						//Chama funcao para apagar modificar passando por parametro codigo 1 indicando edicao
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						printf("Digite o codigo a ser editado: ");
 						scanf("%d",&Codigo);
+						//Caso txt, recebe codigo a ser editado
 						Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,1,Modo,Dados_Acomodacoes);
+						//Chama funcao para apagar modificar passando por parametro codigo 1 indicando edicao
 					}
-				}else{
+				}else{//Mostra que usuario nao tem permissao para editar
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}
 					break;
-
 				case Apagar:
+				//Caso apagar
 					if ((Modo.Nivel_De_Permissao%2)){//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
-
+						//Veriifica a permissao para apagar
 						if(Modo.Modo_de_Abertura == Arquivo_Binario){
 							printf("Digite o codigo a ser apagado: ");
 							scanf("%d",&Codigo);
+							//Caso modo binario recebe codigo a ser apagado
 							Apagar_Modificar_Acomodacoes_Bin("Arquivos/Acomodacoes.bin",Codigo,0,Modo);
+							//Chama funcao de apagar modificar passando 0 por parametro indicando deleçao
 						}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 							printf("Digite o codigo a ser apagado: ");
 							scanf("%d",&Codigo);
+							//Caso modo txt recebe codigo
 							Apagar_Modificar("Arquivos/Acomodacoes.txt",Codigo,0,Modo,Dados_Acomodacoes);
+							//Chama funcao de apagar modificar passando 0 por parametro indicando deleçao
 						}
 						
-					}else{
+					}else{//Caso usuario nao tenha permissao mostra isso
 							printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 						}
 					break;
-
 				default:
 					return;
-					break;
+				break;
 			}
 		}
 	}
@@ -232,12 +245,11 @@ void Ler_Acomodacoes_Bin(char Url[99]){
 			//Contador para verificar se o arquivo está em branco
 		}
 		fclose(Arquivo);
-		if(Arquivo_Vazio==0){
+		if(Arquivo_Vazio==0){//Caso arquivo vazio
 			printf("O Arquivo está vazio\n");
 		}
 	}
 }
-
 
 void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	//Colocar com parametro não " " mas sim ;
@@ -248,8 +260,6 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	if(Arquivo == NULL){
 		printf("\nNao foi possivel abrir o arquivo!");
 	}
-	
-	
 	if(Acomodacoes->Cod_Categoria == 0 || Acomodacoes->Cod_Hotel == 0){
 		if(Acomodacoes->Cod_Categoria == 0 ){
 			printf("Erro com Codigo da cateogira");
@@ -271,8 +281,6 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 
 		fclose(Arquivo);
 			//Fecha o o arquivo para evitar erros
-		
-
 		printf("\nArquivo Salvo em : %s",Url);
 	}
 }
@@ -297,6 +305,7 @@ void Gravar_Acomodacoes_Bin(char Url[99],ACOMODACOES *Acomodacoes){
    		//Mensagem de Confirmação
 }
 void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
+	//Funcao para receber dados passando recebe por parametro struct e modo de abertura
 	printf("Descrição:");
 	scanf("%s",Acomodacoes->Descricao);
 	printf("Televisao:");
@@ -309,51 +318,54 @@ void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 	scanf("%d",&Acomodacoes->Facilidades.Internet);
 	printf("Banheira:");
 	scanf("%d",&Acomodacoes->Facilidades.Banheira);
+	//Recebe dados do usuario
 	int Codigo_Categoria_A_Ser_Validado,Codigo_Hotel_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
-
-	while(Auxiliar == 0){
+	//Codigos a serem validados
+	while(Auxiliar == 0){//Repete loop enquanto auxiliar se mantem no 0
 		printf("Codigo da Categoria:");
 		scanf("%d",&Codigo_Categoria_A_Ser_Validado);
+		//Recebe codida categoria
 		if (Valida_Codigo_Categoria_Acomodacoes(Codigo_Categoria_A_Ser_Validado,Modo_de_Abertura))
 		{
+			//Chama funcao para validar e ja verifica se retornou verdadeiro 1
 			Acomodacoes->Cod_Categoria = Codigo_Categoria_A_Ser_Validado;
 			Auxiliar = 1;			
+			//Coloca codigo da categoria na struct e auxiliar recebe 1 para sair do loop sem erros
 		}else{
-			printf("\nCodigo não cadastrado\n");
-
-
-
+			printf("\nCodigo não cadastrado\n");//Mostra que o codigo nao esta cadastrado
 			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 			scanf("%d",&Sair_Da_Validacao);
+			//Recebe valor para sair do loop sem efetuar cadastro
 			if(Sair_Da_Validacao == 1){
-				break;
+				break;//sai do loop com auxiliar 0 indicando que nao efetuara o cadastro
 			}
-			
 		}
 	}
-	if(Auxiliar==1){
-		Auxiliar = 0;
-
-		while(Auxiliar == 0){
+	if(Auxiliar==1){//Se auxiliar sair como 1 indica que validou
+		Auxiliar = 0;//zera auxiliar
+		while(Auxiliar == 0){//Loop enquanto auxiliar for 0
 			printf("Codigo do Hotel:");
 			scanf("%d",&Codigo_Hotel_A_Ser_Validado);
+			//Recebe codigo do hotel a ser validado
 			if (Valida_Codigo_Hotel(Codigo_Hotel_A_Ser_Validado,Modo_de_Abertura))
 			{
+				//Chamafuncao para validar codigo hotel e ja verifica retorno verdadeiro
 				Acomodacoes->Cod_Hotel = Codigo_Hotel_A_Ser_Validado;	
 				Auxiliar = 1;		
+				//Joga codigo para struct e auxiliar recebe 1 indicando que validou com sucesso
 			}else{
 				printf("\nCodigo não cadastrado\n\n");
 				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 				scanf("%d",&Sair_Da_Validacao);
+				//Caso contrario pergunta se deseja sair sem efetuar cadastro
 				if(Sair_Da_Validacao == 1){
-					break;
+					break;//Se verdadeiro sai sem validar auxiliar
 				}	
 			}
 		}
 	}
 }
 int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
-	
 		FILE *Arquivo;
 		char Temporario[9999];
 			//Ponteiro para Arquivo
@@ -364,7 +376,7 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 			if(Arquivo==NULL){
 					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
 				printf("Não há Hoteis\n");
-				return -1;
+				return -1;//retorna valor invalido
 			}
 			break;
 			case Arquivo_Binario:
@@ -431,13 +443,13 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 				if (Codigo == Vetor_Codigos[i])
 				{
 					return 1;
+					//verifica se achou codigo e retonar 1 como verdadeiro
 				}
 			}
 	return 0;
 }
 
 int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
-
 	FILE *Arquivo;
 	char Temporario[9999];
 		//Ponteiro para Arquivo
@@ -467,7 +479,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
 		while(!feof(Arquivo)){
-
+			//equanto nao for fim do arquivo
 			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
 				//Lê o Codigo
 			getc(Arquivo);
@@ -512,7 +524,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		{
 			if (Codigo == Vetor_Codigos[i])
 			{
-				return 1;
+				return 1;//Retorna true ao achar codigo
 			}
 		}
 		return 0;
@@ -546,8 +558,10 @@ void Criar_Modificar_Acomodacoes(int Modo_de_Abertura, int Manter_Codigo){
 			if (Manter_Codigo == 0)
 			{
 				Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Texto,Dados_Acomodacoes);
+				//Caso mantem codigo falso indica que vai criar nova acomodacao
 			}else{
 				Acomodacoes.Codigo = Manter_Codigo;
+				//Indica que esta sendo editado
 			}
 			break;
 
@@ -559,8 +573,10 @@ void Criar_Modificar_Acomodacoes(int Modo_de_Abertura, int Manter_Codigo){
 			if (Manter_Codigo == 0)
 			{
 				Acomodacoes.Codigo = Valida_Codigo(Url,15,Arquivo_Binario,Dados_Acomodacoes);
+				//Caso mantem codigo falso indica que vai criar nova acomodacao
 			}else{
 				Acomodacoes.Codigo = Manter_Codigo;
+				//Indica que esta sendo editado
 			}
 			break;
 
@@ -613,9 +629,11 @@ int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo){
 	do{
 		fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
 		Validador = Acomodacoes.Codigo;
+		//Recebe dados de acomodacao salvos no binario
 		if(feof(Arquivo)){
 			return -1;
 			break;
+			//sai do loop retornando valor falso
 		}
 		if(Validador == Codigo){
 			//Verifica se o codigo é igual ao lido
