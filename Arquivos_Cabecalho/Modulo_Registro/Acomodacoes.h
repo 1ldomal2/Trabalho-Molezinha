@@ -14,7 +14,6 @@ void Gravar_Acomodacoes_Bin(char Url[99],ACOMODACOES *Acomodacoes);
 void Criar_Modificar_Acomodacoes(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
 void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes);
 */
 void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
@@ -53,12 +52,6 @@ void Main_Acomodacoes(MODO Modo){
 						Ler_Acomodacoes_Bin("Arquivos/Acomodacoes.bin");//Chama funcao para ler acomodacoes
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");//Caso txt chama funcao para ler em txt
-					}else if(Modo.Modo_de_Abertura==Memoria){//Caso memoria
-						if(Acomodacoes.Codigo == 1){//Verifica se codigo é 1 
-							Ler_Acomodacoes_Memoria(Acomodacoes);//chama funcao para ler na memoria
-						}else{
-							printf("Não existe nenhum dado na memória");//MOstra que nao existe nada salvo 
-						}
 					}
 				}else{//Caso o usuario nao tenha permissao para ler
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -68,18 +61,7 @@ void Main_Acomodacoes(MODO Modo){
 				case Criar://Caso criar
 					if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
 						//Verifica se usuario tem permissao para criar dados
-						if(Modo.Modo_de_Abertura == Memoria){	//Caso modo seja memoria
-							printf("!!!ATENÇÂO!!!\n"
-							"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-							if(Confirmacao()){//Confirma se deseja continuar
-								Retorna_Struct_Acomodacoes_Grava_Memoria(&Acomodacoes,Modo.Modo_de_Abertura);
-								printf("Salvo com sucesso na memória");
-								//Chama funcao e retorna confirmacao que gravou na memoria
-							}
-							break;
-						}else{
 							Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);//chama funcao para criar ou modificar acomodacoes
-						}
 					}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}//Mostra que usuario nao tem a permissao para a a acao
@@ -529,16 +511,6 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 		}
 		return 0;
 }
-
-ACOMODACOES Retorna_Struct_Acomodacoes_Grava_Memoria(ACOMODACOES *Acomodacoes,int Modo_de_Abertura){
-	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
-	Acomodacoes->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Acomodacoes(Acomodacoes,Modo_de_Abertura);
-	return *Acomodacoes;
-	//Retorna ponteiro de hotel
-}
-
 
 void Criar_Modificar_Acomodacoes(int Modo_de_Abertura, int Manter_Codigo){
 	char Url[99];

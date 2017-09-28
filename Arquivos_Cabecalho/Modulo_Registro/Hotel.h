@@ -5,7 +5,6 @@
 
 	//Inclui arquivos de cabeçalho
 /*
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel);
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 void Criar_Modificar_Hotel(int Modo_de_Abertura,int Manter_Codigo);
@@ -39,12 +38,6 @@ void Main_Hotel(MODO Modo){
 						Ler_Hotel_Bin("Arquivos/Hotel.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Hotel_Txt("Arquivos/Hotel.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Hotel.Codigo == 1){
-							Ler_Hotel_Memoria(Hotel);
-						}else{
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -52,18 +45,7 @@ void Main_Hotel(MODO Modo){
 				break;
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Hotel_Grava_Memoria(&Hotel);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
 						Criar_Modificar_Hotel(Modo.Modo_de_Abertura,0);	
-					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -343,16 +325,6 @@ void Recebe_Dados_Hotel(DADOS_HOTEL *Hotel){
 	scanf("%d",&Hotel->Lucro);
 	//Le os outros dados
 }
-
-DADOS_HOTEL Retorna_Struct_Hotel_Grava_Memoria(DADOS_HOTEL *Hotel){
-	//Metodo do tipo Dados_Hotel e recebe por parametro ponteiro de Dados de Hotel
-	Hotel->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Hotel(Hotel);
-	return *Hotel;
-	//Retorna ponteiro de hotel
-}
-
 
 int Valida_Acomadacao_Hotel(int Codigo, int Modo_de_Abertura){
 	//Procura nas acomodacoes pelo codigo da categoria para que assim nao apague os que sao vinculados

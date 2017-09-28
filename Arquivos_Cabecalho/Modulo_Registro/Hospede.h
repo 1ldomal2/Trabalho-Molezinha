@@ -13,7 +13,6 @@ void Gravar_Hospede_Bin(char Url[99],DADOS_HOSPEDE *Hospede);
 void Criar_Modificar_Hospede(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
 void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede);
 */
 void Main_Hospede(MODO Modo){
 	OrdenaValoresTxt();
@@ -38,12 +37,6 @@ void Main_Hospede(MODO Modo){
 						Ler_Hospede_Bin("Arquivos/Hospede.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Hospede_Txt("Arquivos/Hospede.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Hospede.Codigo == 1){
-							Ler_Hospede_Memoria(Hospede);
-						}else{
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -52,19 +45,7 @@ void Main_Hospede(MODO Modo){
 
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Hospede_Grava_Memoria(&Hospede);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
 						Criar_Modificar_Hospede(Modo.Modo_de_Abertura,0);	
-					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -315,15 +296,6 @@ void Recebe_Dados_Hospede(DADOS_HOSPEDE *Hospede){
 	scanf("%s",Hospede->Data_Nascimento);
 	
 	//Le os outros dados
-}
-
-DADOS_HOSPEDE Retorna_Struct_Hospede_Grava_Memoria(DADOS_HOSPEDE *Hospede){
-	//Metodo do tipo Dados_Hospede e recebe por parametro ponteiro de Dados de Hospede
-	Hospede->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Hospede(Hospede);
-	return *Hospede;
-	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Hospede(int Modo_de_Abertura, int Manter_Codigo){

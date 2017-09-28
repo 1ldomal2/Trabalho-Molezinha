@@ -4,7 +4,7 @@
 	//Define _Funcoes_ evitando que a bilioteca seja iplementada duas vezes
 
 //Enum
-enum Modo_de_Abertura{Erro=0,Memoria,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
+enum Modo_de_Abertura{Erro=0,Arquivo_Texto,Arquivo_Binario,Banco_De_Dados,Nuvem};
 enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categoria,Dados_Produtos,Dados_Fornecedores,Dados_Funcionarios};	
 enum Acoes{Ler=1,Criar,Editar,Apagar};	
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};

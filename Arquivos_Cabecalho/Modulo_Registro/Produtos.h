@@ -13,7 +13,6 @@ void Gravar_Produtos_Bin(char Url[99],PRODUTOS *Produtos);
 void Criar_Modificar_Produtos(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Produtos(char Url[99], int Codigo);
 void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos);
 int Retorna_Lucro_Txt(int Codigo);
 int Retorna_Lucro_Bin(int Codigo);
 */
@@ -45,13 +44,6 @@ void Main_Produtos(MODO Modo){
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){//Caso Arquivo TXT
 						Ler_Produtos_Txt("Arquivos/Produtos.txt");
 						//Chama Funcao para ler TXT
-					}else if(Modo.Modo_de_Abertura==Memoria){//Se Modo MEMORIA
-						if(Produtos.Codigo == 1){//Verifica se Existe valor no campo Codigo da memoria
-							Ler_Produtos_Memoria(Produtos);
-							//Chama FUncao para Ler dados da memoria
-						}else{//Se codigo nao for 1 indicia que nao existe dados na memoria
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{//Mostra que o usuario nao tem permissao para realizar a acao de leitura
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -61,22 +53,9 @@ void Main_Produtos(MODO Modo){
 			case Criar:
 			//Caso de Criar dados
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-					//Verifica se o osuario tem a permissao do RANGE de criar (Formato BINARIO)
-					if(Modo.Modo_de_Abertura == Memoria){
-						//SE modo de abeertura memoria
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){//MOstra mensagem e espera por confirmacao
-							Retorna_Struct_Produtos_Grava_Memoria(&Produtos);
-							//Caso verdadeiro chama funcao para gravar na memoria
-							printf("Salvo com sucesso na memória");//Mostra mensagem de confirmacao
-						}
-						
-						break;
-					}else{							
+					//Verifica se o osuario tem a permissao do RANGE de criar (Formato BINARIO)					
 						Criar_Modificar_Produtos(Modo.Modo_de_Abertura,0);	
 						//Se nao for memoria chama funcao para criar ou editar os produtos
-					}
 				}else{//Caso entre no ELSE mostra que o usuario nao tem permissao para realizar tal tarefa
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -499,15 +478,6 @@ int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura){
 				}
 			}
 	return 0;//Caso contrario retorna FALSE 0 
-}
-
-PRODUTOS Retorna_Struct_Produtos_Grava_Memoria(PRODUTOS *Produtos){
-	//Metodo do tipo PRODUTOS e recebe por parametro ponteiro de Dados de Produtos
-	Produtos->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_PRODUTOS(Produtos);
-	return *Produtos;
-	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Produtos(int Modo_de_Abertura, int Manter_Codigo){

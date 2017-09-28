@@ -360,11 +360,10 @@ int Modo_Manipulacao(){
 
 	do{
 		printf("\nDigite o modo de manipulação dos arquivos\n" );
-		printf("\n1-Memoria"
-			"\n2-Arquivo Texto"
-			"\n3-Arquivo Binario"
-			"\n4-Banco de Dados"
-			"\n5-Nuvem"
+		printf("\n1-Arquivo Texto"
+			"\n2-Arquivo Binario"
+			"\n3-Banco de Dados"
+			"\n4-Nuvem"
 			"\n");
 			//Legenda
 
@@ -376,10 +375,6 @@ int Modo_Manipulacao(){
 		//OBS Olhar Enum no arquivo de cabeçalho Registro.h
 
 		switch(Modo_de_Abertura){
-			case Memoria:
-			return Memoria;
-			break;
-
 			case Arquivo_Texto:
 			return Arquivo_Texto;
 
@@ -397,7 +392,7 @@ int Modo_Manipulacao(){
 			break;
 		}
 
-	}while(Modo_de_Abertura>=1 || Modo_de_Abertura<=5);
+	}while(Modo_de_Abertura>=1 || Modo_de_Abertura<=4);
 		//Validando o numero digitado
 
 	system("clear");
@@ -700,10 +695,6 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura){
 		strcpy(Modo.Concatenacao,"ab");
 			//Modo concatenação Bin
 		Modo.Modo_de_Abertura = Arquivo_Binario;
-		break;
-
-		case Memoria:
-			Modo.Modo_de_Abertura = Memoria;
 		break;
 	}
 	return Modo;

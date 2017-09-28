@@ -5,7 +5,6 @@
 
 	//Inclui arquivos de cabeçalho
 /*
-FORNECEDORES Retorna_Struct_Fornecedores_Grava_Memoria(FORNECEDORES *Fornecedores);
 int Retorna_Campo_Struct_Fornecedores(char Url[99], int Codigo);
 void Apagar_Modificar_Fornecedores_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 void Criar_Modificar_Fornecedores(int Modo_de_Abertura,int Manter_Codigo);
@@ -38,12 +37,6 @@ void Main_Fornecedores(MODO Modo){
 						Ler_Fornecedores_Bin("Arquivos/Fornecedores.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Fornecedores_Txt("Arquivos/Fornecedores.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Fornecedores.Codigo == 1){
-							Ler_Fornecedores_Memoria(Fornecedores);
-						}else{
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -51,18 +44,7 @@ void Main_Fornecedores(MODO Modo){
 				break;
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Fornecedores_Grava_Memoria(&Fornecedores);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
 						Criar_Modificar_Fornecedores(Modo.Modo_de_Abertura,0);	
-					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -302,15 +284,6 @@ void Recebe_Dados_Fornecedores(FORNECEDORES *Fornecedores){
 	printf("e-mail:");
 	scanf("%s",Fornecedores->Email);
 	//Le os outros dados
-}
-
-FORNECEDORES Retorna_Struct_Fornecedores_Grava_Memoria(FORNECEDORES *Fornecedores){
-	//Metodo do tipo Dados_Fornecedores e recebe por parametro ponteiro de Dados de Fornecedores
-	Fornecedores->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Fornecedores(Fornecedores);
-	return *Fornecedores;
-	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Fornecedores(int Modo_de_Abertura, int Manter_Codigo){

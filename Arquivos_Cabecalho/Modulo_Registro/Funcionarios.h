@@ -13,7 +13,6 @@ void Gravar_Funcionarios_Bin(char Url[99],FUNCIONARIOS *Funcionarios);
 void Criar_Modificar_Funcionarios(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Funcionarios(char Url[99], int Codigo);
 void Apagar_Modificar_Funcionarios_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-FUNCIONARIOS Retorna_Struct_Funcionarios_Grava_Memoria(FUNCIONARIOS *Funcionarios);
 */
 void Main_Funcionarios(MODO Modo){
 	FUNCIONARIOS Funcionarios;
@@ -37,12 +36,6 @@ void Main_Funcionarios(MODO Modo){
 						Ler_Funcionarios_Bin("Arquivos/Funcionarios.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Funcionarios_Txt("Arquivos/Funcionarios.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Funcionarios.Codigo == 1){
-							Ler_Funcionarios_Memoria(Funcionarios);
-						}else{
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -51,19 +44,7 @@ void Main_Funcionarios(MODO Modo){
 
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Funcionarios_Grava_Memoria(&Funcionarios);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
 						Criar_Modificar_Funcionarios(Modo.Modo_de_Abertura,0);	
-					}
 				}else{
 						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -330,15 +311,6 @@ void Recebe_Dados_Funcionarios(FUNCIONARIOS *Funcionarios){
 			break;
 	}
 	//Le os outros dados
-}
-
-FUNCIONARIOS Retorna_Struct_Funcionarios_Grava_Memoria(FUNCIONARIOS *Funcionarios){
-	//Metodo do tipo Dados_Funcionarios e recebe por parametro ponteiro de Dados de Funcionarios
-	Funcionarios->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Funcionarios(Funcionarios);
-	return *Funcionarios;
-	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Funcionarios(int Modo_de_Abertura, int Manter_Codigo){

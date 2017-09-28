@@ -13,7 +13,6 @@ void Gravar_Codigo_Categoria_Bin(char Url[99],CODIGO_CATEGORIA *Codigo_Categoria
 void Criar_Modificar_Codigo_Categoria(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
 void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
-CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria);
 int Valida_Acomadacao_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
 */
 void Main_Codigo_Categoria(MODO Modo){
@@ -39,12 +38,6 @@ void Main_Codigo_Categoria(MODO Modo){
 						Ler_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin");
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
 						Ler_Codigo_Categoria_Txt("Arquivos/Codigo_Categoria.txt");
-					}else if(Modo.Modo_de_Abertura==Memoria){
-						if(Codigo_Categoria.Codigo == 1){
-							Ler_Codigo_Categoria_Memoria(Codigo_Categoria);
-						}else{
-							printf("Não existe nenhum dado na memória");
-						}
 					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -53,19 +46,7 @@ void Main_Codigo_Categoria(MODO Modo){
 				break;
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
-
-					if(Modo.Modo_de_Abertura == Memoria){
-						printf("!!!ATENÇÂO!!!\n"
-						"Se existir algum dado na mémoria será peridido, so é possivel salvar 1 dado por vez na memoria\n");
-						if(Confirmacao()){
-							Retorna_Struct_Codigo_Categoria_Grava_Memoria(&Codigo_Categoria);
-							printf("Salvo com sucesso na memória");
-						}
-						
-						break;
-					}else{
 						Criar_Modificar_Codigo_Categoria(Modo.Modo_de_Abertura,0);	
-					}
 				}else{
 					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
@@ -340,15 +321,6 @@ void Recebe_Dados_Codigo_Categoria(CODIGO_CATEGORIA *Codigo_Categoria){
 	printf("Capacidade Crianças:");
 	scanf("%d",&Codigo_Categoria->Capacidade_Crianca);
 	//Le os outros dados
-}
-
-CODIGO_CATEGORIA Retorna_Struct_Codigo_Categoria_Grava_Memoria(CODIGO_CATEGORIA *Codigo_Categoria){
-	//Metodo do tipo Dados_Codigo_Categoria e recebe por parametro ponteiro de Dados de Codigo_Categoria
-	Codigo_Categoria->Codigo = 1;
-	//Como salva so 1 dado na memoria coloca como codigo 1
-	Recebe_Dados_Codigo_Categoria(Codigo_Categoria);
-	return *Codigo_Categoria;
-	//Retorna ponteiro de hotel
 }
 
 void Criar_Modificar_Codigo_Categoria(int Modo_de_Abertura, int Manter_Codigo){
