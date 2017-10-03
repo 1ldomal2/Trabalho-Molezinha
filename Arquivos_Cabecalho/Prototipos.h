@@ -18,6 +18,7 @@ MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 void Quick_Sort(int vetor[], int inicio, int fim);
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 int Arquivo_Texto_Vazio(char Url[]);
+void Verificacao_All();
 //Hotel
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);

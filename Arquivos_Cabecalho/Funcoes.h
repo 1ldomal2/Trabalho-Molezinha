@@ -30,27 +30,79 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Arquivo_Texto_Vazio(char Url[],int Leitura);
+void Verificacao_All();
 
 */
 //Funçoes
+void Verificacao_All(){
+	//Texto
+	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Funcionarios.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
+	Verificacao_Arquivo("Arquivos/Produtos.txt",Arquivo_Texto);
+	//Binario
+	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Funcionarios.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
+	Verificacao_Arquivo("Arquivos/Produtos.bin",Arquivo_Binario);
 
-
+}
+void OrdenaValoresTxt(){
+	Verificacao_All();
+	//Cria  os que nao existem para evitar mensagem de erro
+	system("sort -n --output=Arquivos/Produtos.txt Arquivos/Produtos.txt");
+	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
+	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");
+	system("sort -n --output=Arquivos/Funcionarios.txt Arquivos/Funcionarios.txt");
+	system("sort -n --output=Arquivos/Hospede.txt Arquivos/Hospede.txt");
+	system("sort -n --output=Arquivos/Hotel.txt Arquivos/Hotel.txt");
+}
 
 int Configuracoes(){
-	int Enum_Manipulacao = 0; 
+	int Enum_Manipulacao = 0,Enum_Errado=0; 
 	FILE *Arquivo;
-	Arquivo = fopen("Arquivos/Configuracoes.txt","r");
-	if(Arquivo == NULL){
-		Verificacao_Arquivo("Arquivos/Configuracoes.txt",Arquivo_Texto);		
-		Enum_Manipulacao = Modo_Manipulacao();
-		Arquivo = fopen("Arquivos/Configuracoes.txt","w");
-		fprintf(Arquivo,"%d",Enum_Manipulacao);
-	}else{
-		fscanf(Arquivo,"%d",&Enum_Manipulacao);
-		getc(Arquivo);
-	}
-	fclose(Arquivo);
+	do{
+		Enum_Errado=0;
+		Arquivo = fopen("Arquivos/Configuracoes.txt","r");
+		if(Arquivo == NULL){
+		//Arquivo Vazio Cria o Arquivo e ja salva o modo de manipulação
+			Enum_Manipulacao = Modo_Manipulacao();
+			//Interação com o usuário para saber o modo de manipulação
+			Arquivo = fopen("Arquivos/Configuracoes.txt","w");
+			//Cria o Arquivo;	
+			fprintf(Arquivo,"%d",Enum_Manipulacao);
+			//Printa no arquivo
+		}else{
+			int Vazio=Arquivo_Texto_Vazio("Arquivos/Configuracoes.txt");
+			//Verifica se o arquivo está vazio
+			if(Vazio){//Caso esteja	fecha e abre como escrita e salva o modo de manipulação
+				fclose(Arquivo);
+				//Fecha		
+				Arquivo = fopen("Arquivos/Configuracoes.txt","w");
+				//Abre modo escrita
+				Enum_Manipulacao = Modo_Manipulacao();
+				//Interação com o usuário para saber o modo de manipulação
+				fprintf(Arquivo,"%d",Enum_Manipulacao);
+				//Printa no arquivo
+			}else{//Caso não apenas le
+				fscanf(Arquivo,"%d",&Enum_Manipulacao);
+				//Le um inteiro do Arquivo para Enum_Manipulacao
+				if(Enum_Manipulacao<1 || Enum_Manipulacao>4){
+					remove("Arquivos/Configuracoes.txt");
+					Enum_Errado=1;
+					//Condigo Enum não está em um range aceitavel
+				}
+			}
+		}
+		fclose(Arquivo);
+	}while(Enum_Errado==1);
+	//Fecha o Arquivo evitando erros
 	return Enum_Manipulacao;
+	//retorna Enum Manipulação
 }
 
 int Arquivo_Texto_Vazio(char Url[]){
@@ -117,14 +169,7 @@ int Arquivo_Binario_Vazio(char Url[]){
 }
 
 
-void OrdenaValoresTxt(){
-	system("sort -n --output=Arquivos/Produtos.txt Arquivos/Produtos.txt");
-	system("sort -n --output=Arquivos/Acomodacoes.txt Arquivos/Acomodacoes.txt");
-	system("sort -n --output=Arquivos/Codigo_Categoria.txt Arquivos/Codigo_Categoria.txt ");
-	system("sort -n --output=Arquivos/Funcionarios.txt Arquivos/Funcionarios.txt");
-	system("sort -n --output=Arquivos/Hospede.txt Arquivos/Hospede.txt");
-	system("sort -n --output=Arquivos/Hotel.txt Arquivos/Hotel.txt");
-}
+
 int Opcao_Acoes(){
 	int Acao;
 	
@@ -646,9 +691,9 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura){
 			//Abre o Arquivo em Modo Leitura
 
 		if(Arquivo==NULL){
-				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
 			Arquivo=fopen(Url,"w");
-					//Abre no modo leitura e caso não exista ele vai criar o arquivo
+			//Abre no modo escrita e caso não exista ele vai criar o arquivo
 		}
 		break;
 		case Arquivo_Binario:
@@ -656,10 +701,10 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura){
 			//Abre o Arquivo em Modo Leitura
 
 		if(Arquivo==NULL){
-				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+		//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
 
 			Arquivo=fopen(Url,"wb");
-					//Abre no modo leitura e caso não exista ele vai criar o arquivo
+			//Abre no modo escrita e caso não exista ele vai criar o arquivo
 			
 		}
 		break;

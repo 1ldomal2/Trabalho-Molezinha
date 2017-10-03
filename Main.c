@@ -5,6 +5,7 @@
 //Macros
 #define Vermelho(TEXTO)	printf("\33[1;31m%s \33[0;29m ",TEXTO)
 #define Verde(TEXTO)	printf("\33[1;32m%s \33[0;29m ",TEXTO)
+#define Amarelo(TEXTO)	printf("\33[1;33m%s \33[0;29m ",TEXTO)
 //Biblioteca Padrão
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,8 +30,6 @@
 //Modulo_Reserva
 
 
-
-
 //Macro
 	#define DEBUG(x) printf("\n______________________%s_____________________________\n",x);
 
@@ -41,19 +40,8 @@ int main(int argc, char const *argv[])
 {
 	system("mkdir Arquivos");
 	//comando do s.os
-	Verificacao_Arquivo("Arquivos/Produtos.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Produtos.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Acomodacoes.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Acomodacoes.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Codigo_Categoria.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Codigo_Categoria.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Funcionarios.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Funcionarios.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Hospede.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Hospede.bin",Arquivo_Binario);
-	Verificacao_Arquivo("Arquivos/Hotel.txt",Arquivo_Texto);
-	Verificacao_Arquivo("Arquivos/Hotel.bin",Arquivo_Binario);
-	//Cria os arquivos
+	Verificacao_All();
+	//Cria todos os arquivos tanto bin quanto txt
 	system("clear");
 	//Limpa a tela
 
@@ -63,12 +51,19 @@ int main(int argc, char const *argv[])
 
 		Enum_Manipulacao=Configuracoes();//Retorna um inteiro referente ao modo de manipulação
 		Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);//Retorna uma struct com os modos txt ou bin
-		Modo.Nivel_De_Permissao = Login(Modo);
+		int Permissao = Login(Modo);
+		Modo.Nivel_De_Permissao = Permissao;
 		//LOGIN retorna o tipo de permissao de 1 a 15
 
 		while(Loop){
 			OrdenaValoresTxt();
-			//Cria os arquivos
+			//Ordena os Txt em ordem crescente
+
+			Enum_Manipulacao=Configuracoes();
+			Modo=Modo_Bin_ou_Txt(Enum_Manipulacao);
+			Modo.Nivel_De_Permissao = Permissao;
+			//Verifica se o arquivo Configurações não foi apagado
+
 			int Opcao_Menu_Inicial;
 
 			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case

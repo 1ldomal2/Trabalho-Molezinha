@@ -1,10 +1,8 @@
 _________________________________#Release#______________________________________
 
-Criação Makefile (para compilar é so digitar make)
-Add .gitignore no repositorio
-AddLeia-mepara nortear o projeto
-Coloração nas Msgs de Erro e confirmação
-Testes realizados
+Melhoria da função Configurações (Bug's corrigidos)
+Criação de uma função Valida_All que verifica todos os arquivos e chamei ela dentro de Ordena Txt para evitar erro
+
 
 ______________________________#Proximo Passo#___________________________________
 
@@ -18,11 +16,6 @@ Reserva
 
 
 ___________________________________#Bug's#_______________________________________
-Configuracoes.txt  se estiver vazio buga
-	//Validar se está vazio e caso esteja perguntar como manipular
-	//Fazer rodar essa validação nos Main especificos
-	//Não Deixar o Main ir pra frente caso arquivo esteja em branco
-	//Logo a função deve ser chamada assim que a variavel das "ações" receber algum valor
 
 
 
