@@ -25,5 +25,6 @@ ___________________________________#Extras#_____________________________________
 
 sed -i s/Hotel/N1/g N1.h
 sed -i s/DADOS_HOTEL/N2/g N1.h
+//Primeiro argumento é um ponteiro .... como proceder
 
 

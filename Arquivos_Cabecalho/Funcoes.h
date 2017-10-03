@@ -541,6 +541,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 	PRODUTOS Tipo_Produtos;
 	FORNECEDORES Tipo_Fornecedores;
 	FUNCIONARIOS Tipo_Funcionarios;
+	RESERVA Tipo_Reserva;
 	//Declaraçao de variaveis
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
@@ -555,10 +556,11 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 	}
 
 	int Contador1=0;
+	
 		//Evita lixo de memoria
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
-  
+		
 		while(!feof(Arquivo)){
 
 
@@ -604,6 +606,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
 		Contador1=0;
+		
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
 
@@ -629,6 +632,10 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 				case Dados_Funcionarios:
 					fread(&Tipo_Funcionarios, sizeof(FUNCIONARIOS),1,Arquivo);
 				break;
+				case Dados_Reserva:
+					fread(&Tipo_Reserva, sizeof(RESERVA),1,Arquivo);
+				break;	
+
 			}
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){

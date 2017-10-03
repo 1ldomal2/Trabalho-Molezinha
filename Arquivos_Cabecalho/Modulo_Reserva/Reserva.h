@@ -511,7 +511,6 @@ int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura){
 }
 void Criar_Modificar_Reserva(int Modo_de_Abertura, int Manter_Codigo){
 	char Url[99];
-	printf("ASDFGHJK\n");
 	RESERVA Reserva;
 		//Variavel Local
 		//Obedecendo o principio do privilegio mínimo

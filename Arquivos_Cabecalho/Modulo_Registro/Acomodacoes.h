@@ -192,13 +192,13 @@ void Ler_Acomodacoes_Txt(char Url[99]){
 
 void Ler_Acomodacoes_Memoria(ACOMODACOES Acomodacoes){
 	//Recebe por parametro Struct de Acomodacoes
-	printf("Codigo:\t\t%d\n",Acomodacoes.Codigo);
-	printf("Descricao:\t%s\n",Acomodacoes.Descricao);
-	printf("Televisao \t%d\n",Acomodacoes.Facilidades.Televisao);
+	printf("Codigo:\t\t\t%d\n",Acomodacoes.Codigo);
+	printf("Descricao:\t\t%s\n",Acomodacoes.Descricao);
+	printf("Televisao \t\t%d\n",Acomodacoes.Facilidades.Televisao);
 	printf("Ar Condicionado 	%d\n",Acomodacoes.Facilidades.Ar_Condicionado);
-	printf("Frigobar\t%d\n",Acomodacoes.Facilidades.Frigobar);
-	printf("Banheira\t%d\n",Acomodacoes.Facilidades.Banheira);
-	printf("Internet\t%d\n",Acomodacoes.Facilidades.Internet);
+	printf("Frigobar\t\t%d\n",Acomodacoes.Facilidades.Frigobar);
+	printf("Banheira\t\t%d\n",Acomodacoes.Facilidades.Banheira);
+	printf("Internet\t\t%d\n",Acomodacoes.Facilidades.Internet);
 	printf("Codigo da Categoria:\t%d\n",Acomodacoes.Cod_Categoria);
 	printf("Codigo do Hotel:\t%d\n",Acomodacoes.Cod_Hotel);
 	
@@ -278,12 +278,21 @@ void Gravar_Acomodacoes_Bin(char Url[99],ACOMODACOES *Acomodacoes){
 	if(Arquivo == NULL){
 		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
-	fwrite(Acomodacoes, sizeof(ACOMODACOES), 1, Arquivo); 
-   		//Primeiro argumento é um ponteiro .... como proceder
+	if(Acomodacoes->Cod_Categoria == 0 || Acomodacoes->Cod_Hotel == 0){
+		if(Acomodacoes->Cod_Hotel == 0 ){
+			Vermelho("Erro com Codigo do hotel");
+		}
+		if( Acomodacoes->Cod_Categoria == 0 ){
+			Vermelho("Erro com Codigo da categoria");
+		}
+	}else{
+		fwrite(Acomodacoes, sizeof(ACOMODACOES), 1, Arquivo); 
+		//Primeiro argumento é um ponteiro .... como proceder
+		printf("\nArquivo Salvo 'Acomodacoes.bin'");
+	}
 
 	fclose(Arquivo);
    		//Fecha o Arquivo Para evitar erro
-	printf("\nArquivo Salvo 'Acomodacoes.bin'");
    		//Mensagem de Confirmação
 }
 void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){

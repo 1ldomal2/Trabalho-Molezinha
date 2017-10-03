@@ -3,9 +3,9 @@
 //Semestre	:2º Semestre
 //
 //Macros
-#define Vermelho(TEXTO)	printf("\33[1;31m%s \33[0;29m ",TEXTO)
-#define Verde(TEXTO)	printf("\33[1;32m%s \33[0;29m ",TEXTO)
-#define Amarelo(TEXTO)	printf("\33[1;33m%s \33[0;29m ",TEXTO)
+#define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO)
+#define Verde(TEXTO)	printf("\33[1;32m%s\33[0;29m",TEXTO)
+#define Amarelo(TEXTO)	printf("\33[1;33m%s\33[0;29m",TEXTO)
 //Biblioteca Padrão
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,6 +57,7 @@ int main(int argc, char const *argv[])
 		//LOGIN retorna o tipo de permissao de 1 a 15
 
 		while(Loop){
+			
 			OrdenaValoresTxt();
 			//Ordena os Txt em ordem crescente
 
@@ -68,6 +69,7 @@ int main(int argc, char const *argv[])
 
 			int Opcao_Registro;
 			int Opcao_Inicial = Modulo();
+			system("clear");
 			switch(Opcao_Inicial){
 				case Registro:
 					while(Loop1){
@@ -112,8 +114,10 @@ int main(int argc, char const *argv[])
 					Main_Reserva(Modo);
 				break;
 				case 3:
+					system("clear");
 				break;
 				case 0:
+					system("clear");
 					Loop=0;
 				break;
 			}

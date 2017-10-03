@@ -153,9 +153,9 @@ void Ler_Funcionarios_Memoria(FUNCIONARIOS Funcionarios){
 	//Recebe por parametro Struct de Funcionarios
 	printf("Codigo:\t\t%d\n",Funcionarios.Codigo);
 	printf("Nome:\t\t%s\n",Funcionarios.Nome);
-	printf("Usuario:\t\t%s\n",Funcionarios.Usuario);
+	printf("Usuario:\t%s\n",Funcionarios.Usuario);
 	printf("Senha\t\t%s\n",Funcionarios.Senha);
-	printf("Pemissao:\t\t%d\n",Funcionarios.Permissao);
+	printf("Pemissao:\t%d\n",Funcionarios.Permissao);
 	printf("____________________________________________________\n");
 	//Mostra dados do Funcionarios cadastrado na memoria
 }
