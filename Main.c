@@ -28,6 +28,7 @@
 #include "Arquivos_Cabecalho/Modulo_Registro/Fornecedores.h"
 #include "Arquivos_Cabecalho/Modulo_Registro/Produtos.h"
 //Modulo_Reserva
+#include "Arquivos_Cabecalho/Modulo_Reserva/Reserva.h"
 
 
 //Macro
@@ -46,7 +47,7 @@ int main(int argc, char const *argv[])
 	//Limpa a tela
 
 	while(1){
-		int Enum_Manipulacao,Loop=1;
+		int Enum_Manipulacao,Loop=1,Loop1 = 1;
 		MODO Modo;
 
 		Enum_Manipulacao=Configuracoes();//Retorna um inteiro referente ao modo de manipulação
@@ -64,44 +65,59 @@ int main(int argc, char const *argv[])
 			Modo.Nivel_De_Permissao = Permissao;
 			//Verifica se o arquivo Configurações não foi apagado
 
-			int Opcao_Menu_Inicial;
 
-			Opcao_Menu_Inicial=Main_All();//Retorna um numero inteiro referente ao case
-
-			switch(Opcao_Menu_Inicial){
-
-				case Dados_Hotel:
-					Main_Hotel(Modo);
-				break;
+			int Opcao_Registro;
+			int Opcao_Inicial = Modulo();
+			switch(Opcao_Inicial){
+				case Registro:
+					while(Loop1){
+						system("clear");
+						Opcao_Registro=Main_All();//Retorna um numero inteiro referente ao case
+							switch(Opcao_Registro){
+								case Dados_Hotel:
+									Main_Hotel(Modo);
+								break;
+								case Dados_Hospede:
+									Main_Hospede(Modo); 	
+								break;
 				
-				case Dados_Hospede:
-					Main_Hospede(Modo); 	
+								case Dados_Acomodacoes:
+									Main_Acomodacoes(Modo);
+								break;
+				
+								case Dados_Codigo_Categoria:
+									Main_Codigo_Categoria(Modo);
+								break;
+				
+								case Dados_Produtos:
+									Main_Produtos(Modo);
+								break;
+				
+								case Dados_Fornecedores:
+									Main_Fornecedores(Modo);
+								break;
+				
+								case Dados_Funcionarios:
+									Main_Funcionarios(Modo);
+								break;
+				
+								case 0:
+									Loop1=0;
+								break;
+							}
+						}
 				break;
-
-				case Dados_Acomodacoes:
-					Main_Acomodacoes(Modo);
+				case Reserva:
+					system("clear");
+					Main_Reserva(Modo);
 				break;
-
-				case Dados_Codigo_Categoria:
-					Main_Codigo_Categoria(Modo);
+				case 3:
 				break;
-
-				case Dados_Produtos:
-					Main_Produtos(Modo);
-				break;
-
-				case Dados_Fornecedores:
-					Main_Fornecedores(Modo);
-				break;
-
-				case Dados_Funcionarios:
-					Main_Funcionarios(Modo);
-				break;
-
 				case 0:
 					Loop=0;
 				break;
 			}
+			
 		}
 	}
 	return 1;

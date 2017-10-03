@@ -1,23 +1,18 @@
 _________________________________#Release#______________________________________
 
-Melhoria da função Configurações (Bug's corrigidos)
-Criação de uma função Valida_All que verifica todos os arquivos e chamei ela dentro de Ordena Txt para evitar erro
+Inicio Modulo Reserva
 
 
 ______________________________#Proximo Passo#___________________________________
 
 Reserva
-	//Ler
-	//Criar
-	//Editar
-	//Apagar
 	//Linkagen com os demais Arquivos
 
 
 
 ___________________________________#Bug's#_______________________________________
 
-
+Olhar porque criar reserva não mostra nada
 
 
 

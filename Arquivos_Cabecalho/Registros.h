@@ -5,8 +5,10 @@
 
 //Enum
 enum Modo_de_Abertura{Arquivo_Texto=1,Arquivo_Binario,Banco_De_Dados,Nuvem};
-enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categoria,Dados_Produtos,Dados_Fornecedores,Dados_Funcionarios};	
+enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categoria,Dados_Produtos,Dados_Fornecedores,Dados_Funcionarios,Dados_Reserva};	
 enum Acoes{Ler=1,Criar,Editar,Apagar};	
+enum Menu_Inicial{Registro = 1, Reserva};
+enum Pagamento{Especie=1,Debito,Credito,Cheque};
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
 	//o valor sendo que a cada termo tem um acrescimo unário ou seja como o primeiro termo tem
@@ -122,14 +124,14 @@ typedef struct Reserva{
 	char Nome_Hospede[Tamanho1];
 	int Codigo_Hospede;
 	int Cod_Acomodacao;
-	char Data_Entrada;
-	char Data_Saida;
-	char Data_Vencimento_Fatura;
+	char Data_Entrada[Tamanho1];
+	char Data_Saida[Tamanho1];
+	char Data_Vencimento_Fatura[Tamanho1];
 	float Valor_Fatura;
 	int Pago;//boolean
 	float Valor_Conta;
 	int Modo_Pagamento;//Fazer um Enum
-	int Produtos[3][999];//L1 Cod_Produto	L2 Quantidade Produto	L3 Avista ou a prazo
+	int Produtos[3][Tamanho2];//L1 Cod_Produto	L2 Quantidade Produto	L3 Avista ou a prazo
 
 
 

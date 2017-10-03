@@ -241,7 +241,6 @@ void Ler_Codigo_Categoria_Memoria(CODIGO_CATEGORIA Codigo_Categoria){
 	printf("____________________________________________________\n");
 	//Mostra dados do Codigo_Categoria cadastrado na memoria
 }
-
 void Ler_Codigo_Categoria_Bin(char Url[99]){
 	FILE *Arquivo;
 	//Cria ponteiro de arquivo

@@ -186,6 +186,18 @@ int Opcao_Acoes(){
 	return Acao;
 }
 
+int Modulo(){
+	int Registro;
+	do{
+		printf("\nDigite:"
+		"\n\t1\tPara Registros"
+		"\n\t2\tPara Reservas"
+		"\n\t0\tSair\n\t");
+		scanf("%d",&Registro);
+	}while(Registro <0 || Registro > 2);
+	return Registro;
+}
+
 int Main_All(){
 	int Registro = 0;
 	do{

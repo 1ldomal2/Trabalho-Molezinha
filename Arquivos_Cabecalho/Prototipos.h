@@ -97,4 +97,18 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Produtos(char Url[99], int Codigo);
 void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura);
+//Reserva
+int Retorna_Campo_Struct_Reserva(char Url[99], int Codigo);
+void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+void Criar_Modificar_Reserva(int Modo_de_Abertura,int Manter_Codigo);
+void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva);
+void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva);
+void Ler_Reserva_Bin();
+void Ler_Reserva_Memoria(RESERVA Reserva);
+void Ler_Reserva_Txt(char Url[99]);
+void Main_Reserva(MODO Modo);
+int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura);
+void Mostra_Se_Conta_Paga(int Pago);
+void Modo_De_Pagamento(int Modo);
+int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
 #endif
