@@ -189,7 +189,7 @@ int Main_All(){
 
 			}else{
 				system("clear");
-				printf("Digite uma opção válida\n");
+				Vermelho("Digite uma opção válida\n");
 			}
 		}
 	}while(Registro <0 || Registro > 7);
@@ -203,7 +203,7 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 		//Retorna qual linha deve ser apagada
 	if(Linha == -1){
 		//Caso o codigo nãp esteja presente dentro do arquivo
-		printf("Codigo inexistente");
+		Vermelho("Codigo inexistente");
 	}else{
 		if(Registro == Dados_Codigo_Categoria ){
 			Auxiliar = Valida_Acomadacao_Codigo_Categoria(Codigo, Modo.Modo_de_Abertura);
@@ -240,37 +240,37 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 					switch(Registro){
 						case Dados_Hotel:
 							Criar_Modificar_Hotel(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Hospede:
 							Criar_Modificar_Hospede(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Acomodacoes:
 							Criar_Modificar_Acomodacoes(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Codigo_Categoria:
 							Criar_Modificar_Codigo_Categoria(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Produtos:
 							Criar_Modificar_Produtos(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Fornecedores:
 							Criar_Modificar_Fornecedores(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 						case Dados_Funcionarios:
 							Criar_Modificar_Funcionarios(Arquivo_Texto, Codigo);
-							printf("\nEditado com Sucesso");
+							Verde("\nEditado com Sucesso");
 							system("clear");
 						break;
 
@@ -300,7 +300,7 @@ void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Regis
 				rename("Arquivos/Temp",Url);
 						//Renomeia o Arquivo
 				if(Modificar==0){
-					printf("\nExcluído com Sucesso");
+					Verde("\nExcluído com Sucesso");
 				}
 			}
 		}else{
@@ -382,13 +382,13 @@ int Modo_Manipulacao(){
 			return Arquivo_Binario;
 
 			case Banco_De_Dados:
-			printf("Banco de Dados não foi implentado\n");
+			Vermelho("Banco de Dados não foi implentado\n");
 			break;
 			case Nuvem:
-			printf("Nuvem não foi implementado\n");
+			Vermelho("Nuvem não foi implementado\n");
 			break;
 			default:
-			printf("Digite um codigo valido!\n");
+			Vermelho("Digite um codigo valido!\n");
 			break;
 		}
 

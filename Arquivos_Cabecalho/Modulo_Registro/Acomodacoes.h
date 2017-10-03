@@ -33,10 +33,10 @@ void Main_Acomodacoes(MODO Modo){
 	}
 	//Caso algum esteja vazio indica que nao é possivel manipular dados hotel
 	if(Vazio_Hotel == 1){
-		printf("Não é possivel Manipular as Acomodaçoes pois não há hotéis cadastradas \n");
+		Vermelho("Não é possivel Manipular as Acomodaçoes pois não há hotéis cadastradas \n");
 	}else if (Vazio_Categoria == 1)
 	{
-		printf("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas \n");
+		Vermelho("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas \n");
 	}else{
 		while(1){
 			OrdenaValoresTxt();
@@ -54,7 +54,7 @@ void Main_Acomodacoes(MODO Modo){
 						Ler_Acomodacoes_Txt("Arquivos/Acomodacoes.txt");//Caso txt chama funcao para ler em txt
 					}
 				}else{//Caso o usuario nao tenha permissao para ler
-						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+						Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}
 					break;
 
@@ -63,7 +63,7 @@ void Main_Acomodacoes(MODO Modo){
 						//Verifica se usuario tem permissao para criar dados
 							Criar_Modificar_Acomodacoes(Modo.Modo_de_Abertura,0);//chama funcao para criar ou modificar acomodacoes
 					}else{
-						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+						Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}//Mostra que usuario nao tem a permissao para a a acao
 					break;	
 
@@ -85,7 +85,7 @@ void Main_Acomodacoes(MODO Modo){
 						//Chama funcao para apagar modificar passando por parametro codigo 1 indicando edicao
 					}
 				}else{//Mostra que usuario nao tem permissao para editar
-						printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+						Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 					}
 					break;
 				case Apagar:
@@ -107,7 +107,7 @@ void Main_Acomodacoes(MODO Modo){
 						}
 						
 					}else{//Caso usuario nao tenha permissao mostra isso
-							printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+							Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 						}
 					break;
 				default:
@@ -130,7 +130,7 @@ void Ler_Acomodacoes_Txt(char Url[99]){
 
 	
 	if(Arquivo==NULL){
-		printf("O Arquivo não foi aberto corretamente\n");
+		Vermelho("O Arquivo não foi aberto corretamente\n");
 	}else{
 		do{
 
@@ -182,7 +182,7 @@ void Ler_Acomodacoes_Txt(char Url[99]){
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		if(Arquivo_Vazio==0){
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 
@@ -213,7 +213,7 @@ void Ler_Acomodacoes_Bin(char Url[99]){
 	Arquivo = fopen(Url,"rb");
 	int Arquivo_Vazio=0;
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}else{
 		while(!feof(Arquivo)){
 			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
@@ -228,7 +228,7 @@ void Ler_Acomodacoes_Bin(char Url[99]){
 		}
 		fclose(Arquivo);
 		if(Arquivo_Vazio==0){//Caso arquivo vazio
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 }
@@ -240,14 +240,14 @@ void Gravar_Acomodacoes_Txt(char Url[99],ACOMODACOES *Acomodacoes){
 	Arquivo=fopen(Url,"a+");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
 	if(Acomodacoes->Cod_Categoria == 0 || Acomodacoes->Cod_Hotel == 0){
 		if(Acomodacoes->Cod_Categoria == 0 ){
-			printf("Erro com Codigo da cateogira");
+			Vermelho("Erro com Codigo da cateogira");
 		}
 		if( Acomodacoes->Cod_Hotel == 0 ){
-			printf("Erro com Codigo do Hotel");
+			Vermelho("Erro com Codigo do Hotel");
 		}
 	}else{
 		fprintf(Arquivo,"%d;",Acomodacoes->Codigo);
@@ -276,7 +276,7 @@ void Gravar_Acomodacoes_Bin(char Url[99],ACOMODACOES *Acomodacoes){
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
 	fwrite(Acomodacoes, sizeof(ACOMODACOES), 1, Arquivo); 
    		//Primeiro argumento é um ponteiro .... como proceder
@@ -314,7 +314,7 @@ void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 			Auxiliar = 1;			
 			//Coloca codigo da categoria na struct e auxiliar recebe 1 para sair do loop sem erros
 		}else{
-			printf("\nCodigo não cadastrado\n");//Mostra que o codigo nao esta cadastrado
+			Vermelho("\nCodigo não cadastrado\n");//Mostra que o codigo nao esta cadastrado
 			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 			scanf("%d",&Sair_Da_Validacao);
 			//Recebe valor para sair do loop sem efetuar cadastro
@@ -336,7 +336,7 @@ void Recebe_Dados_Acomodacoes(ACOMODACOES *Acomodacoes, int Modo_de_Abertura){
 				Auxiliar = 1;		
 				//Joga codigo para struct e auxiliar recebe 1 indicando que validou com sucesso
 			}else{
-				printf("\nCodigo não cadastrado\n\n");
+				Vermelho("\nCodigo não cadastrado\n\n");
 				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 				scanf("%d",&Sair_Da_Validacao);
 				//Caso contrario pergunta se deseja sair sem efetuar cadastro
@@ -357,7 +357,7 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 				//Abre o Arquivo em Modo Leitura
 			if(Arquivo==NULL){
 					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-				printf("Não há Hoteis\n");
+				Vermelho("Não há Hoteis\n");
 				return -1;//retorna valor invalido
 			}
 			break;
@@ -366,7 +366,7 @@ int Valida_Codigo_Hotel(int Codigo, int Modo_de_Abertura){
 				//Abre o Arquivo em Modo Leitura
 			if(Arquivo==NULL){
 					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-				printf("Não há Hoteis\n");
+				Vermelho("Não há Hoteis\n");
 				return -1;		
 			}
 			break;
@@ -441,7 +441,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-			printf("Não há categorias cadastradas\n");
+			Vermelho("Não há categorias cadastradas\n");
 			return -1;
 		}
 		break;
@@ -450,7 +450,7 @@ int Valida_Codigo_Categoria_Acomodacoes(int Codigo, int Modo_de_Abertura){
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-			printf("Não há categorias cadastradas\n");
+			Vermelho("Não há categorias cadastradas\n");
 			return -1;		
 		}
 		break;
@@ -575,10 +575,10 @@ void Criar_Modificar_Acomodacoes(int Modo_de_Abertura, int Manter_Codigo){
 			break;
 
 		case Banco_De_Dados:
-			printf("Banco de Dados não foi implentado\n");
+			Vermelho("Banco de Dados não foi implentado\n");
 			break;
 		case Nuvem:
-			printf("Nuvem não foi implementado\n");
+			Vermelho("Nuvem não foi implementado\n");
 			break;
 	}
 		//Para Grava o Buffer da String no Arquivo
@@ -636,7 +636,7 @@ void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MOD
 		int Campo_Struct = Retorna_Campo_Struct_Acomodacoes(Url, Codigo);
 		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
 		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
-			printf("O codigo digitado não foi encontrado");
+			Vermelho("O codigo digitado não foi encontrado");
 		}else{
 			if(Confirmacao()){//Se a confirmacao retornar 1 
 				for(int i=1;i<Campo_Struct;i++){
@@ -652,7 +652,7 @@ void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MOD
 					//Entra no modo Editar
 					Criar_Modificar_Acomodacoes(Arquivo_Binario, Codigo);
 					//Chama a funcao para editar o arquivo
-					printf("\nEditado com Sucesso");
+					Verde("\nEditado com Sucesso");
 					system("clear");
 					//Limpa tela
 				}
@@ -675,7 +675,7 @@ void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MOD
 				rename("Arquivos/Temp",Url);
 					//Renomeia o Arquivo
 				if(Modificar==0){
-					printf("\nExcluído com Sucesso");
+					Verde("\nExcluído com Sucesso");
 					//Mostra que foi apagado com sucesso
 				}
 			}

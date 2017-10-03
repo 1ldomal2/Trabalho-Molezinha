@@ -2,21 +2,22 @@
 //Ano		:2017
 //Semestre	:2º Semestre
 //
-//Arquivos de cabeçalho padrão Ansi
+//Macros
+#define Vermelho(TEXTO)	printf("\33[1;31m%s \33[0;29m ",TEXTO)
+#define Verde(TEXTO)	printf("\33[1;32m%s \33[0;29m ",TEXTO)
+//Biblioteca Padrão
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
 #include <unistd.h>
-
 //Registros
 #include "Arquivos_Cabecalho/Registros.h"
-
 //Prototipos
 #include "Arquivos_Cabecalho/Prototipos.h"
-
 //Funções
 #include "Arquivos_Cabecalho/Funcoes.h"
+//Modulo_Registro
 #include "Arquivos_Cabecalho/Modulo_Registro/Hotel.h"
 #include "Arquivos_Cabecalho/Modulo_Registro/Hospede.h"
 #include "Arquivos_Cabecalho/Modulo_Registro/Codigo_Categoria.h"
@@ -25,7 +26,7 @@
 #include "Arquivos_Cabecalho/Modulo_Registro/Funcionarios.h"
 #include "Arquivos_Cabecalho/Modulo_Registro/Fornecedores.h"
 #include "Arquivos_Cabecalho/Modulo_Registro/Produtos.h"
-
+//Modulo_Reserva
 
 
 

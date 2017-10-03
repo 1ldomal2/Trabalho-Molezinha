@@ -46,7 +46,7 @@ void Main_Produtos(MODO Modo){
 						//Chama Funcao para ler TXT
 					}
 				}else{//Mostra que o usuario nao tem permissao para realizar a acao de leitura
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 
@@ -57,7 +57,7 @@ void Main_Produtos(MODO Modo){
 						Criar_Modificar_Produtos(Modo.Modo_de_Abertura,0);	
 						//Se nao for memoria chama funcao para criar ou editar os produtos
 				}else{//Caso entre no ELSE mostra que o usuario nao tem permissao para realizar tal tarefa
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;	
 
@@ -82,7 +82,7 @@ void Main_Produtos(MODO Modo){
 					}
 				}else{
 					//Caso entre no ELSE mostra que o usuario nao tem permissao para realizar a tarefa
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 
@@ -105,7 +105,7 @@ void Main_Produtos(MODO Modo){
 					}
 				}else{
 					//Caso entre no ELSE indica que o usuario nao tem permissao para realizar a tarefa
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 			
@@ -128,7 +128,7 @@ void Ler_Produtos_Txt(char Url[99]){
 
 	
 	if(Arquivo==NULL){//Indica que ponteiro nao conseguiu abrir arquivo e provalvelmente nao existe
-		printf("O Arquivo não foi aberto corretamente\n");
+		Vermelho("O Arquivo não foi aberto corretamente\n");
 	}else{
 		do{
 			fscanf(Arquivo,"%d",&Produtos.Codigo);
@@ -173,7 +173,7 @@ void Ler_Produtos_Txt(char Url[99]){
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		if(Arquivo_Vazio==0){//Mostra que arquivo esta vazio
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 
@@ -203,7 +203,7 @@ void Ler_Produtos_Bin(char Url[99]){
 	//Abre arquivo de produtos em modo de leitura binaria
 	int Arquivo_Vazio=0;//Arquivo vazio
 	if(Arquivo == NULL){//Indica que o ponteiro nao conseguiu abrir arquivo e provavelmente ele nao existe
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}else{
 		while(!feof(Arquivo)){
 			//Le ate o fim do arquivo
@@ -222,7 +222,7 @@ void Ler_Produtos_Bin(char Url[99]){
 		fclose(Arquivo);
 		//Fecha arquivo para evitar erros
 		if(Arquivo_Vazio==0){//Se contador 0 indica que nao achou nenhum dado no arquivo
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 }
@@ -234,10 +234,10 @@ void Gravar_Produtos_Txt(char Url[99],PRODUTOS *Produtos){
 	Arquivo=fopen(Url,"a+");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 	if(Arquivo == NULL){//Se ponteiro igual a null indica que nao foi aberto e provavelmente nao existe
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
 	if(Produtos->Cod_Hotel == 0){//Se codigo do hotel voltar como 0 indica que o codigo do hotel nao foi validado
-			printf("Erro com Codigo do Hotel");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+			Vermelho("Erro com Codigo do Hotel");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
 	}else{//Caso contrario salva no TXT
 		fprintf(Arquivo,"%d;",Produtos->Codigo);
 		fprintf(Arquivo,"%u;",Produtos->Estoque);
@@ -262,10 +262,10 @@ void Gravar_Produtos_Bin(char Url[99],PRODUTOS *Produtos){
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 
 	if(Arquivo == NULL){//Se Ponteiro NULL indica que o arquivo nao foi aberto e provavelmente ele nao exite
-		printf("\nNao foi possivel abrir o arquivo!");//Mostra mensagem de erro
+		Vermelho("\nNao foi possivel abrir o arquivo!");//Mostra mensagem de erro
 	}
 	if(Produtos->Cod_Hotel == 0){//Caso o codigo do hotel volte como 0 indica que ele nao foi validado
-			printf("Erro com Codigo do Hotel");//Mostra que obteve algum erro ao validar o codigo do hotel
+			Vermelho("Erro com Codigo do Hotel");//Mostra que obteve algum erro ao validar o codigo do hotel
 	}else{//Caso contrario salva a struct inteira no arquivo binario
 		fwrite(Produtos, sizeof(PRODUTOS), 1, Arquivo); 
 		printf("\nArquivo Salvo 'Produtos.bin'");
@@ -358,7 +358,7 @@ void Recebe_PRODUTOS(PRODUTOS *Produtos){
 			Auxiliar = 1;		
 			//Variavel para sair do loop
 		}else{
-			printf("\nCodigo não cadastrado\n\n");
+			Vermelho("\nCodigo não cadastrado\n\n");
 			printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
 			scanf("%d",&Sair_Da_Validacao);
 			if(Sair_Da_Validacao == 1){
@@ -407,7 +407,7 @@ int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura){
 				//Abre o Arquivo em Modo Leitura
 			if(Arquivo==NULL){
 					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-				printf("Não há Hoteis\n");
+				Vermelho("Não há Hoteis\n");
 				return -1;
 			}
 			break;
@@ -416,7 +416,7 @@ int Valida_Codigo_Hotel_Produtos(int Codigo, int Modo_de_Abertura){
 				//Abre o Arquivo em Modo Leitura
 			if(Arquivo==NULL){
 					//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-				printf("Não há Hoteis\n");
+				Vermelho("Não há Hoteis\n");
 				return -1;		
 			}
 			break;
@@ -537,10 +537,10 @@ void Criar_Modificar_Produtos(int Modo_de_Abertura, int Manter_Codigo){
 			break;
 
 		case Banco_De_Dados:
-			printf("Banco de Dados não foi implentado\n");
+			Vermelho("Banco de Dados não foi implentado\n");
 			break;
 		case Nuvem:
-			printf("Nuvem não foi implementado\n");
+			Vermelho("Nuvem não foi implementado\n");
 			break;
 	}
 		
@@ -598,7 +598,7 @@ void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO M
 		int Campo_Struct = Retorna_Campo_Struct_Produtos(Url, Codigo);
 		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
 		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
-			printf("O codigo digitado não foi encontrado");
+			Vermelho("O codigo digitado não foi encontrado");
 		}else{
 			if(Confirmacao()){//Se a confirmacao retornar 1 
 				for(int i=1;i<Campo_Struct;i++){
@@ -614,7 +614,7 @@ void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO M
 					//Entra no modo Editar
 					Criar_Modificar_Produtos(Arquivo_Binario, Codigo);
 					//Chama a funcao para editar o arquivo
-					printf("\nEditado com Sucesso");
+					Verde("\nEditado com Sucesso");
 					system("clear");
 					//Limpa tela
 				}
@@ -637,7 +637,7 @@ void Apagar_Modificar_Produtos_Bin(char Url[99], int Codigo,int Modificar,MODO M
 				rename("Arquivos/Temp",Url);
 					//Renomeia o Arquivo
 				if(Modificar==0){
-					printf("\nExcluído com Sucesso");
+					Verde("\nExcluído com Sucesso");
 					//Mostra que foi apagado com sucesso
 				}
 			}

@@ -1,0 +1,41 @@
+_________________________________#Release#______________________________________
+
+Criação Makefile (para compilar é so digitar make)
+Add .gitignore no repositorio
+AddLeia-mepara nortear o projeto
+Coloração nas Msgs de Erro e confirmação
+Testes realizados
+
+______________________________#Proximo Passo#___________________________________
+
+Reserva
+	//Ler
+	//Criar
+	//Editar
+	//Apagar
+	//Linkagen com os demais Arquivos
+
+
+
+___________________________________#Bug's#_______________________________________
+Configuracoes.txt  se estiver vazio buga
+	//Validar se está vazio e caso esteja perguntar como manipular
+	//Fazer rodar essa validação nos Main especificos
+	//Não Deixar o Main ir pra frente caso arquivo esteja em branco
+	//Logo a função deve ser chamada assim que a variavel das "ações" receber algum valor
+
+
+
+
+
+
+
+
+
+___________________________________#Extras#_______________________________________
+
+
+sed -i s/Hotel/N1/g N1.h
+sed -i s/DADOS_HOTEL/N2/g N1.h
+
+

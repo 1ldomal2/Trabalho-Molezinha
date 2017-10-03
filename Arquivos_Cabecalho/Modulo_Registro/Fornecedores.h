@@ -39,14 +39,14 @@ void Main_Fornecedores(MODO Modo){
 						Ler_Fornecedores_Txt("Arquivos/Fornecedores.txt");
 					}
 				}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 			case Criar:
 				if ((Modo.Nivel_De_Permissao >=4 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=12 && Modo.Nivel_De_Permissao <=15)){
 						Criar_Modificar_Fornecedores(Modo.Modo_de_Abertura,0);	
 				}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;	
 
@@ -62,7 +62,7 @@ void Main_Fornecedores(MODO Modo){
 						Apagar_Modificar("Arquivos/Fornecedores.txt",Codigo,1,Modo,Dados_Fornecedores);
 					}
 				}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 
@@ -78,7 +78,7 @@ void Main_Fornecedores(MODO Modo){
 						Apagar_Modificar("Arquivos/Fornecedores.txt",Codigo,0,Modo,Dados_Fornecedores);
 					}
 				}else{
-					printf("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
+					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;
 			default:
@@ -100,7 +100,7 @@ void Ler_Fornecedores_Txt(char Url[99]){
 
 	
 	if(Arquivo==NULL){
-		printf("O Arquivo não foi aberto corretamente\n");
+		Vermelho("O Arquivo não foi aberto corretamente\n");
 	}else{
 		do{
 			fscanf(Arquivo,"%d",&Fornecedores.Codigo);
@@ -162,7 +162,7 @@ void Ler_Fornecedores_Txt(char Url[99]){
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		if(Arquivo_Vazio==0){
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 
@@ -194,7 +194,7 @@ void Ler_Fornecedores_Bin(char Url[99]){
 	Arquivo = fopen(Url,"rb");
 	int Arquivo_Vazio=0;
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}else{
 		while(!feof(Arquivo)){
 			fread(&Fornecedores, sizeof(FORNECEDORES),1,Arquivo);
@@ -209,7 +209,7 @@ void Ler_Fornecedores_Bin(char Url[99]){
 		}
 		fclose(Arquivo);
 		if(Arquivo_Vazio==0){
-			printf("O Arquivo está vazio\n");
+			Vermelho("O Arquivo está vazio\n");
 		}
 	}
 }
@@ -221,7 +221,7 @@ void Gravar_Fornecedores_Txt(char Url[99],FORNECEDORES *Fornecedores){
 	Arquivo=fopen(Url,"a+");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
 	fprintf(Arquivo,"%d;",Fornecedores->Codigo);
 	fprintf(Arquivo,"%s;",Fornecedores->Nome_Fantasia);
@@ -252,7 +252,7 @@ void Gravar_Fornecedores_Bin(char Url[99],FORNECEDORES *Fornecedores){
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
 
 	if(Arquivo == NULL){
-		printf("\nNao foi possivel abrir o arquivo!");
+		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
 	fwrite(Fornecedores, sizeof(FORNECEDORES), 1, Arquivo); 
    		//Primeiro argumento é um ponteiro .... como proceder
@@ -336,10 +336,10 @@ void Criar_Modificar_Fornecedores(int Modo_de_Abertura, int Manter_Codigo){
 			break;
 
 		case Banco_De_Dados:
-			printf("Banco de Dados não foi implentado\n");
+			Vermelho("Banco de Dados não foi implentado\n");
 			break;
 		case Nuvem:
-			printf("Nuvem não foi implementado\n");
+			Vermelho("Nuvem não foi implementado\n");
 			break;
 	}
 		//Para Grava o Buffer da String no Arquivo
@@ -395,7 +395,7 @@ void Apagar_Modificar_Fornecedores_Bin(char Url[99], int Codigo,int Modificar,MO
 		int Campo_Struct = Retorna_Campo_Struct_Fornecedores(Url, Codigo);
 		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
 		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
-			printf("O codigo digitado não foi encontrado");
+			Vermelho("O codigo digitado não foi encontrado");
 		}else{
 			if(Confirmacao()){//Se a confirmacao retornar 1 
 				for(int i=1;i<Campo_Struct;i++){
@@ -411,7 +411,7 @@ void Apagar_Modificar_Fornecedores_Bin(char Url[99], int Codigo,int Modificar,MO
 					//Entra no modo Editar
 					Criar_Modificar_Fornecedores(Arquivo_Binario, Codigo);
 					//Chama a funcao para editar o arquivo
-					printf("\nEditado com Sucesso");
+					Verde("\nEditado com Sucesso");
 					system("clear");
 					//Limpa tela
 				}
@@ -434,7 +434,7 @@ void Apagar_Modificar_Fornecedores_Bin(char Url[99], int Codigo,int Modificar,MO
 				rename("Arquivos/Temp",Url);
 					//Renomeia o Arquivo
 				if(Modificar==0){
-					printf("\nExcluído com Sucesso");
+					Verde("\nExcluído com Sucesso");
 					//Mostra que foi apagado com sucesso
 				}
 			}

@@ -34,11 +34,24 @@ int Login(MODO Modo){
 		system("clear");
 		
 		if(Codigo == 666){
-			if (strcmp(Usuario_Digitado,"Da10")==0)
+			if (strcmp(Usuario_Digitado,"Da50")==0)
 			{
 				if (strcmp(Senha_Digitada,"Manoel")==0)
 				{
 					printf("MODO GOD\n");
+					return 15;
+					//Modo god tem todas as permiossoes
+				}
+			}
+		}
+
+		if(Codigo == 1){
+			if (strcmp(Usuario_Digitado,"1")==0)
+			{
+				if (strcmp(Senha_Digitada,"1")==0)
+				{
+					Vermelho("DEPOIS TEM QUE APAGAR  1 1 1 \n");
+					Verde("Da linha 48 a 59 Login.h");
 					return 15;
 					//Modo god tem todas as permiossoes
 				}
@@ -81,7 +94,7 @@ int Login(MODO Modo){
 
 				}else{
 					system("clear");
-					printf("O codigo digitado não existe\n");
+					Vermelho("O codigo digitado não existe\n");
 				}
 
 			break;
@@ -99,7 +112,7 @@ int Login(MODO Modo){
 					strcpy(Senha_Arquivo,Temporarios.Senha);
 				}else{
 					system("clear");
-					printf("O codigo digitado não existe\n");
+					Vermelho("O codigo digitado não existe\n");
 				}
 			break;
 		}
@@ -129,11 +142,11 @@ int Login(MODO Modo){
 
 				}else{
 
-					printf("Senha está incorreta\n");
+					Vermelho("Senha está incorreta\n");
 					Criptografar(Senha_Arquivo);
 				}
 			}else{
-				printf("Usuario está incorreto\n");
+				Vermelho("Usuario está incorreto\n");
 			}
 		}
 	}
