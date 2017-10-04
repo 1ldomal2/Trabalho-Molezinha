@@ -8,17 +8,23 @@
 
 //Funçoes
 //void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
+int Opcao_Acoes();
+int Main_All();
+void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
 int Confirmacao();
-int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Intervalo_Vetor(int Vetor[],int Ultimo);
 int Modo_Manipulacao();
-int Retorna_Linha_Codigo(char Url[99], int Codigo);
-int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura,int Tipo_DADO);
-MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 void Quick_Sort(int vetor[], int inicio, int fim);
+int Retorna_Linha_Codigo(char Url[99], int Codigo);
+int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int Tipo_DADO);
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
+MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
+int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Arquivo_Texto_Vazio(char Url[]);
 void Verificacao_All();
+int Ler_Configuracoes_Retorna_Modo_de_Abertura();
+int Valida_Codigo_Produto(int Codigo, int Modo_de_Abertura);
+void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]);
 //Hotel
 int Retorna_Campo_Struct_Hotel(char Url[99], int Codigo);
 void Apagar_Modificar_Hotel_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);

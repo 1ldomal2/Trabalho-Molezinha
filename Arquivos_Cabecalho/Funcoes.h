@@ -29,8 +29,12 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
-int Arquivo_Texto_Vazio(char Url[],int Leitura);
+int Arquivo_Texto_Vazio(char Url[]);
 void Verificacao_All();
+int Ler_Configuracoes_Retorna_Modo_de_Abertura();
+int Valida_Codigo_Produto(int Codigo, int Modo_de_Abertura);
+void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]);
+
 
 */
 //Funçoes
@@ -187,13 +191,17 @@ int Opcao_Acoes(){
 }
 
 int Modulo(){
-	int Registro;
+	int Registro = 0;
 	do{
 		printf("\nDigite:"
 		"\n\t1\tPara Registros"
 		"\n\t2\tPara Reservas"
 		"\n\t0\tSair\n\t");
 		scanf("%d",&Registro);
+		system("clear");
+		if(Registro <0 || Registro > 2){
+			Vermelho("Digite um valor valido");	
+		}
 	}while(Registro <0 || Registro > 2);
 	return Registro;
 }
@@ -772,4 +780,174 @@ int Converter_Decimal_Binario(int n0,int n1,int n2,int n3){
 	int Binario = n0+n1+n2+n3;
 	return Binario;
 }
+
+/*
+void Printa_Vetor_INT(FILE Arquivo*,UltimaPosicao,int Produtos[]){
+	
+		for(i=0;i<UltimoVetor;i++){
+			fprintf(Arquivo,"%d;",Produtos[i]);
+		}
+		fprintf(Arquivo,"\n");
+	
+		
+}
+
+void Printa_Vetor_FLOAT(FILE Arquivo*,float Produtos[]){
+	
+		for(i=0;i<UltimoVetor;i++){
+			fprintf(Arquivo,"%f;",Produtos[i]);
+		}
+		fprintf(Arquivo,"\n");
+	
+		
+	}
+*/
+
+int Ler_Configuracoes_Retorna_Modo_de_Abertura(){
+	FILE *Arquivo;
+	int Modo_Abertura = 0;
+	//cria as variaveis para o bom funcionamento da função 
+
+	Arquivo = fopen("Arquivos/Configuracoes.txt", "r");
+	//Abre o Arquivo para ver o modo de manipulaçao que está salvo
+	
+	fscanf(Arquivo,"%d",&Modo_Abertura);
+	//Le do Arquivo
+
+	fclose(Arquivo);
+	//Fecha para evitar erros
+
+	return Modo_Abertura;
+}
+
+void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]){
+	int Loop=1,Indice=0;
+	while(Loop){
+		int Codigo_Produto_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
+		
+		//Adapta A variavel de acordo com o modo de abertura
+		while(Auxiliar == 0){
+			printf("Codigo do Produto:");
+			scanf("%d",&Codigo_Produto_A_Ser_Validado);
+			//Recebe o codigo de Hotel OBS O Codigo do hotel é importante para vincular o produto ao hotel alem de automatizar o preço de venda de acordo com a porcentagem de lucro cadastrada no hotel
+			if (Valida_Codigo_Produto(Codigo_Produto_A_Ser_Validado, Ler_Configuracoes_Retorna_Modo_de_Abertura()))
+			{//Verifica se o codigo do hotel está cadastro 
+				Codigo[Indice] = Codigo_Produto_A_Ser_Validado;
+				//Atribui o codigo digitado a struct	
+				Auxiliar = 1;		
+				//Variavel para sair do loop
+			}else{
+				Vermelho("\nCodigo não cadastrado\n\n");
+				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
+				scanf("%d",&Sair_Da_Validacao);
+				if(Sair_Da_Validacao == 1){
+					Loop=0;
+					break;
+					//Sai do loop
+				}	
+			}
+		}
+		if(Auxiliar==1){
+			do{
+				printf("Digite o Quantidade do produto");
+				scanf("%d",&Quantidade[Indice]);
+			}while(Quantidade[Indice]<=0);
+			do{
+				printf("Digite o Pagamento do produto");
+				scanf("%d",&Pagamento[Indice]);	
+			}while(Pagamento[Indice]!=Prazo && Pagamento[Indice]!=Vista);
+			Indice++;
+			printf("Deseja implementar outro Produto à lista ");
+			Verde("1 - Sim ");
+			Vermelho("0 - Não");
+			scanf("%d",&Loop);		
+		}
+		
+	}
+}
+int Valida_Codigo_Produto(int Codigo, int Modo_de_Abertura){
+	FILE *Arquivo;
+	char Temporario[9999];
+		//Ponteiro para Arquivo
+
+	switch(Modo_de_Abertura){
+		case Arquivo_Texto:
+		Arquivo=fopen("Arquivos/Produtos.txt","r");
+
+			//Abre o Arquivo em Modo Leitura
+		if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			Vermelho("Não há Produtos\n");
+			return 0;
+		}
+		break;
+		case Arquivo_Binario:
+		Arquivo=fopen("Arquivos/Produtos.bin","rb");
+			//Abre o Arquivo em Modo Leitura
+		if(Arquivo==NULL){
+				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
+			Vermelho("Não há Produtos\n");
+			return 0;		
+		}
+		break;
+	}		
+
+	int Contador1=0, Vetor_Codigos[9999];
+		//Evita lixo de memoria
+	if (Modo_de_Abertura == Arquivo_Texto)
+	{
+		while(!feof(Arquivo)){
+
+			fscanf(Arquivo,"%d",&Vetor_Codigos[Contador1]);
+				//Lê o Codigo
+			getc(Arquivo);
+				//lê/pula ';'
+			if(feof(Arquivo)){
+				//Verifica se chegou a ao fim do arquivo
+				break;
+				//sai do while
+			}
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+			//Move o ponteiro até o proximo codigo
+			Contador1++;
+			//Adicione 1 ao contador ou seja adicione um ao numero do indice
+			
+		}
+
+	}else if (Modo_de_Abertura == Arquivo_Binario)
+	{
+		PRODUTOS Produtos;
+		Contador1=0;
+		//Zera contador de Codigos
+		while(!feof(Arquivo)){
+			fread(&Produtos, sizeof(PRODUTOS),1,Arquivo);
+			//Le arquivo e passac para a struct
+			Vetor_Codigos[Contador1] = Produtos.Codigo;
+			Contador1++;
+			//Soma no contador de contador
+			if(feof(Arquivo)){
+				break;
+				//Se estiver no fim do arquivo sai do loop
+			}
+
+			
+		}
+	}
+	if(Contador1!=1){
+		Quick_Sort(Vetor_Codigos,0,Contador1-1);
+		//COntador -1 para poder ler o vetor inteiro e não perder ultimo valor 
+		//Ordena o Vetor;
+	}	
+		for (int i = 0; i < Contador1; ++i)
+		{
+
+			if (Codigo == Vetor_Codigos[i])
+			{
+				return 1;//Se achar o codigo no vetor ordenado retorna 1 indicando TRUE
+			}
+		}
+return 0;//Caso contrario retorna FALSE 0 
+}
+
 #endif

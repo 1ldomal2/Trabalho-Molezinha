@@ -19,6 +19,8 @@ void Mostra_Se_Conta_Paga(int Pago);
 void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
 */
+
+
 void Ler_Reserva_Memoria(RESERVA Reserva){
 	//Recebe por parametro Struct de Reserva
 	printf("Codigo:\t\t\t%d\n",Reserva.Codigo);
@@ -73,24 +75,35 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 	if(Arquivo == NULL){
 		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
-	fprintf(Arquivo,"%d;",Reserva->Codigo);
-	fprintf(Arquivo,"%s;",Reserva->Nome_Hospede);
-	fprintf(Arquivo,"%d;",Reserva->Codigo_Hospede);
-	fprintf(Arquivo,"%d;",Reserva->Cod_Acomodacao);
-	fprintf(Arquivo,"%s;",Reserva->Data_Entrada);
-	fprintf(Arquivo,"%s;",Reserva->Data_Saida);
-	fprintf(Arquivo,"%s;",Reserva->Data_Vencimento_Fatura);
-	fprintf(Arquivo,"%f;",Reserva->Valor_Fatura);
-	fprintf(Arquivo,"%d;",Reserva->Pago);
-	fprintf(Arquivo,"%f;",Reserva->Valor_Conta);
-	fprintf(Arquivo,"%d;",Reserva->Modo_Pagamento);
+	if(Reserva->Codigo_Hospede == 0){//Se codigo do hotel voltar como 0 indica que o codigo do hotel nao foi validado
+		Vermelho("Erro com Codigo do Hospede");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+	}else if(Reserva->Cod_Acomodacao == 0){
+		Vermelho("Erro com Codigo de acomodacao");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+	}else{
+		fprintf(Arquivo,"%d;",Reserva->Codigo);
+		fprintf(Arquivo,"%s;",Reserva->Nome_Hospede);
+		fprintf(Arquivo,"%d;",Reserva->Codigo_Hospede);
+		fprintf(Arquivo,"%d;",Reserva->Cod_Acomodacao);
+		fprintf(Arquivo,"%s;",Reserva->Data_Entrada);
+		fprintf(Arquivo,"%s;",Reserva->Data_Saida);
+		fprintf(Arquivo,"%s;",Reserva->Data_Vencimento_Fatura);
+		fprintf(Arquivo,"%f;",Reserva->Valor_Fatura);
+		fprintf(Arquivo,"%d;",Reserva->Pago);
+		fprintf(Arquivo,"%f;",Reserva->Valor_Conta);
+		fprintf(Arquivo,"%d;",Reserva->Modo_Pagamento);
+		Verde("\nArquivo Salvo em :");
+		Verde(Url);
+	}
+	//
+	//
+	//
 	//Fazer funcao para salvar produtos no TXT
 		//Salva um struct por Linha
 	fclose(Arquivo);
 		//Fecha o o arquivo para evitar erros
 	
 
-	printf("\nArquivo Salvo em : %s",Url);
+	
 }
 void Ler_Reserva_Txt(char Url[99]){
 	RESERVA Reserva;
@@ -197,7 +210,9 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 				//Joga codigo para struct e auxiliar recebe 1 indicando que validou com sucesso
 			}else{
 				Vermelho("\nCodigo não cadastrado\n\n");
-				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
+				printf("Deseja sair sem efetuar o cadastro?");
+				Verde("1 - Sim ");
+				Vermelho("0 - Não");
 				scanf("%d",&Sair_Da_Validacao);
 				//Caso contrario pergunta se deseja sair sem efetuar cadastro
 				if(Sair_Da_Validacao == 1){
@@ -206,23 +221,31 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			}
 		}
 	}
-	printf("Data de Entrada:");
-	scanf("%s",Reserva->Data_Entrada);
-	printf("Data de Saida:");
-	scanf("%s",Reserva->Data_Saida);
-	printf("Data Vencimento da Fatura:");
-	scanf("%s",Reserva->Data_Vencimento_Fatura);
-	printf("Valor da Fatura:");
-	scanf("%f",&Reserva->Valor_Fatura);
-	printf("Digite");
-	Verde("\t1 para valor pago");
-	Vermelho("\t0 para pendente");
-	scanf("%d",&Reserva->Pago);
-	printf("1- Pagamento Dinheiro\n"
-			"2- Pagamento Debito\n"
-			"3- Pagamento Credito\n"
-			"4- Pagamento Cheque");
-	scanf("%d",&Reserva->Modo_Pagamento);
+	if(Auxiliar == 1){
+		printf("Data de Entrada:");
+		scanf("%s",Reserva->Data_Entrada);
+		printf("Data de Saida:");
+		scanf("%s",Reserva->Data_Saida);
+		printf("Data Vencimento da Fatura:");
+		scanf("%s",Reserva->Data_Vencimento_Fatura);
+		printf("Valor da Fatura:");
+		scanf("%f",&Reserva->Valor_Fatura);
+		printf("Digite");
+		Verde("\t1 para valor pago");
+		Vermelho("\t0 para pendente");
+		scanf("%d",&Reserva->Pago);
+		printf("1- Pagamento Dinheiro\n"
+				"2- Pagamento Debito\n"
+				"3- Pagamento Credito\n"
+				"4- Pagamento Cheque\n");
+		scanf("%d",&Reserva->Modo_Pagamento);
+		Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
+		for(int i = 0; i<11; i++){
+			Reserva->Codigo_Produto[i];
+			Reserva->Quantidade_De_Produtos[i];
+			Reserva->Prazo_Vista[i];
+		}
+	}
 	//RECEBER DADOS PRODUTOS
 	//os outros dados
 }
@@ -339,13 +362,19 @@ void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 	if(Arquivo == NULL){
 		Vermelho("\nNao foi possivel abrir o arquivo!");
 	}
-	fwrite(Reserva, sizeof(RESERVA), 1, Arquivo); 
-   		//Primeiro argumento é um ponteiro .... como proceder
+	if(Reserva->Codigo_Hospede == 0){//Se codigo do hotel voltar como 0 indica que o codigo do hotel nao foi validado
+		Vermelho("Erro com Codigo do Hospede");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+	}else if(Reserva->Cod_Acomodacao == 0){
+		Vermelho("Erro com Codigo de acomodacao");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+	}else{
+		fwrite(Reserva, sizeof(RESERVA), 1, Arquivo); 
+			//Primeiro argumento é um ponteiro .... como proceder
 
-	fclose(Arquivo);
-   		//Fecha o Arquivo Para evitar erro
-	printf("\nArquivo Salvo 'Reserva.bin'");
-   		//Mensagem de Confirmação
+		fclose(Arquivo);
+			//Fecha o Arquivo Para evitar erro
+		Verde("\nArquivo Salvo 'Reserva.bin'");
+		   //Mensagem de Confirmação
+	}
 }
 
 int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura){

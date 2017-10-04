@@ -390,6 +390,7 @@ void Recebe_PRODUTOS(PRODUTOS *Produtos){
 		//(1+(porcentagem de lucro/100))*Valor 
 		printf("Preço de Venda:R$%.2f",Produtos->Preco_Venda);
 		//Mostra na tela o valor  de venda do produto
+		
 		fclose(Arquivo);	
 		
 	}

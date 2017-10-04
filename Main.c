@@ -55,7 +55,7 @@ int main(int argc, char const *argv[])
 		int Permissao = Login(Modo);
 		Modo.Nivel_De_Permissao = Permissao;
 		//LOGIN retorna o tipo de permissao de 1 a 15
-
+		int contador = 0;
 		while(Loop){
 			
 			OrdenaValoresTxt();
@@ -68,6 +68,8 @@ int main(int argc, char const *argv[])
 
 
 			int Opcao_Registro;
+			contador++;
+			printf("%d",contador);
 			int Opcao_Inicial = Modulo();
 			system("clear");
 			switch(Opcao_Inicial){
@@ -106,6 +108,9 @@ int main(int argc, char const *argv[])
 								case 0:
 									Loop1=0;
 								break;
+
+								default:
+								break;	
 							}
 						}
 				break;
@@ -113,12 +118,13 @@ int main(int argc, char const *argv[])
 					system("clear");
 					Main_Reserva(Modo);
 				break;
-				case 3:
-					system("clear");
-				break;
 				case 0:
 					system("clear");
 					Loop=0;
+				break;
+				default:
+				system("clear");
+				Vermelho("Digite um Codigo Valido");
 				break;
 			}
 			
