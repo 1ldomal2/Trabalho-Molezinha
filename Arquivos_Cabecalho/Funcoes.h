@@ -679,6 +679,10 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 					Vetor_Codigos[Contador1] = Tipo_Funcionarios.Codigo;
 			//Atribui o codigo no  vetor de codigos
 				break;
+				case Dados_Reserva:
+				Vetor_Codigos[Contador1] = Tipo_Reserva.Codigo;
+			//Atribui o codigo no  vetor de codigos
+			break;
 			}
 			
 			Contador1++;
