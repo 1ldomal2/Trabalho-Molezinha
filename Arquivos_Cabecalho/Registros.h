@@ -146,8 +146,17 @@ typedef struct Faturamento{
 	float Valor_Caixa;
 	float Valor_Receber;
 	//Fazer um Arquivo so para relatorio do fluxo de caixa
-
-
-
 }FATURAMENTO;
+
+typedef struct Pesquisa{
+	int Data;
+	char Datas
+	int Categoria_Acomodacao;
+	int Quantidade_Pessoa;
+	int Quantidade_Criancas;
+	int Quantidade_Adultos;
+	int Facilidade;
+	FACILIDADES Facilidades;
+	//Fazer um Arquivo so para relatorio do fluxo de caixa
+}PESQUISA;
 #endif
