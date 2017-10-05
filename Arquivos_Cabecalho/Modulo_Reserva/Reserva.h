@@ -241,9 +241,10 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 		scanf("%d",&Reserva->Modo_Pagamento);
 		Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
 		for(int i = 0; i<11; i++){
-			Reserva->Codigo_Produto[i];
-			Reserva->Quantidade_De_Produtos[i];
-			Reserva->Prazo_Vista[i];
+			printf("%d",Reserva->Codigo_Produto[i]);
+			printf("%d",Reserva->Quantidade_De_Produtos[i]);
+			printf("%d",Reserva->Prazo_Vista[i]);
+			
 		}
 	}
 	//RECEBER DADOS PRODUTOS

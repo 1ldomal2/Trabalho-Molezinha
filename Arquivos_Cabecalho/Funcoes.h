@@ -858,6 +858,8 @@ void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]){
 			}while(Quantidade[Indice]<=0);
 			do{
 				printf("Digite o Pagamento do produto");
+				Vermelho(" 0 - Prazo");
+				Verde(" 1 - A vista");
 				scanf("%d",&Pagamento[Indice]);	
 			}while(Pagamento[Indice]!=Prazo && Pagamento[Indice]!=Vista);
 			Indice++;
