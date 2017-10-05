@@ -29,6 +29,7 @@
 #include "Arquivos_Cabecalho/Modulo_Registro/Produtos.h"
 //Modulo_Reserva
 #include "Arquivos_Cabecalho/Modulo_Reserva/Reserva.h"
+#include "Arquivos_Cabecalho/Modulo_Reserva/Pesquisa.h"
 
 
 //Macro
@@ -118,6 +119,7 @@ int main(int argc, char const *argv[])
 					system("clear");
 					Main_Reserva(Modo);
 				break;
+				
 				case 0:
 					system("clear");
 					Loop=0;

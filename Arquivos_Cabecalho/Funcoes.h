@@ -785,53 +785,6 @@ int Converter_Decimal_Binario(int n0,int n1,int n2,int n3){
 	int Binario = n0+n1+n2+n3;
 	return Binario;
 }
-int Tipo_Pesquisa(){
-	int  Data,Categoria_Acomodacao,Quantidade_Pessoas,Facilidade;
-	Verde("Digite 1 no campo em que deseja pesquisar\n");
-	do{
-		 printf("\nData");
-		 scanf("%d",&Data);
-	}while(Data != 1 && Data !=0);
-	do{
-		 printf("Categoria de Acomodação":);
-		 scanf("%d",&Categoria_Acomodacao);
-	}while(Data != 1 && Data !=0);
-	do{
-		 printf("Quantidade de Pessoas:");
-		 scanf("%d",&Quantidade_Pessoas);
-	}while(Data != 1 && Data !=0);
-	do{
-		 printf("Facilidades:");
-		 scanf("%d",&Facilidade);
-	}while(Data != 1 && Data !=0);
-
-	return Converter_Decimal_Binario(Data,Categoria_Acomodacao,Quantidade_Pessoas,Facilidade);
-
-
-}
-
-
-/*
-void Printa_Vetor_INT(FILE Arquivo*,UltimaPosicao,int Produtos[]){
-	
-		for(i=0;i<UltimoVetor;i++){
-			fprintf(Arquivo,"%d;",Produtos[i]);
-		}
-		fprintf(Arquivo,"\n");
-	
-		
-}
-
-void Printa_Vetor_FLOAT(FILE Arquivo*,float Produtos[]){
-	
-		for(i=0;i<UltimoVetor;i++){
-			fprintf(Arquivo,"%f;",Produtos[i]);
-		}
-		fprintf(Arquivo,"\n");
-	
-		
-	}
-*/
 
 int Ler_Configuracoes_Retorna_Modo_de_Abertura(){
 	FILE *Arquivo;

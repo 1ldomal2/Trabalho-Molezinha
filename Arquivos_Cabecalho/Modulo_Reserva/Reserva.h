@@ -171,7 +171,12 @@ void Ler_Reserva_Txt(char Url[99]){
 
 void Recebe_Dados_Reserva(RESERVA *Reserva){
 	int Modo_de_Abertura=0;
+
 	Modo_de_Abertura=Configuracoes();
+
+	Pesquisa(Tipo_Pesquisa());
+
+
 	printf("\nNome Hospede:");
 	scanf("%s",Reserva->Nome_Hospede);
 	int Codigo_Hospede_A_Ser_Validado,Codigo_Acomodacao_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;

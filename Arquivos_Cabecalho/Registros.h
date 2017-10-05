@@ -149,14 +149,15 @@ typedef struct Faturamento{
 }FATURAMENTO;
 
 typedef struct Pesquisa{
-	int Data;
-	char Datas
-	int Categoria_Acomodacao;
-	int Quantidade_Pessoa;
-	int Quantidade_Criancas;
-	int Quantidade_Adultos;
-	int Facilidade;
-	FACILIDADES Facilidades;
+	int Data;				//boolean
+		char Datas[Tamanho1];
+	int Categoria_Acomodacao;//boolean
+		int Codigo_Categoria;
+	int Quantidade_Pessoas;	//boolean
+		int Quantidade_Criancas;
+		int Quantidade_Adultos;
+	int Facilidade;			//boolean
+		FACILIDADES Facilidades;
 	//Fazer um Arquivo so para relatorio do fluxo de caixa
 }PESQUISA;
 #endif
