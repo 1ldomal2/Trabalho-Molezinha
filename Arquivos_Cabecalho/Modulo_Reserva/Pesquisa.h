@@ -5,7 +5,10 @@ PESQUISA Tipo_Pesquisa();
 void Pesquisa(PESQUISA Pesquisa);
 int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
 void Recebe_Data(DATA *Data);
-
+int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
+void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade);
+void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor);
+void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
 
 */
 PESQUISA Tipo_Pesquisa(){
@@ -71,16 +74,18 @@ PESQUISA Tipo_Pesquisa(){
 }
 
 void Pesquisa(PESQUISA Pesquisa){
-
 	int Modo_Abertura=Configuracoes();
 	int Ok=0;
 	int Contador=0;
-	int Vator_Acomodacoes_Invalidas[Tamanho2];
+	int Vetor_Acomodacoes_Invalidas[Tamanho2];
+	int Inicio_Vetor = 0;
 	if(Pesquisa.Data==1){
 
 		Recebe_Data(&Pesquisa.Data_Entrada);
 		Recebe_Data(&Pesquisa.Data_Saida);
 		//Recebe dados da Data
+
+		Inicio_Vetor = Pequisa_Periodo(Vetor_Acomodacoes_Invalidas,Inicio_Vetor,Pesquisa.Data_Entrada,Pesquisa.Data_Saida);			
 	}
 	
 
@@ -168,24 +173,135 @@ void Pesquisa(PESQUISA Pesquisa){
 
 }
 
-void Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida){
+int Valida_Reserva(){
+	ACOMODACOES Acomodacoes;
+	int Diferenca_A_B = 1;
+	int Acomodacao_Invalida[999], Inicio_Vetor = 0;
+	int Acomodacao_Registradas[999],Contador_Acomodacao_Registrada;
+	char Temporario[999];
+	DATA Entrada,Saida;
+	FILE *Arquivo;
+
+	int Modo_Abertura = Configuracoes();
+	//TXT ou Binario
+
+
+	if(Modo_Abertura == Arquivo_Texto){
+		Arquivo = fopen("Arquivos/Acomodacoes.txt","r");
+	}else{
+		Arquivo = fopen("Arquivos/Acomodacoes.bin","rb");		
+}
+	//abre o arquivo 
+
+
+	if(Arquivo == NULL){
+		Vermelho("\nErro ao abrir arquivo\n");
+	}else{
+		//TEXTO
+		if(Modo_Abertura == Arquivo_Texto){
+			while(!feof(Arquivo)){
+				fscanf(Arquivo,"%d",&Acomodacao_Registradas[Contador_Acomodacao_Registrada]);//Lê o Codigo e passa para o vetor
+				getc(Arquivo);
+				if(feof(Arquivo)){
+					break;
+				}//evita dup
+				//lê/pula ';'
+				Contador_Acomodacao_Registrada++;
+				//Soma no contador de registrados
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				getc(Arquivo);
+				//pula o \n
+			}
+	
+	
+		//BINARIO
+		}else{
+			while(!feof(Arquivo)){
+				fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
+				Acomodacao_Registradas[Contador_Acomodacao_Registrada] = Acomodacoes.Codigo;
+				//Passa codigo de acomodacao para vetor
+				if(feof(Arquivo)){
+					break;
+				}
+				Contador_Acomodacao_Registrada++;
+			}			
+		}
+	}
+	//Passa todos codigos existentes de acomodacao para o vetor
+
+	Inicio_Vetor = Pequisa_Periodo(Acomodacao_Invalida,Inicio_Vetor,Entrada,Saida);
+	for(int i = 0; i < Inicio_Vetor; i++){
+		for(int j = 0;j<Contador_Acomodacao_Registrada;j++){
+			if(Acomodacao_Invalida[i]==Acomodacao_Registradas[j]){
+				Diferenca_A_B = 0;
+			}	//Caso entra no IF nao esta disponivel
+		}
+		if(Diferenca_A_B == 1){
+			//FAZER TERCEIRO VETOR QUE é O A - B ou seja os valores que nao se chocam		
+		}
+	}
+
+}
+
+int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida){
 	FILE *Arquivo;
 	FLUXO Fluxo;
+	int Contador_Periodo_Lido_Arquivo=0;
 	char Url[999];
+	int Vetor_Periodo_Pesquisar[999];//Declara vetor periodo a ser pesquisado 
+	int Contador_Periodo_Input = Saida.Dia - Entrada.Dia + 1;//QUantidade de dias que hospede pretende ficar
+
+	for(int i = 0; i <= Contador_Periodo_Input; i++){
+		Vetor_Periodo_Pesquisar[i] = Entrada.Dia + i; 
+	}
+	//Passa o periodo em dias para um vetor por exemplo se começa no dia 1 e vai ate o 5 ele ficou 5 dias e sera setado no vetor os valores 1 2 3 4 e 5
+
+	char Pasta[999];
+	strcpy(Pasta,"mkdir /Arquivos/Reserva/");
+	char Ano[10];
+	sprintf(Ano,"%u",Entrada.Ano);
+	strcat(Pasta,Ano);
+	system(Pasta);
+	char Mes[10];
+	sprintf(Mes,"%u",Entrada.Mes);
+	strcat(Pasta,Mes);
+	system(Pasta);
+	system("clear");
+	//Criando pastas para evitar o erro de falha na segmentação
+
 	strcpy(Url,"Arquivos/");
-	strcat(Url,Entrada.Ano);
+	strcat(Url,Ano);
 	strcat(Url,"/");
-	strcat(Url,Entrada.Mes);
-	Arquivo = fopen(Url,"rb");
+	strcat(Url,Mes);
+	Verificacao_Arquivo(Url,2);	
+	Arquivo = fopen(Url,"rb");//sempre abre em binario 
 	//Abre arquivo 
 
 	if (Arquivo == NULL)
 	{
-		Vermelho("")
+		Vermelho("Erro Abrir arquivo");
+	}else{
+		while(!feof(Arquivo)){
+			fread(&Fluxo, sizeof(FLUXO),1,Arquivo);//Por ser arquivo de fluxo decidimos ser sempre binario para facilitar
+			if(feof(Arquivo)){
+				break;
+			}
+			Contador_Periodo_Lido_Arquivo = Fluxo.Data_Saida.Dia - Fluxo.Data_Entrada.Dia + 1;
+			//QUantidade de dias que hospede pretende ficar "Periodo"
+			for(int i = 0; i < Contador_Periodo_Input; i++){
+				for(int j = 0;j<Contador_Periodo_Lido_Arquivo;j++){
+					if(Vetor_Periodo_Pesquisar[i] == Fluxo.Vetor_Dias[j]){
+						Acomodacao_Invalida[Inicio_Vetor] = Fluxo.Codigo_Acomodacao;
+						Inicio_Vetor++;
+						//Caso entra no IF nao esta disponivel
+					} 
+				}
+			}
+			//Passa pro vetor as acomodações em que há sombreamento de datas ou seja, quando a data em que a pessoa pretende se hospedar ja tem alguma reserva	.....em outras palavras o vetor vai ser preenchido com as acomodacoes invalidas
+		}
 	}
-	fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
-
-
+	return Inicio_Vetor;
+	//retorna o indice do vetor que sera usado na proxima pesquisa
 }
 
 void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade){

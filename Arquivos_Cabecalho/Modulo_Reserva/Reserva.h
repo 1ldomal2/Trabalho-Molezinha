@@ -233,20 +233,29 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 		do{
 			Verde("Digite a Data referente a Entrada");
 			Recebe_Data(&Data1);
-			strcpy(Reserva->Data_Entrada,Data1.Dia);
-			strcat(->Data_Entrada,"/");
-			strcat(->Data_Entrada,Data1.Mes);
-			strcat(->Data_Entrada,"/");
-			strcat(->Data_Entrada,Data1.Ano);
+			char Dia[10];
+			sprintf(Dia,"%u",Data1.Dia);
+			strcpy(Reserva->Data_Entrada,Dia);
+			strcat(Reserva->Data_Entrada,"/");
+			char Mes[10];
+			sprintf(Mes,"%u",Data1.Mes);
+			strcat(Reserva->Data_Entrada,Mes);
+			strcat(Reserva->Data_Entrada,"/");
+			char Ano[10];
+			sprintf(Ano,"%u",Data1.Ano);
+			strcat(Reserva->Data_Entrada,Ano);
 			//Recebe a data de entrada e concatena na string que será salva no arquivo de reserva
 
 			Verde("Digite a Data referente a Saida");
 			Recebe_Data(&Data2);
-			strcpy(Reserva->Data_Saida,Data2.Dia);
-			strcat(->Data_Saida,"/");
-			strcat(->Data_Saida,Data2.Mes);
-			strcat(->Data_Saida,"/");
-			strcat(->Data_Saida,Data2.Ano);
+			sprintf(Dia,"%u",Data1.Dia);
+			strcpy(Reserva->Data_Saida,Dia);
+			strcat(Reserva->Data_Saida,"/");
+			sprintf(Mes,"%u",Data1.Mes);
+			strcat(Reserva->Data_Saida,Mes);
+			strcat(Reserva->Data_Saida,"/");
+			sprintf(Ano,"%u",Data1.Ano);
+			strcat(Reserva->Data_Saida,Ano);
 			//Recebe a data de saida e concatena na string que será salva no arquivo de reserva
 
 			if((Data2.Ano-Data1.Ano)<0){

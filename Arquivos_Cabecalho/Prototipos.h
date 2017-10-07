@@ -122,4 +122,8 @@ PESQUISA Tipo_Pesquisa();
 void Pesquisa(PESQUISA Pesquisa);
 int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
 void Recebe_Data(DATA *Data);
+int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
+void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade);
+void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor);
+void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
 #endif
