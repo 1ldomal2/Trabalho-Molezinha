@@ -4,6 +4,7 @@
 PESQUISA Tipo_Pesquisa();
 void Pesquisa(PESQUISA Pesquisa);
 int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
+void Recebe_Data(DATA *Data);
 
 
 */
@@ -73,14 +74,15 @@ void Pesquisa(PESQUISA Pesquisa){
 
 	int Modo_Abertura=Configuracoes();
 	int Ok=0;
-
-
-
+	int Contador=0;
+	int Vator_Acomodacoes_Invalidas[Tamanho2];
 	if(Pesquisa.Data==1){
-		printf("\nDigite  a Data:");
-		scanf("%s",Pesquisa.Datas);
+
+		Recebe_Data(&Pesquisa.Data_Entrada);
+		Recebe_Data(&Pesquisa.Data_Saida);
+		//Recebe dados da Data
 	}
-	//Pega dados sobre a Data
+	
 
 	if(Pesquisa.Categoria_Acomodacao==1){
 		do{
@@ -166,6 +168,45 @@ void Pesquisa(PESQUISA Pesquisa){
 
 }
 
+void Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida){
+	FILE *Arquivo;
+	FLUXO Fluxo;
+	char Url[999];
+	strcpy(Url,"Arquivos/");
+	strcat(Url,Entrada.Ano);
+	strcat(Url,"/");
+	strcat(Url,Entrada.Mes);
+	Arquivo = fopen(Url,"rb");
+	//Abre arquivo 
+
+	if (Arquivo == NULL)
+	{
+		Vermelho("")
+	}
+	fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
+
+
+}
+
+void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade){
+
+
+}
+
+void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor){
+
+
+}
+
+void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor){
+
+
+}
+
+
+
+
+
 
 
 int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
@@ -250,5 +291,126 @@ int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
 }
 
 
+void Recebe_Data(DATA *Data){
+
+	do{
+		printf("\nDigite o Ano ");
+		scanf("%u",&Data->Ano);
+		if(Data->Ano<2017){
+			Vermelho("\nAno invalido");
+		}
+	}while(Data->Ano<2017);
+	//Valida o Ano
+
+
+	do{
+		printf("\nDigite o numero referente ao Mes ");
+		scanf("%u",&Data->Mes);
+		if(Data->Mes<1 || Data->Mes>12){
+			Vermelho("\nMes invalido");
+		}
+	}while(Data->Mes<1 || Data->Mes>12);
+	//Valida o Mes;
+
+	switch (Data->Mes){
+
+		case Janeiro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Fevereiro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>28 || Data->Dia<1);
+		break;
+
+
+		case Marco:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Abril:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>30 || Data->Dia<1);
+		break;
+
+
+		case Maio:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Junho:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>30 || Data->Dia<1);
+		break;
+
+
+		case Julho:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Agosto:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Setembro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>30 || Data->Dia<1);
+		break;
+
+
+		case Outubro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+
+
+		case Novembro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>30 || Data->Dia<1);
+		break;
+
+		case Dezembro:
+			do{
+				printf("\nDigite o Dia ");
+				scanf("%u",&Data->Dia);
+			}while(Data->Dia>31 || Data->Dia<1);
+		break;
+		//Valida dia do mes
+	}
+
+}
+//Cria os vetores para as reservas
 
 #endif

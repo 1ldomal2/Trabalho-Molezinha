@@ -121,4 +121,5 @@ int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
 PESQUISA Tipo_Pesquisa();
 void Pesquisa(PESQUISA Pesquisa);
 int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
+void Recebe_Data(DATA *Data);
 #endif

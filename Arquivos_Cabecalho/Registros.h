@@ -10,6 +10,7 @@ enum Acoes{Ler=1,Criar,Editar,Apagar};
 enum Menu_Inicial{Registro = 1, Reserva};
 enum Pagamento{Prazo=0,Vista};
 enum Tipo_Pagamento{Especie=1,Debito,Credito,Cheque};
+enum Mes{Janeiro=1,Fevereiro,Marco,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro};
 
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
@@ -148,9 +149,16 @@ typedef struct Faturamento{
 	//Fazer um Arquivo so para relatorio do fluxo de caixa
 }FATURAMENTO;
 
+typedef struct Data{
+	unsigned int Dia;
+	unsigned int Mes;
+	unsigned int Ano;
+}DATA;
+
 typedef struct Pesquisa{
 	int Data;				//boolean
-		char Datas[Tamanho1];
+		DATA Data_Entrada;
+		DATA Data_Saida;
 	int Categoria_Acomodacao;//boolean
 		int Codigo_Categoria;
 	int Quantidade_Pessoas;	//boolean
@@ -160,4 +168,16 @@ typedef struct Pesquisa{
 		FACILIDADES Facilidades;
 	//Fazer um Arquivo so para relatorio do fluxo de caixa
 }PESQUISA;
+
+typedef struct Fluxo{
+	int Codigo_Reserva;	
+	int Codigo_Acomodacao;			//boolean
+	DATA Data_Entrada;
+	DATA Data_Saida;
+	int Vetor_Dias[Tamanho2];
+}FLUXO;
+
+
+
+
 #endif

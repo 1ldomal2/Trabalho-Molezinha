@@ -227,10 +227,44 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 		}
 	}
 	if(Auxiliar == 1){
-		printf("Data de Entrada:");
-		scanf("%s",Reserva->Data_Entrada);
-		printf("Data de Saida:");
-		scanf("%s",Reserva->Data_Saida);
+		DATA Data1,Data2;
+		int Aux=0,Loop=1;
+		Vermelho("\nNão é possivel fazer uma reserva que ultrapasse um mes\n");
+		do{
+			Verde("Digite a Data referente a Entrada");
+			Recebe_Data(&Data1);
+			strcpy(Reserva->Data_Entrada,Data1.Dia);
+			strcat(->Data_Entrada,"/");
+			strcat(->Data_Entrada,Data1.Mes);
+			strcat(->Data_Entrada,"/");
+			strcat(->Data_Entrada,Data1.Ano);
+			//Recebe a data de entrada e concatena na string que será salva no arquivo de reserva
+
+			Verde("Digite a Data referente a Saida");
+			Recebe_Data(&Data2);
+			strcpy(Reserva->Data_Saida,Data2.Dia);
+			strcat(->Data_Saida,"/");
+			strcat(->Data_Saida,Data2.Mes);
+			strcat(->Data_Saida,"/");
+			strcat(->Data_Saida,Data2.Ano);
+			//Recebe a data de saida e concatena na string que será salva no arquivo de reserva
+
+			if((Data2.Ano-Data1.Ano)<0){
+				Vermelho("\n O Ano de saida não pode ser anterior a de entrada\n");
+			}else{
+				if((Data2.Mes-Data1.Mes)<0){
+				Vermelho("\n O Mes de saida não pode ser anterior a de entrada\n");
+				}else{
+					if((Data2.Dia-Data1.Dia)<0){
+					Vermelho("\n O dia de saida não pode ser anterior a de entrada\n");
+					}else{
+					Loop=0;	
+					}
+				}
+			}
+		}while(Loop);
+		//Valida
+
 		printf("Data Vencimento da Fatura:");
 		scanf("%s",Reserva->Data_Vencimento_Fatura);
 		printf("Valor da Fatura:");

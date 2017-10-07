@@ -1,11 +1,15 @@
 _________________________________#Release#______________________________________
 
-Modulos Pesquisa
-Inicio Pesquisa simples ou composta
+Validamos a Data (dentro do arquivo Reserva);
 
 ______________________________#Proximo Passo#___________________________________
 
-Reserva
+Receber o ano atual no inicio e apagar o Fluxo de reservas ja passados
+
+Criar uma pasta com ofluxo de reserva estruturado em uma pasta com ano  e 12 arquivos referente ao mes sendo que em cada aqrquivo terá      Codigo_da_reserva;Entrada;Saida;Vetor_Periodo;
+
+
+Desativar o Editar na reserva // caso perguntem não deu tempo de implementar com eficiencia alem de não ser obrigatório, logo não documentamos e desativamos 
 
 
 ___________________________________#Bug's#_______________________________________
