@@ -8,7 +8,7 @@ Converter STRING PARA INT RESERVA.H linha 122, Para poder o fwrite no arquivo cr
 
 
 ___________________________________#Bug's#_______________________________________
-
+Reserva.h linha 111 data entrada edata saida ta vindo vazia por isso da falha da segmentação
 
 
 
