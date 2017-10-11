@@ -69,6 +69,10 @@ void Modo_De_Pagamento(int Modo){
 void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 	//Colocar com parametro não " " mas sim ;
 	FILE *Arquivo;
+	FILE *Arquivo_Fluxo_Ponteiro;
+	char Arquivo_Fluxo[999];
+	char Temporario;
+	int Auxiliar, Digito[4];
 		//Um ponteiro que aponta para um arquivo
 	Arquivo=fopen(Url,"a+");
 		//A função Retorna NULL caso o ponteiro não consiga apontar para o arquivo
@@ -91,8 +95,62 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 		fprintf(Arquivo,"%d;",Reserva->Pago);
 		fprintf(Arquivo,"%f;",Reserva->Valor_Conta);
 		fprintf(Arquivo,"%d;",Reserva->Modo_Pagamento);
+		char Ano[10];
+		char Mes[10];	
+		int Ano_Conversao;
+		int Mes_Conversao;
+		int Dia_Conversao;
+		do{
+			Temporario = Reserva->Data_Entrada[Auxiliar];
+			if(Temporario != '/'){
+				Digito[Auxiliar] = Temporario - 48;
+			}
+			Auxiliar++;
+
+		}while(Temporario != '/');
+		if(Auxiliar == 1){
+			Dia_Conversao = Digito[0];
+		}else{
+			Dia_Conversao = (Digito[0]*10) + Digito[1];
+		}
+
+		//Converte Dia
+		int Numero_Digitos_Dia = Auxiliar;
+		//Pega DIa		
+		Auxiliar++;
+		//Pula o / da data
+
+		
+		sprintf(Ano,"%u",Reserva->Data_Entrada->Ano);
+		strcpy(Arquivo_Fluxo,"Arquivos/Reserva/");
+		strcat(Arquivo_Fluxo,Ano);
+		strcat(Arquivo_Fluxo,"/");
+		
+		sprintf(Mes,"%u",Reserva->Data_Entrada->Mes);
+		strcat(Arquivo_Fluxo,Mes);
+		printf("%s",Arquivo_Fluxo);
+		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);	
+		Arquivo_Fluxo_Ponteiro = fopen(Arquivo_Fluxo,"ab");//sempre abre em binario 
+		FLUXO Fluxo;
+		Fluxo.Codigo_Reserva = Reserva->Codigo;	
+		Fluxo.Codigo_Acomodacao = Reserva->Cod_Acomodacao;			//boolean
+		Fluxo.Data_Entrada = Reserva->Data_Entrada;
+		Fluxo.Data_Saida = Reserva->Data_Saida;
+		for(int i = 0; i <= Fluxo.Data_Saida.Dia-Fluxo.Data_Entrada.Dia + 1){
+			Fluxo.Vetor_Dias[i] = Fluxo.Data_Entrada.Dia + i;
+		}
+		fwrite(Fluxo, sizeof(FLUXO), 1, Arquivo_Fluxo_Ponteiro); 
+		
+		//Abre arquivo 
+
+		fclose(Arquivo_Fluxo_Ponteiro);
+
+		//94
 		Verde("\nArquivo Salvo em :");
 		Verde(Url);
+		Verde("\nArquivo Salvo em :");
+		Verde(Arquivo_Fluxo);
+		
 	}
 	//
 	//
@@ -171,10 +229,11 @@ void Ler_Reserva_Txt(char Url[99]){
 
 void Recebe_Dados_Reserva(RESERVA *Reserva){
 	int Modo_de_Abertura=0;
+	DATA Data;
 
 	Modo_de_Abertura=Configuracoes();
 
-	Pesquisa(Tipo_Pesquisa());
+	Data = Pesquisa(Tipo_Pesquisa());
 
 
 	printf("\nNome Hospede:");
@@ -228,11 +287,13 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 	}
 	if(Auxiliar == 1){
 		DATA Data1,Data2;
+		Data1=Data;
+		Data2=Data;
+		Data2.Dia=Data.Dia_Saida;
 		int Aux=0,Loop=1;
 		Vermelho("\nNão é possivel fazer uma reserva que ultrapasse um mes\n");
 		do{
-			Verde("Digite a Data referente a Entrada");
-			Recebe_Data(&Data1);
+			
 			char Dia[10];
 			sprintf(Dia,"%u",Data1.Dia);
 			strcpy(Reserva->Data_Entrada,Dia);
@@ -247,14 +308,13 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			//Recebe a data de entrada e concatena na string que será salva no arquivo de reserva
 
 			Verde("Digite a Data referente a Saida");
-			Recebe_Data(&Data2);
-			sprintf(Dia,"%u",Data1.Dia);
+			sprintf(Dia,"%u",Data2.Dia);
 			strcpy(Reserva->Data_Saida,Dia);
 			strcat(Reserva->Data_Saida,"/");
-			sprintf(Mes,"%u",Data1.Mes);
+			sprintf(Mes,"%u",Data2.Mes);
 			strcat(Reserva->Data_Saida,Mes);
 			strcat(Reserva->Data_Saida,"/");
-			sprintf(Ano,"%u",Data1.Ano);
+			sprintf(Ano,"%u",Data2.Ano);
 			strcat(Reserva->Data_Saida,Ano);
 			//Recebe a data de saida e concatena na string que será salva no arquivo de reserva
 
@@ -403,6 +463,7 @@ void Ler_Reserva_Bin(char Url[99]){
 
 void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 	FILE *Arquivo;
+	FILE *Arquivo_Fluxo_Ponteiro;
 		//Um ponteiro que aponta para um arquivo
 	
 	Arquivo=fopen(Url,"ab");
@@ -419,6 +480,25 @@ void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 		fwrite(Reserva, sizeof(RESERVA), 1, Arquivo); 
 			//Primeiro argumento é um ponteiro .... como proceder
 
+			strcpy(Arquivo_Fluxo,"Arquivos/Reserva/");
+			strcat(Arquivo_Fluxo,Ano);
+			strcat(Arquivo_Fluxo,"/");
+			char Mes[10];
+			sprintf(Mes,"%u",Entrada.Mes);
+			strcat(Arquivo_Fluxo,Mes);
+			printf("%s",Arquivo_Fluxo);
+			Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);	
+			Arquivo_Fluxo_Ponteiro = fopen(Arquivo_Fluxo,"ab");//sempre abre em binario 
+			FLUXO Fluxo;
+			Fluxo.Codigo_Reserva = Reserva->Codigo;	
+			Fluxo.Codigo_Acomodacao = Reserva->Cod_Acomodacao;			//boolean
+			Fluxo.Data_Entrada = Reserva->Data_Entrada;
+			Fluxo.Data_Saida = Reserva->Data_Saida;
+			for(int i = 0; i <= Fluxo.Data_Saida.Dia-Fluxo.Data_Entrada.Dia + 1){
+				Fluxo.Vetor_Dias[i] = Fluxo.Data_Entrada.Dia + i;
+			}
+			fwrite(Fluxo, sizeof(FLUXO), 1, Arquivo_Fluxo_Ponteiro); 
+			
 		fclose(Arquivo);
 			//Fecha o Arquivo Para evitar erro
 		Verde("\nArquivo Salvo 'Reserva.bin'");

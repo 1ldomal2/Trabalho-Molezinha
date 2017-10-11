@@ -3,15 +3,17 @@
 /*
 PESQUISA Tipo_Pesquisa();
 void Pesquisa(PESQUISA Pesquisa);
-int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura);
-void Recebe_Data(DATA *Data);
-int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
+int Retorna_Acomodacao_Disponiveis_Por_Periodo(int Acomodacao_Disponiveis[],PESQUISA Pesquisa_Entrada,PESQUISA Pesquisa_Saida);
 void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade);
 void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor);
 void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
-
+int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura);
+void Recebe_Data(DATA *Data);
+int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
 */
+
 PESQUISA Tipo_Pesquisa(){
+	//Retorna em binario o tipo de pesquisa dentro da struct
 	PESQUISA Pesquisa;
 	int  Data,Categoria_Acomodacao,Quantidade_Pessoas,Facilidade;
 	Verde("Digite '1' no campo  pelo qual deseja pesquisar:\n");
@@ -70,31 +72,40 @@ PESQUISA Tipo_Pesquisa(){
 
 
 	return Pesquisa;
-
 }
-
-void Pesquisa(PESQUISA Pesquisa){
+DATA Pesquisa(PESQUISA Pesquisa){
+	//????LUcas: Sera que tem que retornar
+	//Leandro: NAOO precisa
+	//Realiza a pesquisa recebendo por parametro o tipo de pesquisa
 	int Modo_Abertura=Configuracoes();
 	int Ok=0;
 	int Contador=0;
 	int Vetor_Acomodacoes_Invalidas[Tamanho2];
-	int Inicio_Vetor = 0;
+	int Tamanho_Acomodacoes_disponiveis = 0;
+	int Acomodacao_Disponiveis[999];
+	DATA Data;
 	if(Pesquisa.Data==1){
 
-		Recebe_Data(&Pesquisa.Data_Entrada);
-		Recebe_Data(&Pesquisa.Data_Saida);
-		//Recebe dados da Data
+		Verde("\nDigite a data referente a Entrada");
+		Recebe_Data(&Pesquisa.Data_Entrada,1);
+		Verde("\nDigite a data referente a Saida");
+		Pesquisa.Data_Saida.Ano = Pesquisa.Data_Entrada.Ano;
+		Pesquisa.Data_Saida.Mes = Pesquisa.Data_Entrada.Mes;		
+		Recebe_Data(&Pesquisa.Data_Saida,2);
+		Data.Dia = Pesquisa.Data_Entrada.Dia;
+		Data.Mes = Pesquisa.Data_Entrada.Mes;
+		Data.Ano = Pesquisa.Data_Entrada.Ano;
+		Data.Dia_Saida = Pesquisa.Data_Saida.Dia;
+				//Recebe dados da Data
 
-		Inicio_Vetor = Pequisa_Periodo(Vetor_Acomodacoes_Invalidas,Inicio_Vetor,Pesquisa.Data_Entrada,Pesquisa.Data_Saida);			
+		Tamanho_Acomodacoes_disponiveis = Retorna_Acomodacao_Disponiveis_Por_Periodo(Acomodacao_Disponiveis,Pesquisa,Pesquisa);
 	}
-	
-
 	if(Pesquisa.Categoria_Acomodacao==1){
 		do{
 			printf("Digite a categoria da Acomodação");
 			scanf("%d",&Pesquisa.Codigo_Categoria);
 
-			Ok = Valida_Codigo_Categoria(Pesquisa.Codigo_Categoria,Modo_Abertura);
+			Ok = Valida_Codigo_Acomodacao(Pesquisa.Codigo_Categoria,Modo_Abertura);
 
 			if(Ok==0){
 				Vermelho("O codigo não está cadastrado \n");
@@ -170,17 +181,23 @@ void Pesquisa(PESQUISA Pesquisa){
 	//pega dados sobre as Facilidades(coisas que a acomodaçao possui)
 
 	//Pega os dados necessários
+return Data;
 
 }
 
-int Valida_Reserva(){
+
+int Retorna_Acomodacao_Disponiveis_Por_Periodo(int Acomodacao_Disponiveis[],PESQUISA Pesquisa_Entrada,PESQUISA Pesquisa_Saida){
+	/*
+		Preenche por referencia o vetor de acomodacoes diponiveis
+		Retorna o tamanho do vetor de acomodacoes disponiveis para reserva
+	*/
 	ACOMODACOES Acomodacoes;
-	int Diferenca_A_B = 1;
+	int Diferenca_A_B = 1,Contador_Acomodacao_Disponiveis = 0;
 	int Acomodacao_Invalida[999], Inicio_Vetor = 0;
 	int Acomodacao_Registradas[999],Contador_Acomodacao_Registrada;
 	char Temporario[999];
-	DATA Entrada,Saida;
 	FILE *Arquivo;
+	//Declara variaveis
 
 	int Modo_Abertura = Configuracoes();
 	//TXT ou Binario
@@ -192,8 +209,6 @@ int Valida_Reserva(){
 		Arquivo = fopen("Arquivos/Acomodacoes.bin","rb");		
 }
 	//abre o arquivo 
-
-
 	if(Arquivo == NULL){
 		Vermelho("\nErro ao abrir arquivo\n");
 	}else{
@@ -212,8 +227,6 @@ int Valida_Reserva(){
 				getc(Arquivo);
 				//pula o \n
 			}
-	
-	
 		//BINARIO
 		}else{
 			while(!feof(Arquivo)){
@@ -228,111 +241,112 @@ int Valida_Reserva(){
 		}
 	}
 	//Passa todos codigos existentes de acomodacao para o vetor
-
-	Inicio_Vetor = Pequisa_Periodo(Acomodacao_Invalida,Inicio_Vetor,Entrada,Saida);
-	for(int i = 0; i < Inicio_Vetor; i++){
-		for(int j = 0;j<Contador_Acomodacao_Registrada;j++){
-			if(Acomodacao_Invalida[i]==Acomodacao_Registradas[j]){
+	Inicio_Vetor = Pequisa_Periodo(Acomodacao_Invalida,0,Pesquisa_Entrada.Data_Entrada,Pesquisa_Saida.Data_Saida);
+	for(int i = 0; i < Contador_Acomodacao_Registrada; i++){
+		Diferenca_A_B = 1;
+		for(int j = 0;j<Inicio_Vetor;j++){
+			if(Acomodacao_Invalida[j]==Acomodacao_Registradas[i]){
 				Diferenca_A_B = 0;
 			}	//Caso entra no IF nao esta disponivel
 		}
 		if(Diferenca_A_B == 1){
-			//FAZER TERCEIRO VETOR QUE é O A - B ou seja os valores que nao se chocam		
+			Acomodacao_Disponiveis[Contador_Acomodacao_Disponiveis] = Acomodacao_Registradas[i];
+			Contador_Acomodacao_Disponiveis++;
+			//Passa codigo da acomodacao registrada para acomodacao disponivel
 		}
 	}
-
+	return Contador_Acomodacao_Disponiveis;
 }
 
 int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida){
-	FILE *Arquivo;
-	FLUXO Fluxo;
-	int Contador_Periodo_Lido_Arquivo=0;
-	char Url[999];
-	int Vetor_Periodo_Pesquisar[999];//Declara vetor periodo a ser pesquisado 
-	int Contador_Periodo_Input = Saida.Dia - Entrada.Dia + 1;//QUantidade de dias que hospede pretende ficar
-
-	for(int i = 0; i <= Contador_Periodo_Input; i++){
-		Vetor_Periodo_Pesquisar[i] = Entrada.Dia + i; 
-	}
-	//Passa o periodo em dias para um vetor por exemplo se começa no dia 1 e vai ate o 5 ele ficou 5 dias e sera setado no vetor os valores 1 2 3 4 e 5
-
-	char Pasta[999];
-	strcpy(Pasta,"mkdir /Arquivos/Reserva/");
-	char Ano[10];
-	sprintf(Ano,"%u",Entrada.Ano);
-	strcat(Pasta,Ano);
-	system(Pasta);
-	char Mes[10];
-	sprintf(Mes,"%u",Entrada.Mes);
-	strcat(Pasta,Mes);
-	system(Pasta);
-	system("clear");
-	//Criando pastas para evitar o erro de falha na segmentação
-
-	strcpy(Url,"Arquivos/");
-	strcat(Url,Ano);
-	strcat(Url,"/");
-	strcat(Url,Mes);
-	Verificacao_Arquivo(Url,2);	
-	Arquivo = fopen(Url,"rb");//sempre abre em binario 
-	//Abre arquivo 
-
-	if (Arquivo == NULL)
-	{
-		Vermelho("Erro Abrir arquivo");
-	}else{
-		while(!feof(Arquivo)){
-			fread(&Fluxo, sizeof(FLUXO),1,Arquivo);//Por ser arquivo de fluxo decidimos ser sempre binario para facilitar
-			if(feof(Arquivo)){
-				break;
-			}
-			Contador_Periodo_Lido_Arquivo = Fluxo.Data_Saida.Dia - Fluxo.Data_Entrada.Dia + 1;
-			//QUantidade de dias que hospede pretende ficar "Periodo"
-			for(int i = 0; i < Contador_Periodo_Input; i++){
-				for(int j = 0;j<Contador_Periodo_Lido_Arquivo;j++){
-					if(Vetor_Periodo_Pesquisar[i] == Fluxo.Vetor_Dias[j]){
-						Acomodacao_Invalida[Inicio_Vetor] = Fluxo.Codigo_Acomodacao;
-						Inicio_Vetor++;
-						//Caso entra no IF nao esta disponivel
-					} 
-				}
-			}
-			//Passa pro vetor as acomodações em que há sombreamento de datas ou seja, quando a data em que a pessoa pretende se hospedar ja tem alguma reserva	.....em outras palavras o vetor vai ser preenchido com as acomodacoes invalidas
+	/*
+		Retorna tamanho do vetor de acomodacoes invalidas 
+		E preenche por referencia os codigos das acomodacoes invalidas
+	*/
+		FILE *Arquivo;
+		FLUXO Fluxo;
+		int Contador_Periodo_Lido_Arquivo=0;
+		char Url[999];
+		int Vetor_Periodo_Pesquisar[999];//Declara vetor periodo a ser pesquisado 
+		int Contador_Periodo_Input = Saida.Dia - Entrada.Dia + 1;//QUantidade de dias que hospede pretende ficar
+	
+		for(int i = 0; i <= Contador_Periodo_Input; i++){
+			Vetor_Periodo_Pesquisar[i] = Entrada.Dia + i; 
 		}
+		//Passa o periodo em dias para um vetor por exemplo se começa no dia 1 e vai ate o 5 ele ficou 5 dias e sera setado no vetor os valores 1 2 3 4 e 5
+		char Pasta[999];
+		system("mkdir Arquivos/Reserva");//Cria primeira pasta Reserva
+		strcpy(Pasta,"mkdir Arquivos/Reserva/");
+		char Ano[10];
+		sprintf(Ano,"%u",Entrada.Ano);
+		strcat(Pasta,Ano);
+		system(Pasta);//Cria a pasta com o ano
+		system("clear");
+		//Criando pastas para evitar o erro de falha na segmentação
+	
+		strcpy(Url,"Arquivos/Reserva/");
+		strcat(Url,Ano);
+		strcat(Url,"/");
+		char Mes[10];
+		sprintf(Mes,"%u",Entrada.Mes);
+		strcat(Url,Mes);
+		printf("%s",Url);
+		Verificacao_Arquivo(Url,Arquivo_Binario);	
+		Arquivo = fopen(Url,"rb");//sempre abre em binario 
+		//Abre arquivo 
+	
+		if (Arquivo == NULL)
+		{
+			Vermelho("Erro Abrir arquivo");
+		}else{
+			while(!feof(Arquivo)){
+				fread(&Fluxo, sizeof(FLUXO),1,Arquivo);//Por ser arquivo de fluxo decidimos ser sempre binario para facilitar
+				if(feof(Arquivo)){
+					break;
+				}
+				Contador_Periodo_Lido_Arquivo = Fluxo.Data_Saida.Dia - Fluxo.Data_Entrada.Dia + 1;
+				//QUantidade de dias que hospede pretende ficar "Periodo"
+				for(int i = 0; i < Contador_Periodo_Input; i++){
+					for(int j = 0;j<Contador_Periodo_Lido_Arquivo;j++){
+						if(Vetor_Periodo_Pesquisar[i] == Fluxo.Vetor_Dias[j]){
+							Acomodacao_Invalida[Inicio_Vetor] = Fluxo.Codigo_Acomodacao;
+							Inicio_Vetor++;
+							//Caso entra no IF nao esta disponivel
+						} 
+					}
+				}
+				//Passa pro vetor as acomodações em que há sombreamento de datas ou seja, quando a data em que a pessoa pretende se hospedar ja tem alguma reserva	.....em outras palavras o vetor vai ser preenchido com as acomodacoes invalidas
+			}
+		}
+		return Inicio_Vetor;
+		//retorna o indice do vetor que sera usado na proxima pesquisa
 	}
-	return Inicio_Vetor;
-	//retorna o indice do vetor que sera usado na proxima pesquisa
-}
+
 
 void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade){
-
-
-}
-
+	
+	
+	}
+	
 void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor){
-
-
-}
-
+	
+	
+	}
+	
 void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor){
+	
+	
+	}
 
 
-}
-
-
-
-
-
-
-
-int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
-	//Procura nas acomodacoes pelo codigo da categoria para que assim nao apague os que sao vinculados
+int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura){
+	//Procura nas acomodacoes pelo codigo da acomodacao
 	FILE *Arquivo;
 	char Temporario[9999];
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
-		Arquivo=fopen("Arquivos/Codigo_Categoria.txt","r");
+		Arquivo=fopen("Arquivos/Acomodacoes.txt","r");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -341,7 +355,7 @@ int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
 		}
 		break;
 		case Arquivo_Binario:
-		Arquivo=fopen("Arquivos/Codigo_Categoria.bin","rb");
+		Arquivo=fopen("Arquivos/Acomodacoes.bin","rb");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -376,11 +390,11 @@ int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
 
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
-		CODIGO_CATEGORIA Codigo_Categoria;
+		ACOMODACOES Codigo_Categoria;
 		Contador1=0;
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
-			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+			fread(&Codigo_Categoria, sizeof(ACOMODACOES),1,Arquivo);
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){
 				break;
@@ -406,127 +420,223 @@ int Valida_Codigo_Categoria(int Codigo, int Modo_de_Abertura){
 	return 0;
 }
 
-
-void Recebe_Data(DATA *Data){
-
-	do{
-		printf("\nDigite o Ano ");
-		scanf("%u",&Data->Ano);
-		if(Data->Ano<2017){
-			Vermelho("\nAno invalido");
+void Recebe_Data(DATA *Data, int Auxiliar){
+	if(Auxiliar == 1){
+		do{
+			printf("\nDigite o Ano ");
+			scanf("%u",&Data->Ano);
+			if(Data->Ano<2017){
+				Vermelho("\nAno invalido");
+			}
+		}while(Data->Ano<2017);
+		do{
+			printf("\nDigite o numero referente ao Mes ");
+			scanf("%u",&Data->Mes);
+			if(Data->Mes<1 || Data->Mes>12){
+				Vermelho("\nMes invalido");
+			}
+		}while(Data->Mes<1 || Data->Mes>12);
+	
+		switch (Data->Mes){
+			
+			case Janeiro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Fevereiro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>28 || Data->Dia<1);
+			break;
+	
+	
+			case Marco:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Abril:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Maio:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Junho:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Julho:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Agosto:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Setembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Outubro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Novembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+			case Dezembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+			//Valida dia do mes
 		}
-	}while(Data->Ano<2017);
-	//Valida o Ano
-
-
-	do{
-		printf("\nDigite o numero referente ao Mes ");
-		scanf("%u",&Data->Mes);
-		if(Data->Mes<1 || Data->Mes>12){
-			Vermelho("\nMes invalido");
+	}else{
+		switch (Data->Mes){
+			
+			case Janeiro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Fevereiro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>28 || Data->Dia<1);
+			break;
+	
+	
+			case Marco:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Abril:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Maio:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Junho:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Julho:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Agosto:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Setembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+	
+			case Outubro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+	
+	
+			case Novembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>30 || Data->Dia<1);
+			break;
+	
+			case Dezembro:
+				do{
+					printf("\nDigite o Dia ");
+					scanf("%u",&Data->Dia);
+				}while(Data->Dia>31 || Data->Dia<1);
+			break;
+			//Valida dia do mes
 		}
-	}while(Data->Mes<1 || Data->Mes>12);
-	//Valida o Mes;
-
-	switch (Data->Mes){
-
-		case Janeiro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Fevereiro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>28 || Data->Dia<1);
-		break;
-
-
-		case Marco:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Abril:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>30 || Data->Dia<1);
-		break;
-
-
-		case Maio:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Junho:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>30 || Data->Dia<1);
-		break;
-
-
-		case Julho:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Agosto:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Setembro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>30 || Data->Dia<1);
-		break;
-
-
-		case Outubro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-
-
-		case Novembro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>30 || Data->Dia<1);
-		break;
-
-		case Dezembro:
-			do{
-				printf("\nDigite o Dia ");
-				scanf("%u",&Data->Dia);
-			}while(Data->Dia>31 || Data->Dia<1);
-		break;
-		//Valida dia do mes
 	}
-
+	
+		
 }
-//Cria os vetores para as reservas
+
+
 
 #endif

@@ -714,7 +714,7 @@ int Valida_Codigo(char Url[99],int Numero_De_Registros,int Modo_de_Abertura, int
 
 }
 
-void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura){
+void Verificacao_Arquivo(char Url[999],int Modo_de_Abertura){
 	FILE *Arquivo;
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
@@ -729,12 +729,12 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura){
 		}
 		break;
 		case Arquivo_Binario:
+		
 		Arquivo=fopen(Url,"rb");
 			//Abre o Arquivo em Modo Leitura
-
+		
 		if(Arquivo==NULL){
 		//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
-
 			Arquivo=fopen(Url,"wb");
 			//Abre no modo escrita e caso não exista ele vai criar o arquivo
 			

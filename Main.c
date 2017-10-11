@@ -1,4 +1,4 @@
-//Autor		:Lucas Mateus Fernandes e Leandro
+//Autor		:Leandro Souza Pinheiro e Lucas Mateus Fernandes
 //Ano		:2017
 //Semestre	:2º Semestre
 //

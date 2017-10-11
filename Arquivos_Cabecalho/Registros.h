@@ -153,6 +153,8 @@ typedef struct Data{
 	unsigned int Dia;
 	unsigned int Mes;
 	unsigned int Ano;
+	unsigned int Dia_Saida;
+	
 }DATA;
 
 typedef struct Pesquisa{

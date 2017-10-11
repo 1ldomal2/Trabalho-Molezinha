@@ -1,20 +1,14 @@
 _________________________________#Release#______________________________________
 
-Validamos a Data (dentro do arquivo Reserva);
+
 
 ______________________________#Proximo Passo#___________________________________
 
-Receber o ano atual no inicio e apagar o Fluxo de reservas ja passados
-
-Criar uma pasta com ofluxo de reserva estruturado em uma pasta com ano  e 12 arquivos referente ao mes sendo que em cada aqrquivo terá      Codigo_da_reserva;Entrada;Saida;Vetor_Periodo;
-
-
-Desativar o Editar na reserva // caso perguntem não deu tempo de implementar com eficiencia alem de não ser obrigatório, logo não documentamos e desativamos 
+Converter STRING PARA INT RESERVA.H linha 122, Para poder o fwrite no arquivo criado em FLUXO
 
 
 ___________________________________#Bug's#_______________________________________
 
-Pesquisa.h linha 240 esta incompleta e talvez nao modular (Refazer), ler novamente a funcao pesquisa periodo quando estiver descansado...
 
 
 
