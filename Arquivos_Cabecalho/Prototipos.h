@@ -117,6 +117,7 @@ int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura);
 void Mostra_Se_Conta_Paga(int Pago);
 void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
+void Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);	
 //Pesquisa
 PESQUISA Tipo_Pesquisa();
 DATA Pesquisa(PESQUISA Pesquisa);

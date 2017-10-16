@@ -9,6 +9,7 @@ enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categor
 enum Acoes{Ler=1,Criar,Editar,Apagar};	
 enum Menu_Inicial{Registro = 1, Reserva};
 enum Pagamento{Prazo=0,Vista};
+enum On{On=1,Ok=1,Off=0,};
 enum Tipo_Pagamento{Especie=1,Debito,Credito,Cheque};
 enum Mes{Janeiro=1,Fevereiro,Marco,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro};
 
@@ -120,16 +121,23 @@ typedef struct Funcionarios{
 	char Usuario[Tamanho1];
 	char Senha[Tamanho1];
 	int Permissao;
-		//Elaborar
 }FUNCIONARIOS;
+
+typedef struct Data{
+	unsigned int Dia;
+	unsigned int Mes;
+	unsigned int Ano;
+	unsigned int Dia_Saida;
+}DATA;
+
 typedef struct Reserva{
 	int Codigo;
 	char Nome_Hospede[Tamanho1];
 	int Codigo_Hospede;
 	int Cod_Acomodacao;
-	char Data_Entrada[Tamanho1];
-	char Data_Saida[Tamanho1];
-	char Data_Vencimento_Fatura[Tamanho1];
+	DATA Data_Entrada;
+	DATA Data_Saida;
+	DATA Data_Vencimento_Fatura;
 	float Valor_Fatura;
 	int Pago;//boolean
 	float Valor_Conta;
@@ -149,13 +157,6 @@ typedef struct Faturamento{
 	//Fazer um Arquivo so para relatorio do fluxo de caixa
 }FATURAMENTO;
 
-typedef struct Data{
-	unsigned int Dia;
-	unsigned int Mes;
-	unsigned int Ano;
-	unsigned int Dia_Saida;
-	
-}DATA;
 
 typedef struct Pesquisa{
 	int Data;				//boolean
