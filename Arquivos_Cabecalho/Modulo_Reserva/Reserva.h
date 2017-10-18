@@ -18,56 +18,39 @@ int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura);
 void Mostra_Se_Conta_Paga(int Pago);
 void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
+void DebugFluxo(char Url[99], FLUXO *Fluxo);
 */
-
-void Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]){
-	FLUXO Fluxo;
+void DebugFluxo(char Url[99], FLUXO *Fluxo){
 	FILE *Arquivo;
-	int Tamanho_Vetor = Data_Saida.Dia - Data_Entrada.Dia + 1;
-	int Contador_Acomodacao_Indisponiveis = 0;
-	int Periodo[Tamanho_Vetor];
-	int Arquivo_Vazio = 0;
-	for(int i = 0; i <= Tamanho_Vetor; i++){
-		Periodo[i] = Data_Entrada.Dia + i;
-	}
-	Arquivo=fopen(Url,"rb");
+	Arquivo = fopen(Url,"rb");
+	Vermelho("\nMostrar Fluxo\n");
+	printf("%s",Url);
+	scanf("%d",&Bug);
+	Verificacao_Arquivo(Url,Arquivo_Binario);
 	while(!feof(Arquivo)){
-		fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
+		DEBUG("WHILE");
+		fread(Fluxo, sizeof(FLUXO),1,Arquivo);	
 		if(feof(Arquivo)){
 			//Verifica se esta no fim do arquivo
 			break;
 			//Sai do loop
 		}
-		if((Fluxo.Data_Saida.Dia < Data_Entrada.Dia) || (Fluxo.Data_Entrada.Dia > Data_Saida.Dia)){
-			Acomodacao_Indisponiveis[Contador_Acomodacao_Indisponiveis] = Fluxo.Codigo_Reserva;
-			Contador_Acomodacao_Indisponiveis++;
-		}else{
-			int Tamanho_Vetor_Fluxo_Lido_Binario = Fluxo.Data_Saida.Dia - Fluxo.Data_Entrada.Dia + 1;
-			for(int i = 0; i <= Tamanho_Vetor; i++){
-				for(int j = 0; j <= Tamanho_Vetor_Fluxo_Lido_Binario; j++){
-					if(Periodo[i] == Fluxo.Vetor_Dias[j]){
-						Acomodacao_Indisponiveis[Contador_Acomodacao_Indisponiveis] = Fluxo.Codigo_Reserva;
-						Contador_Acomodacao_Indisponiveis++;
-						i = Tamanho_Vetor + 1;
-						// i recebe o tamanho do vetor somado 1 para sair do for superior
-						break;
-						//sai do for atual
-					}
-				}
-			}
+		printf("Fluxo->Codigo_Reserva = %d\n", Fluxo->Codigo_Reserva);
+		printf("Fluxo->Codigo_Acomodacao = %d\n", Fluxo->Codigo_Acomodacao);	
+		printf("DataEntrada Dia = %d\n", Fluxo->Data_Entrada.Dia);	
+		printf("Fluxo->DataEntrada Mes = %d\n", Fluxo->Data_Entrada.Mes);		
+		printf("Fluxo->Data_Entrada Ano = %d\n", Fluxo->Data_Entrada.Ano);	
+		printf("Fluxo->Data_Saida Dia = %d\n", Fluxo->Data_Saida.Dia);	
+		printf("Fluxo->Data_Saida Mes = %d\n", Fluxo->Data_Saida.Mes);	
+		printf("Fluxo->Data_Saida Ano = %d\n", Fluxo->Data_Saida.Ano);
+		int Tamanho_Vetor = Fluxo->Data_Saida.Dia-Fluxo->Data_Entrada.Dia+1;
+		for(int i=0;i<Tamanho_Vetor;i++){
+			printf("%d\t",Fluxo->Vetor_Dias[i]);
 		}
-
-		Arquivo_Vazio++;
-		//Contador para verificar se o arquivo está em branco
+	
 	}
 	fclose(Arquivo);
-	if(Arquivo_Vazio==0){
-		Vermelho("O Arquivo está vazio\n");
-	}
-
 }
-
-
 void Ler_Reserva_Memoria(RESERVA Reserva){
 	//Recebe por parametro Struct de Reserva
 	printf("Codigo:\t\t\t\t%d\n",Reserva.Codigo);
@@ -150,6 +133,10 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 		fprintf(Arquivo,"%.2f;",Reserva->Valor_Conta);
 		fprintf(Arquivo,"%d;\n",Reserva->Modo_Pagamento);
 		//CONFERIR DAQUI PARA BAIXO È A URL DE FLUXO printa no arquivo
+		system("pwd");
+		sprintf(Arquivo_Fluxo,"mkdir Arquivos/Reserva/%u",Reserva->Data_Entrada.Ano);
+		system(Arquivo_Fluxo);//Cria primeira pasta Reserva
+		system("clear");
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Reserva->Data_Entrada.Ano,Reserva->Data_Entrada.Mes);		
 		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);	
 		//Verifica / cria os arquivos
@@ -159,11 +146,11 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 		Fluxo.Data_Entrada.Dia = Reserva->Data_Entrada.Dia;
 		Fluxo.Data_Entrada.Mes = Reserva->Data_Entrada.Mes;
 		Fluxo.Data_Entrada.Ano = Reserva->Data_Entrada.Ano;
-		Fluxo.Data_Saida.Dia = Reserva->Data_Entrada.Dia;
+		Fluxo.Data_Saida.Dia = Reserva->Data_Saida.Dia;
 		Fluxo.Data_Saida.Mes = Reserva->Data_Entrada.Mes;
 		Fluxo.Data_Saida.Ano = Reserva->Data_Entrada.Ano;		
 		
-		for(int i = 0; i <= Fluxo.Data_Saida.Dia-Fluxo.Data_Entrada.Dia + 1; i++){
+		for(int i = 0; i < Fluxo.Data_Saida.Dia-Fluxo.Data_Entrada.Dia + 1; i++){
 			Fluxo.Vetor_Dias[i] = Fluxo.Data_Entrada.Dia + i;
 		}
 		
@@ -265,15 +252,14 @@ void Ler_Reserva_Txt(char Url[99]){
 void Recebe_Dados_Reserva(RESERVA *Reserva){
 	int Modo_de_Abertura=0;
 	int Acomodacao_Indisponiveis[9999];
+	int Acomodacao_Disponiveis[9999];
+	int Contador_Acomodacao_Indisponiveis, Contador_Acomodacao_Disponiveis;
 	DATA Data;
 	char Arquivo_Fluxo[999];
 	Modo_de_Abertura=Configuracoes();
 	PESQUISA Pesquisar;
 	Pesquisar = Tipo_Pesquisa();
 	Data = Pesquisa(Pesquisar);
-
-	
-
 	printf("\nNome Hospede:");
 	scanf("%s",Reserva->Nome_Hospede);
 	int Codigo_Hospede_A_Ser_Validado,Codigo_Acomodacao_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
@@ -298,31 +284,9 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			}
 		}
 	}
-	if(Auxiliar==1){//Se auxiliar sair como 1 indica que validou
-		Auxiliar = 0;//zera auxiliar
-		while(Auxiliar == 0){//Loop enquanto auxiliar for 0
-			printf("Codigo da Acomodacao:");
-			scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);
-			//Recebe codigo do hotel a ser validado
-			if (Valida_Acomadacao_Reserva(Codigo_Acomodacao_A_Ser_Validado,Modo_de_Abertura))
-			{
-				//Chamafuncao para validar codigo hotel e ja verifica retorno verdadeiro
-				Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
-				Auxiliar = 1;		
-				//Joga codigo para struct e auxiliar recebe 1 indicando que validou com sucesso
-			}else{
-				Vermelho("\nCodigo não cadastrado\n\n");
-				printf("Deseja sair sem efetuar o cadastro?");
-				Verde("1 - Sim ");
-				Vermelho("0 - Não");
-				scanf("%d",&Sair_Da_Validacao);
-				//Caso contrario pergunta se deseja sair sem efetuar cadastro
-				if(Sair_Da_Validacao == 1){
-					break;//Se verdadeiro sai sem validar auxiliar
-				}	
-			}
-		}
-	}
+	printf("Codigo da Acomodacao:");
+	scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);	
+	Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
 	if(Auxiliar == 1){
 		if(Pesquisar.Data == 1){
 			Reserva->Data_Entrada=Data;
@@ -343,26 +307,41 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 		}
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Reserva->Data_Entrada.Ano,Reserva->Data_Entrada.Mes);	
 		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);			
-		Verifica_Fluxo(Arquivo_Fluxo, Reserva->Data_Entrada,Reserva->Data_Saida, Acomodacao_Indisponiveis);
-		//Valida
-		printf("Digite o dia de Vencimento da Fatura");
-		scanf("%u",&Reserva->Data_Vencimento_Fatura.Dia);
-		printf("Digite o mes de Vencimento da Fatura");
-		scanf("%u",&Reserva->Data_Vencimento_Fatura.Mes);
-		printf("Digite o ano de Vencimento da Fatura");
-		scanf("%u",&Reserva->Data_Vencimento_Fatura.Ano);
-		printf("Valor da Fatura:");
-		scanf("%f",&Reserva->Valor_Fatura);
-		printf("Digite");
-		Verde("\t1 para valor pago");
-		Vermelho("\t0 para pendente");
-		scanf("%d",&Reserva->Pago);
-		printf("1- Pagamento Dinheiro\n"
-				"2- Pagamento Debito\n"
-				"3- Pagamento Credito\n"
-				"4- Pagamento Cheque\n");
-		scanf("%d",&Reserva->Modo_Pagamento);
-		Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
+		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Reserva->Data_Entrada,Reserva->Data_Saida, Acomodacao_Indisponiveis);
+		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		//Retorna os Codigos de acomodaacoes Disponiveis para cadastro e a quantidade
+		Auxiliar = 0;
+		//Zera auxiliar para poder validar a Acomodacao
+		for(int i = 0; i < Contador_Acomodacao_Disponiveis; i++){
+			if(Reserva->Cod_Acomodacao == Acomodacao_Disponiveis[i]){
+				Auxiliar = 1;
+				break;
+			}
+		}
+		if(Auxiliar != 1){
+			Vermelho("\nAcomodacao já esta reservada para a data\n");
+			 printf("%u/%u/%u a  %u/%u/%u", Reserva->Data_Entrada.Dia,Reserva->Data_Entrada.Mes,Reserva->Data_Entrada.Ano,Reserva->Data_Saida.Dia,Reserva->Data_Saida.Mes,Reserva->Data_Saida.Ano);
+			 Reserva->Cod_Acomodacao = 0;
+		}else{
+			printf("Digite o dia de Vencimento da Fatura");
+			scanf("%u",&Reserva->Data_Vencimento_Fatura.Dia);
+			printf("Digite o mes de Vencimento da Fatura");
+			scanf("%u",&Reserva->Data_Vencimento_Fatura.Mes);
+			printf("Digite o ano de Vencimento da Fatura");
+			scanf("%u",&Reserva->Data_Vencimento_Fatura.Ano);
+			printf("Valor da Fatura:");
+			scanf("%f",&Reserva->Valor_Fatura);
+			printf("Digite");
+			Verde("\t1 para valor pago");
+			Vermelho("\t0 para pendente");
+			scanf("%d",&Reserva->Pago);
+			printf("1- Pagamento Dinheiro\n"
+					"2- Pagamento Debito\n"
+					"3- Pagamento Credito\n"
+					"4- Pagamento Cheque\n");
+			scanf("%d",&Reserva->Modo_Pagamento);
+			Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
+		}
 	}
 	//RECEBER DADOS PRODUTOS
 	//os outros dados

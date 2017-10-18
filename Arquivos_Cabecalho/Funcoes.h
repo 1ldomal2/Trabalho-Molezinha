@@ -38,6 +38,11 @@ void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]);
 
 
 */
+void Cria_Pasta(char Url[99]){
+	char Pasta[100] = {"mkdir "};
+	strcat(Pasta, Url);
+	system(Pasta);
+}
 //Funçoes
 void Verificacao_All(){
 	//Texto

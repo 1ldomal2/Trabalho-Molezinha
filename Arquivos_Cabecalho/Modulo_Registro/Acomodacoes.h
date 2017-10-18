@@ -15,6 +15,7 @@ void Criar_Modificar_Acomodacoes(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Acomodacoes(char Url[99], int Codigo);
 void Apagar_Modificar_Acomodacoes_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
 */
+
 void Main_Acomodacoes(MODO Modo){
 	ACOMODACOES Acomodacoes;
 	int Acao,Codigo=0,Vazio_Hotel=0,Vazio_Categoria=0;

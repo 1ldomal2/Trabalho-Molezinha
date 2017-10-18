@@ -8,6 +8,7 @@
 
 //Funçoes
 //void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
+void Cria_Pasta(char Url[99]);	
 int Opcao_Acoes();
 int Main_All();
 void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
@@ -117,8 +118,9 @@ int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura);
 void Mostra_Se_Conta_Paga(int Pago);
 void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
-void Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);	
+void DebugFluxo(char Url[99], FLUXO *Fluxo);
 //Pesquisa
+int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);
 PESQUISA Tipo_Pesquisa();
 DATA Pesquisa(PESQUISA Pesquisa);
 int Retorna_Acomodacao_Disponiveis_Por_Periodo(int Acomodacao_Disponiveis[],PESQUISA Pesquisa_Entrada,PESQUISA Pesquisa_Saida);
@@ -127,5 +129,5 @@ void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor);
 void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
 int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura);
 void Recebe_Data(DATA *Data, int Auxiliar);
-int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
+int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);
 #endif

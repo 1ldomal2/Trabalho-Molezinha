@@ -3,6 +3,10 @@
 //Semestre	:2º Semestre
 //
 //Macros
+int Bug;
+#define PAUSA 	scanf("%d",&Bug);
+#define DEBUG(TEXTO) printf("\n%s%s \t Linha = %d \t %s%s\n","\33[1;31m",__FILE__, __LINE__,TEXTO,"\33[0;29m");//scanf("%d",&Bug)
+#define DEBUGINT(TEXTO,INT) printf("\n%s%s \t Linha = %d \t %s%d%s\n","\33[1;32m",__FILE__,__LINE__,TEXTO,INT,"\33[0;29m");//scanf("%d",&Bug)
 #define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO)
 #define Verde(TEXTO)	printf("\33[1;32m%s\33[0;29m",TEXTO)
 #define Amarelo(TEXTO)	printf("\33[1;33m%s\33[0;29m",TEXTO)
@@ -33,7 +37,6 @@
 
 
 //Macro
-	#define DEBUG(x) printf("\n______________________%s_____________________________\n",x);
 
 //Inicio
 
