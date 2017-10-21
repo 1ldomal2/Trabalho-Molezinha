@@ -19,7 +19,7 @@ int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomod
 
 	FILE *Arquivo;
 		//Ponteiro para o arquivo
-
+	
 	Arquivo=fopen(Url,"r");
 		//Abre o Arquivo
 	int Contador=0;
@@ -59,7 +59,154 @@ int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomod
 	}
 	return Contador;
 }
+void Main_Pesquisa(){
+	int Acomodacao_Disponiveis[999] = {0},Acomodacao_Indisponiveis[999] = {0};
+	int Contador_Acomodacao_Indisponiveis = 0, Contador_Acomodacao_Disponiveis = 0;
+	char Arquivo_Fluxo[999];
+	DATA Data_Entrada,Data_Saida,Data;
+	do{
+		Verde("\nDigite a data referente a Entrada");
+		Recebe_Data(&Data_Entrada,1);
+		Verde("\nDigite a data referente a Saida");
+		Data_Saida.Ano = Data_Entrada.Ano;
+		Data_Saida.Mes = Data_Entrada.Mes;		
+		Recebe_Data(&Data_Saida,2);
+		Data.Dia = Data_Entrada.Dia;
+		Data.Mes = Data_Entrada.Mes;
+		Data.Ano = Data_Entrada.Ano;
+		Data.Dia_Saida = Data_Saida.Dia;
+		if(Data.Dia_Saida <Data_Entrada.Dia){
+			Vermelho("O dia de entrada não pode ser anterior ao dia de saida");
+		}
+	}while(Data.Dia_Saida < Data.Dia);
+	//Equanto a data de entrada for menor que a data de saida repete o loop
+	//Recebe dados da Data
+	//PESQUISA Tipo_Pesquisa(); IMPLEMENTAR DPS
+	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/");
+	Cria_Pasta(Arquivo_Fluxo);
+	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u",Data_Entrada.Ano);
+	printf("%s",Arquivo_Fluxo);
+	Cria_Pasta(Arquivo_Fluxo);
+	//Cria Pasta	
+	system("clear");
+	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Data_Entrada.Ano,Data_Entrada.Mes);
+	Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);
+	//Cria arquivo
+	if(Arquivo_Binario_Vazio(Arquivo_Fluxo) == 0){
+		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Data_Entrada, Data_Saida,Acomodacao_Indisponiveis);
+		
+	}
+	if(Configuracoes() == Arquivo_Binario){
 
+	}else if(Configuracoes() == Arquivo_Texto){
+		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt", Acomodacao_Disponiveis, Acomodacao_Indisponiveis, Contador_Acomodacao_Indisponiveis);
+		Mostra_Acomodacoes_TXT(Contador_Acomodacao_Disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.txt");
+		Verde("\nDigite 1 para continuar\n");
+		PAUSA;
+		
+		//Mostra todas Acomodacoes Disponiveis da pesquisa
+	}
+//	Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]){
+		
+}
+void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]){
+	ACOMODACOES Acomodacoes;
+	//Cria uma variavel do tipo DADOS HOTEL;
+
+	FILE *Arquivo;
+	//Ponteiro para o arquivo
+
+	Arquivo=fopen(Url,"r");
+	//Abre o Arquivo
+	int Arquivo_Vazio=0;
+	char Temporario[999];
+	int Aux=0;
+
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+			
+		do{
+			fscanf(Arquivo,"%d",&Acomodacoes.Codigo);
+			Aux=-1;
+			for(int i = 0; i < Contador_Acomodacoes; i++){
+				if(Codigos[i] == 0){
+					///SE FOR IGUAL A 0 Nao faz nada...
+				}else if(Acomodacoes.Codigo == Codigos[i]){
+					Aux=i;
+					break;
+				}
+			}
+			if(!(Aux == -1)){
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+				//Expreção Regular
+				getc(Arquivo);
+				if(Acomodacoes.Codigo = Codigos[Aux]){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					Verde("\nAcomodacao disponivel\n");
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Acomodacoes.Descricao);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Televisao);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Ar_Condicionado);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Frigobar);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Internet);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Banheira);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes.Cod_Categoria);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Acomodacoes.Cod_Hotel);
+					//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caracte (pula o \n)
+					Ler_Acomodacoes_Memoria(Acomodacoes);
+					
+					Arquivo_Vazio++;
+				}
+			}else{
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				//Expreção Regular
+				getc(Arquivo);
+				Arquivo_Vazio++;
+			}
+		}while(!feof(Arquivo));
+		//Entra no loop se não estiver apontando para o final do arquivo;
+	if(Arquivo_Vazio==0){
+		Vermelho("O Arquivo está vazio\n");
+	}
+	PAUSA;
+}
+
+fclose(Arquivo);
+	//Fecha o Arquivo;
+}
 int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]){
 	FLUXO Fluxo;
 	FILE *Arquivo;
@@ -93,10 +240,6 @@ int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomoda
 		//Contador para verificar se o arquivo está em branco
 	}
 	fclose(Arquivo);
-	for(int i = 0; i < Contador_Acomodacao_Indisponiveis; i++){
-		printf("%d",Acomodacao_Indisponiveis[i]);
-	}
-	PAUSA;
 	return Contador_Acomodacao_Indisponiveis;
 }
 PESQUISA Tipo_Pesquisa(){

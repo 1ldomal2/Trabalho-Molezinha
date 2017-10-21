@@ -88,7 +88,7 @@ void Modo_De_Pagamento(int Modo){
 			printf("Debito\n");
 		break;
 		case Credito:
-			printf("Credio\n");
+			printf("Credito\n");
 		break;
 		case Cheque:
 			printf("Cheque\n");	
@@ -101,7 +101,7 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 	FLUXO Fluxo;
 	FILE *Arquivo;
 	FILE *Arquivo_Fluxo_Ponteiro;
-	char Arquivo_Fluxo[999];
+	char Arquivo_Fluxo[Tamanho2];
 	char Temporario;
 	int Auxiliar, Digito_Dia[2],Digito_Mes[2],Digito_Ano[4];
 		
@@ -251,11 +251,11 @@ void Ler_Reserva_Txt(char Url[99]){
 
 void Recebe_Dados_Reserva(RESERVA *Reserva){
 	int Modo_de_Abertura=0;
-	int Acomodacao_Indisponiveis[9999];
-	int Acomodacao_Disponiveis[9999];
+	int Acomodacao_Indisponiveis[Tamanho2];
+	int Acomodacao_Disponiveis[Tamanho2];
 	int Contador_Acomodacao_Indisponiveis, Contador_Acomodacao_Disponiveis;
 	DATA Data;
-	char Arquivo_Fluxo[999];
+	char Arquivo_Fluxo[Tamanho2];
 	Modo_de_Abertura=Configuracoes();
 	PESQUISA Pesquisar;
 	Pesquisar = Tipo_Pesquisa();
@@ -335,11 +335,16 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			Verde("\t1 para valor pago");
 			Vermelho("\t0 para pendente");
 			scanf("%d",&Reserva->Pago);
-			printf("1- Pagamento Dinheiro\n"
-					"2- Pagamento Debito\n"
-					"3- Pagamento Credito\n"
-					"4- Pagamento Cheque\n");
-			scanf("%d",&Reserva->Modo_Pagamento);
+			do{
+				printf("1- Pagamento Dinheiro\n"
+						"2- Pagamento Debito\n"
+						"3- Pagamento Credito\n"
+						"4- Pagamento Cheque\n");
+				scanf("%d",&Reserva->Modo_Pagamento);
+				if(Reserva->Modo_Pagamento<1 || Reserva->Modo_Pagamento>4){
+					Vermelho("\nDigite um opção Valida\n");
+				}
+			}while(Reserva->Modo_Pagamento<1 || Reserva->Modo_Pagamento>4);
 			Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
 		}
 	}
@@ -454,7 +459,7 @@ void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 	FILE *Arquivo;
 	FILE *Arquivo_Fluxo_Ponteiro;
 	FLUXO Fluxo;
-	char Arquivo_Fluxo[999];
+	char Arquivo_Fluxo[Tamanho2];
 	
 		//Um ponteiro que aponta para um arquivo
 	Arquivo=fopen(Url,"ab");
@@ -502,7 +507,7 @@ void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura){
 	//Procura nas acomodacoes pelo codigo da categoria para que assim nao apague os que sao vinculados
 	FILE *Arquivo;
-	char Temporario[9999];
+	char Temporario[Tamanho2];
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
@@ -525,7 +530,7 @@ int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura){
 		break;
 	}		
 
-	int Contador1=0, Vetor_Codigos[9999];
+	int Contador1=0, Vetor_Codigos[Tamanho2];
 		//Evita lixo de memoria
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
@@ -583,7 +588,7 @@ int Valida_Acomadacao_Reserva(int Codigo, int Modo_de_Abertura){
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura){
 	//Procura nas acomodacoes pelo codigo da categoria para que assim nao apague os que sao vinculados
 	FILE *Arquivo;
-	char Temporario[9999];
+	char Temporario[Tamanho2];
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
@@ -606,7 +611,7 @@ int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura){
 		break;
 	}		
 
-	int Contador1=0, Vetor_Codigos[9999];
+	int Contador1=0, Vetor_Codigos[Tamanho2];
 		//Evita lixo de memoria
 	if (Modo_de_Abertura == Arquivo_Texto)
 	{
@@ -727,7 +732,7 @@ int Retorna_Campo_Struct_Reserva(char Url[99], int Codigo){
 	MODO Modo;
 	Modo = Modo_Bin_ou_Txt(Arquivo_Binario);
 	//Ponteiro do tipo File
-	char Temporario[9999];
+	char Temporario[Tamanho2];
 	RESERVA Reserva;
 	Arquivo = fopen(Url,Modo.Leitura);
 	//Abre o arquivo em modo de leitura

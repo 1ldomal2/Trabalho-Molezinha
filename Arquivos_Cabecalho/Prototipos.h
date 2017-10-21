@@ -22,6 +22,7 @@ void Verificacao_Arquivo(char Url[99],int Modo_de_Abertura);
 MODO Modo_Bin_ou_Txt(int Modo_de_Abertura);
 int Converter_Decimal_Binario(int n0,int n1,int n2,int n3);
 int Arquivo_Texto_Vazio(char Url[]);
+int Arquivo_Binario_Vazio(char Url[]);	
 void Verificacao_All();
 int Ler_Configuracoes_Retorna_Modo_de_Abertura();
 int Valida_Codigo_Produto(int Codigo, int Modo_de_Abertura);
@@ -120,6 +121,7 @@ void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
 void DebugFluxo(char Url[99], FLUXO *Fluxo);
 //Pesquisa
+void Main_Pesquisa();	
 int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);
 PESQUISA Tipo_Pesquisa();
 DATA Pesquisa(PESQUISA Pesquisa);
@@ -130,4 +132,5 @@ void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
 int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura);
 void Recebe_Data(DATA *Data, int Auxiliar);
 int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);
+void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]);	
 #endif

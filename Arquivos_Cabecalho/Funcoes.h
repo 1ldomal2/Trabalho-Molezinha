@@ -149,12 +149,12 @@ int Arquivo_Texto_Vazio(char Url[]){
 int Arquivo_Binario_Vazio(char Url[]){
 	FILE *Arquivo;
 	int Posicao=0;
-	char Temp;
+	char Temp='0';
 	Arquivo=fopen(Url,"rb");
 	//Abre o Arquivo
 
 	while(1){//Repete ate que chegue a um break
-		Temp=getc(Arquivo);
+		fread(&Temp,sizeof(char),1,Arquivo);
 		//Passa o char do Arquivo para Temp e automaticamente desloca o ponteiro uma posição
 
 		if(feof(Arquivo)||Posicao>1){//Repete até chegar no final do arquivo ou até capturar 2 char ou seja  com 2 leituras da para saber se chagamos ou não ao final do arquivo
@@ -164,7 +164,6 @@ int Arquivo_Binario_Vazio(char Url[]){
 		Posicao++;
 		//Adiciona 1 A posição ou seja se 0 o arquivo chegou a Eof na primeira busca
 	}
-
 	fclose(Arquivo);
 	//Fecha o arquivo para evitar erros
 
@@ -202,13 +201,14 @@ int Modulo(){
 		printf("\nDigite:"
 		"\n\t1\tPara Registros"
 		"\n\t2\tPara Reservas"
+		"\n\t3\tPara Pesquisas"
 		"\n\t0\tSair\n\t");
 		scanf("%d",&Registro);
 		system("clear");
-		if(Registro <0 || Registro > 2){
+		if(Registro <0 || Registro > 3){
 			Vermelho("Digite um valor valido");	
 		}
-	}while(Registro <0 || Registro > 2);
+	}while(Registro <0 || Registro > 3);
 	return Registro;
 }
 
