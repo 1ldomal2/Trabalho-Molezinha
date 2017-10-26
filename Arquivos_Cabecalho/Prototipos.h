@@ -121,6 +121,10 @@ void Mostra_Se_Conta_Paga(int Pago);
 void Modo_De_Pagamento(int Modo);
 int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura);
 void DebugFluxo(char Url[99], FLUXO *Fluxo);
+void Apagar_Fluxo(char Url[999], int Codigo);
+int Retorna_Campo_Struct_Fluxo(char Url[99], int Codigo);
+void Arquivo_Url_Fluxo(char Url[99], int Codigo,char Url_Fluxo[]);
+int Retorna_Codigos_Reserva(int Codigos[]);	
 //Pesquisa
 void Main_Pesquisa();	
 int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);

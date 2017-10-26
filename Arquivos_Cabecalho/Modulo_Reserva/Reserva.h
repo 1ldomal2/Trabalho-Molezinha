@@ -280,15 +280,16 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			scanf("%d",&Sair_Da_Validacao);
 			//Recebe valor para sair do loop sem efetuar cadastro
 			if(Sair_Da_Validacao == 1){
+				Auxiliar=0;
 				break;//sai do loop com auxiliar 0 indicando que nao efetuara o cadastro
 			}
 		}
 	}
-    Nome_Hospede_Codigo(Reserva->Codigo_Hospede, Reserva->Nome_Hospede);
-	printf("Codigo da Acomodacao:");
-	scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);	
-	Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
 	if(Auxiliar == 1){
+		Nome_Hospede_Codigo(Reserva->Codigo_Hospede, Reserva->Nome_Hospede);
+		printf("Codigo da Acomodacao:");
+		scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);	
+		Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
 		if(Pesquisar.Data == 1){
 			Reserva->Data_Entrada=Data;
 			Reserva->Data_Saida=Data;
@@ -354,6 +355,85 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 	
 }
 
+void Arquivo_Url_Fluxo(char Url[99], int Codigo,char Url_Fluxo[]){
+	RESERVA Reserva;
+		//Cria uma variavel do tipo DADOS HOTEL;
+
+	FILE *Arquivo;
+		//Ponteiro para o arquivo
+
+	Arquivo=fopen(Url,"r");
+		//Abre o Arquivo
+	char Temporario[Tamanho2];
+	int Arquivo_Vazio=0;
+
+	
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+		do{
+			fscanf(Arquivo,"%d",&Reserva.Codigo);
+			getc(Arquivo);
+			if(Reserva.Codigo == Codigo){
+						//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					//Expreção Regular
+
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				fscanf(Arquivo,"%[^;]s",Reserva.Nome_Hospede);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+					//Expreção Regular
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%d",&Reserva.Codigo_Hospede);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%d",&Reserva.Cod_Acomodacao);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Dia);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Mes);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Ano);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%u",&Reserva.Data_Saida.Dia);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Saida.Mes);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Saida.Ano);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Dia);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Mes);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+				fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Ano);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%f",&Reserva.Valor_Fatura);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%d",&Reserva.Pago);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%f",&Reserva.Valor_Conta);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				fscanf(Arquivo,"%d",&Reserva.Modo_Pagamento);
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+				//FAZER METODO PARA LER MATRIZ NO TXT
+				getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
+				sprintf(Url_Fluxo,"Arquivos/Reserva/%u/%u",Reserva.Data_Entrada.Ano,Reserva.Data_Entrada.Mes);		
+				break;
+				//sai do loop
+			}else{
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+			}
+		}while(!feof(Arquivo));
+			//Entra no loop se não estiver apontando para o final do arquivo;
+	}
+
+	fclose(Arquivo);
+		//Fecha o Arquivo;
+}
+
+
 void Main_Reserva(MODO Modo){
 	RESERVA Reserva;
 	int Acao,Codigo=0;
@@ -394,9 +474,24 @@ void Main_Reserva(MODO Modo){
 						scanf("%d",&Codigo);
 						Apagar_Modificar_Reserva_Bin("Arquivos/Reserva.bin",Codigo,0,Modo);
 					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
+						char Arquivo_Fluxo[Tamanho2]={'\0'};
+						int Indice = 0, Codigos[Tamanho2];
 						printf("Digite o codigo a ser apagado: ");
 						scanf("%d",&Codigo);
-						Apagar_Modificar("Arquivos/Reserva.txt",Codigo,0,Modo,Dados_Reserva);
+						Indice = Retorna_Codigos_Reserva(Codigos);
+						int Auxiliar = 0;
+						for(int i = 0; i < Indice; i++){
+							if(Codigo == Codigos[i]){								
+								Arquivo_Url_Fluxo("Arquivos/Reserva.txt",Codigo,Arquivo_Fluxo);
+								Apagar_Fluxo(Arquivo_Fluxo,Codigo);
+								Apagar_Modificar("Arquivos/Reserva.txt",Codigo,0,Modo,Dados_Reserva);
+								Auxiliar = 1;
+							}
+						}
+						if(Auxiliar == 0){
+							Vermelho("O código que foi digitado é inexistente, por favor digite um código válido!!");
+						}
+						
 					}
 				}else{
 					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
@@ -409,6 +504,23 @@ void Main_Reserva(MODO Modo){
 	}
 }
 
+int Retorna_Codigos_Reserva(int Codigos[]){
+	FILE *Arquivo;
+	int Indice = 0;
+	char Temporario[Tamanho2];
+	Arquivo = fopen("Arquivos/Reserva.txt","r");
+	if(Arquivo != NULL && Arquivo_Texto_Vazio("Arquivos/Reserva.txt") != 1){
+		do{
+			fscanf(Arquivo,"%d", &Codigos[Indice]);
+			if(feof(Arquivo)){
+				break;
+			}
+			fscanf(Arquivo,"%[^\n]s", Temporario);
+			Indice++;
+		}while(!feof(Arquivo));
+	}
+	return Indice;
+}
 
 void Ler_Reserva_Bin(char Url[99]){
 	FILE *Arquivo;
@@ -748,6 +860,7 @@ int Retorna_Campo_Struct_Reserva(char Url[99], int Codigo){
 
 void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Modo){
 	if(Modo.Modo_de_Abertura == Arquivo_Binario){
+		char Arquivo_Fluxo[Tamanho2];
 		RESERVA Reserva;
 		//Cria uma Variavel do tipo Dados_Reserva
 		FILE *Arquivo, *Arquivo_Temporario;
@@ -768,8 +881,10 @@ void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Mo
 					fwrite(&Reserva, sizeof(RESERVA),1,Arquivo_Temporario); 
 					//Escreve no Arquivo temporario
 				}
-
 				fread(&Reserva, sizeof(RESERVA),1,Arquivo); 
+				sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Reserva.Data_Entrada.Ano,Reserva.Data_Entrada.Mes);		
+				Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);	
+				Apagar_Fluxo(Arquivo_Fluxo, Reserva.Codigo);
 				//Le o arquivo Arquivo Binario e passa dados para struct
 				//Apaga o dado
 				while(!feof(Arquivo)){
@@ -797,59 +912,90 @@ void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Mo
 		}
 	}
 }
-/*
-void Apagar_Fluxo(char Url[99], int Codigo,int Modificar,MODO Modo){
-	if(Modo.Modo_de_Abertura == Arquivo_Binario){
-		RESERVA Reserva;
-		//Cria uma Variavel do tipo Dados_Reserva
-		FILE *Arquivo, *Arquivo_Temporario;
-		//Cria 2ponteiros do tipo FILE
-		Arquivo=fopen(Url,Modo.Leitura);
-		//Abre o aqruivo principal em modo leitura
-		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
-		//Abre o arquivo que sera apagado em modo de concatenacao
-		int Campo_Struct = Retorna_Campo_Struct_Reserva(Url, Codigo);
-		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
-		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
-			Vermelho("O codigo digitado não foi encontrado");
-		}else{
-			if(Confirmacao()){//Se a confirmacao retornar 1 
-				for(int i=1;i<Campo_Struct;i++){
-					//Vai ate o campo do codigo
-					fread(&Reserva, sizeof(RESERVA),1,Arquivo);
-					fwrite(&Reserva, sizeof(RESERVA),1,Arquivo_Temporario); 
-					//Escreve no Arquivo temporario
-				}
 
-				fread(&Reserva, sizeof(RESERVA),1,Arquivo); 
-				//Le o arquivo Arquivo Binario e passa dados para struct
-				//Apaga o dado
-				while(!feof(Arquivo)){
-					//Vai ate o Final do Arquivo
-					fread(&Reserva, sizeof(RESERVA),1,Arquivo);
-					if(feof(Arquivo)){
-						//Sai caso esteja no fim do arquivo;
-						break;
-					}
-					fwrite(&Reserva, sizeof(RESERVA),1,Arquivo_Temporario); 
-						//Printa no Arquivo Temporario
-				}
-				fclose(Arquivo_Temporario);
-				fclose(Arquivo);
-					//Fecha ambos os Arquivos
-				remove(Url);
-					//Remove o Arquivo Original
-				rename("Arquivos/Temp",Url);
-					//Renomeia o Arquivo
-				if(Modificar==0){
-					Verde("\nExcluído com Sucesso");
-					//Mostra que foi apagado com sucesso
-				}
+int Retorna_Campo_Struct_Fluxo(char Url[99], int Codigo){
+	//Funcao para procurar hotel com base no codigo digitado pelo usuario
+	FILE *Arquivo;
+	MODO Modo;
+	Modo = Modo_Bin_ou_Txt(Arquivo_Binario);
+	//Ponteiro do tipo File
+	char Temporario[Tamanho2];
+	FLUXO Fluxo;
+	Arquivo = fopen(Url,Modo.Leitura);
+	//Abre o arquivo em modo de leitura
+	int Validador = -1, Numero_Structs = 1;
+	
+	//Armazena o codigo lido no arquivo Bin
+	do{
+		fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
+		Validador = Fluxo.Codigo_Reserva;
+		if(feof(Arquivo)){
+			return -1;
+			break;
+		}
+		if(Validador == Codigo){
+			//Verifica se o codigo é igual ao lido
+			return Numero_Structs;
+			//Retorna a linha que tem o codigo
+			break;
+			//Confirma se saiu do loop
+		}
+		Numero_Structs++;
+		//Soma no contac
+	}while(!feof(Arquivo));
+	//Le ate o fim do arquivo
+	fclose(Arquivo);
+	//Fecha o arquvio
+	return -1;
+}
+
+void Apagar_Fluxo(char Url[999], int Codigo){
+	char Url_Temporaria[999];
+	FLUXO Fluxo;
+	//Cria uma Variavel do tipo Dados_Reserva
+	strcpy(Url_Temporaria,Url);		
+	strcat(Url_Temporaria,".tmp");
+	FILE *Arquivo, *Arquivo_Temporario;
+	//Cria 2ponteiros do tipo FILE
+	Arquivo=fopen(Url,"rb");
+	//Abre o aqruivo principal em modo leitura
+	Arquivo_Temporario = fopen(Url_Temporaria,"ab+");
+	//Abre o arquivo que sera apagado em modo de concatenacao
+	int Campo_Struct = Retorna_Campo_Struct_Fluxo(Url, Codigo);
+	//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
+	if(Campo_Struct != -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
+		if(1){//Se a confirmacao retornar 1 
+			for(int i=1;i<Campo_Struct;i++){
+				//Vai ate o campo do codigo
+				fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
+				fwrite(&Fluxo, sizeof(FLUXO),1,Arquivo_Temporario); 
+				//Escreve no Arquivo temporario
 			}
+
+			fread(&Fluxo, sizeof(FLUXO),1,Arquivo); 
+			//Le o arquivo Arquivo Binario e passa dados para struct
+			//Apaga o dado
+			while(!feof(Arquivo)){
+				//Vai ate o Final do Arquivo
+				fread(&Fluxo, sizeof(FLUXO),1,Arquivo);
+				if(feof(Arquivo)){
+					//Sai caso esteja no fim do arquivo;
+					break;
+				}
+				fwrite(&Fluxo, sizeof(FLUXO),1,Arquivo_Temporario); 
+					//Printa no Arquivo Temporario
+			}
+			fclose(Arquivo_Temporario);
+			fclose(Arquivo);
+				//Fecha ambos os Arquivos
+			remove(Url);
+				//Remove o Arquivo Original
+			rename(Url_Temporaria,Url);
+				//Renomeia o Arquivo
 		}
 	}
 }
-*/
+
 /*
 #ifdef Debug
 printf("");
