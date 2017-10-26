@@ -13,6 +13,7 @@ void Gravar_Hospede_Bin(char Url[99],DADOS_HOSPEDE *Hospede);
 void Criar_Modificar_Hospede(int Modo_de_Abertura,int Manter_Codigo);
 int Retorna_Campo_Struct_Hospede(char Url[99], int Codigo);
 void Apagar_Modificar_Hospede_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
+void Nome_Hospede_Codigo(int Codigo, char Nome_Hospede[]);
 */
 void Main_Hospede(MODO Modo){
 	OrdenaValoresTxt();
@@ -88,6 +89,64 @@ void Main_Hospede(MODO Modo){
 			default:
 				return;
 				break;
+		}
+	}
+}
+
+void Nome_Hospede_Codigo(int Codigo, char Nome_Hospede[]){
+	FILE *Arquivo;
+	int Loop = 1;
+	DADOS_HOSPEDE Hospede;
+	char Temporario;
+	if(Configuracoes() == Arquivo_Binario){
+		Arquivo = fopen("Arquivos/Hospede.bin","rb");
+		if(Arquivo == NULL){
+			Vermelho("\nNao foi possivel abrir o arquivo!");
+		}else{
+			while(Loop){
+				fread(&Hospede, sizeof(DADOS_HOSPEDE),1,Arquivo);
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				if(Hospede.Codigo == Codigo){
+					strcpy(Nome_Hospede,Hospede.Nome);
+					Loop = 0;
+				}
+			}
+			fclose(Arquivo);
+		}	
+	}else{
+		Arquivo = fopen("Arquivos/Hospede.txt","r");
+		if(Arquivo==NULL){
+			Vermelho("O Arquivo não foi aberto corretamente\n");
+		}else{
+			do{
+				fscanf(Arquivo,"%d",&Hospede.Codigo);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					//Expreção Regular
+				getc(Arquivo);
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				if(Hospede.Codigo == Codigo){
+					fscanf(Arquivo,"%[^;]s",Hospede.Nome);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+					//Expreção Regular
+					getc(Arquivo);
+					//Pula o Ponteiro para o proximo caracte (pula o \n)
+					strcpy(Nome_Hospede,Hospede.Nome);
+					Loop = 0;
+				}else{
+					fscanf(Arquivo,"%[^\n]s",&Temporario);
+					getc(Arquivo);getc(Arquivo);
+				}getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+								
+			}while(Loop);
 		}
 	}
 }
@@ -179,18 +238,18 @@ void Ler_Hospede_Txt(char Url[99]){
 
 void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede){
 	//Recebe por parametro Struct de Hospede
-	printf("Codigo:\t\t\t%d\n",Hospede.Codigo);
-	printf("Nome fantasia:\t\t%s\n",Hospede.Nome);
-	printf("Razao social:\t\t%s\n",Hospede.Sexo);
-	printf("Inscricao Estadual\t%s\n",Hospede.Estado_Civil);
-	printf("CPF:\t\t\t%s\n",Hospede.CPF);
-	printf("Logradouro:\t\t%s\n",Hospede.Endereco.Logradouro);
-	printf("Numero:\t\t\t%s\n",Hospede.Endereco.Numero);
-	printf("Bairro:\t\t\t%s\n",Hospede.Endereco.Bairro);
-	printf("Cidade:\t\t\t%s\n",Hospede.Endereco.Cidade);
-	printf("Telefone:\t\t%s\n",Hospede.Telefone);
-	printf("Email:\t\t\t%s\n",Hospede.Email);
-	printf("Telefone gerente:\t%s\n",Hospede.Data_Nascimento);
+	printf("Codigo:\t\t\t\t%d\n",Hospede.Codigo);
+	printf("Nome :\t\t\t\t%s\n",Hospede.Nome);
+	printf("Sexo:\t\t\t\t%s\n",Hospede.Sexo);
+	printf("Estado Civil:\t\t\t%s\n",Hospede.Estado_Civil);
+	printf("CPF:\t\t\t\t%s\n",Hospede.CPF);
+	printf("Logradouro:\t\t\t%s\n",Hospede.Endereco.Logradouro);
+	printf("Numero:\t\t\t\t%s\n",Hospede.Endereco.Numero);
+	printf("Bairro:\t\t\t\t%s\n",Hospede.Endereco.Bairro);
+	printf("Cidade:\t\t\t\t%s\n",Hospede.Endereco.Cidade);
+	printf("Telefone:\t\t\t%s\n",Hospede.Telefone);
+	printf("Email:\t\t\t\t%s\n",Hospede.Email);
+	printf("Data Nascimento gerente:\t%s\n",Hospede.Data_Nascimento);
 	printf("____________________________________________________\n");
 	//Mostra dados do Hospede cadastrado na memoria
 }

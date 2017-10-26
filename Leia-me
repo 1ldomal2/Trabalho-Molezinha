@@ -4,9 +4,7 @@ MILAGRE VALIDOU DATA (APARENTEMENTE)
 
 ______________________________#Proximo Passo#___________________________________
 
-ARRUMAR BINARIO E ADICIONAR EXCLUSAO DO ARQUIVO FLUXO AO EXCLUIR UMA RESERVA
-PROXIMAS TOPICO DE PESQUISA dentro de PESQUISA.H
-
+Arrumar Funcao comentada no final do arquivo RESERVA.h ela ira apagar a reserva no arquivo fluxo
 
 ___________________________________#Bug's#_______________________________________
 NENHUM

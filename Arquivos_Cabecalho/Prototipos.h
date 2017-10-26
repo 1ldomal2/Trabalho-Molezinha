@@ -48,6 +48,7 @@ void Ler_Hospede_Bin();
 void Ler_Hospede_Memoria(DADOS_HOSPEDE Hospede);
 void Ler_Hospede_Txt(char Url[99]);
 void Main_Hospede(MODO Modo);
+void Nome_Hospede_Codigo(int Codigo, char Nome_Hospede[]);	
 //Codigo_Categoria
 int Retorna_Campo_Struct_Codigo_Categoria(char Url[99], int Codigo);
 void Apagar_Modificar_Codigo_Categoria_Bin(char Url[99], int Codigo,int Modificar,MODO Modo);
@@ -132,5 +133,7 @@ void Pequisa_Categoria_Acomodacao(int Acomodacao_Invalida[],int Inicio_Vetor);
 int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura);
 void Recebe_Data(DATA *Data, int Auxiliar);
 int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);
-void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]);	
+void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]);
+void Mostra_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]);	
+int Todas_Acomodacoes_BIN(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);	
 #endif

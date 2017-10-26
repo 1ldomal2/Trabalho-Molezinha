@@ -7,9 +7,9 @@ int Bug;
 #define PAUSA 	scanf("%d",&Bug);
 #define DEBUG(TEXTO) printf("\n%s%s \t Linha = %d \t %s%s\n","\33[1;31m",__FILE__, __LINE__,TEXTO,"\33[0;29m");//scanf("%d",&Bug)
 #define DEBUGINT(TEXTO,INT) printf("\n%s%s \t Linha = %d \t %s%d%s\n","\33[1;32m",__FILE__,__LINE__,TEXTO,INT,"\33[0;29m");//scanf("%d",&Bug)
-#define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO)
-#define Verde(TEXTO)	printf("\33[1;32m%s\33[0;29m",TEXTO)
-#define Amarelo(TEXTO)	printf("\33[1;33m%s\33[0;29m",TEXTO)
+#define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO);
+#define Verde(TEXTO)	printf("\33[1;32m%s\33[0;29m",TEXTO);
+#define Amarelo(TEXTO)	printf("\33[1;33m%s\33[0;29m",TEXTO);
 //Biblioteca Padrão
 #include <stdio.h>
 #include <stdlib.h>
@@ -127,8 +127,8 @@ int main(int argc, char const *argv[])
 					Loop=0;
 				break;
 				default:
-				system("clear");
-				Vermelho("Digite um Codigo Valido");
+					system("clear");
+					Vermelho("Digite um Codigo Valido");
 				break;
 			}
 			

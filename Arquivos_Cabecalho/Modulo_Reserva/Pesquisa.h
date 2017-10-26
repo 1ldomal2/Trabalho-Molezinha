@@ -12,6 +12,8 @@ void Recebe_Data(DATA *Data);
 int Pequisa_Periodo(int Acomodacao_Invalida[],int Inicio_Vetor,DATA Entrada,DATA Saida);
 void Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);
 int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);
+void Mostra_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]);
+int Todas_Acomodacoes_BIN(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);
 */
 int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis){
 	ACOMODACOES Acomodacoes;
@@ -59,6 +61,50 @@ int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomod
 	}
 	return Contador;
 }
+
+
+int Todas_Acomodacoes_BIN(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis){
+	ACOMODACOES Acomodacoes;
+		//Cria uma variavel do tipo DADOS HOTEL;
+
+	FILE *Arquivo;
+		//Ponteiro para o arquivo
+	
+	Arquivo=fopen(Url,"rb");
+		//Abre o Arquivo
+	int Contador=0;
+	char Temporario[999];
+
+	
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+		do{
+			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);			
+			//le struct de acomodacoes salva no binario
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+			Acomodacoes_Disponiveis[Contador] = Acomodacoes.Codigo;
+			Contador++;		
+		}while(!feof(Arquivo));
+			//Entra no loop se não estiver apontando para o final do arquivo;
+		
+	}
+	fclose(Arquivo);
+		//Fecha o Arquivo;
+	for(int i = 0; i < Contador; i++){
+		for(int j = 0; j < Contador_Acomodacao_Indisponiveis; j++){
+			if(Acomodacoes_Disponiveis[i] == Acomodacoes_Indisponiveis[j]){
+				Acomodacoes_Disponiveis[i] = 0;
+			}
+		}
+	}
+	return Contador;
+}
+
 void Main_Pesquisa(){
 	int Acomodacao_Disponiveis[999] = {0},Acomodacao_Indisponiveis[999] = {0};
 	int Contador_Acomodacao_Indisponiveis = 0, Contador_Acomodacao_Disponiveis = 0;
@@ -97,6 +143,10 @@ void Main_Pesquisa(){
 		
 	}
 	if(Configuracoes() == Arquivo_Binario){
+		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_BIN("Arquivos/Acomodacoes.bin", Acomodacao_Disponiveis, Acomodacao_Indisponiveis, Contador_Acomodacao_Indisponiveis);
+		Mostra_Acomodacoes_BIN(Contador_Acomodacao_Disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.bin");
+		Verde("\nDigite 1 para continuar\n");
+		PAUSA;
 
 	}else if(Configuracoes() == Arquivo_Texto){
 		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt", Acomodacao_Disponiveis, Acomodacao_Indisponiveis, Contador_Acomodacao_Indisponiveis);
@@ -207,6 +257,67 @@ void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[])
 fclose(Arquivo);
 	//Fecha o Arquivo;
 }
+
+void Mostra_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]){
+	ACOMODACOES Acomodacoes;
+	//Cria uma variavel do tipo DADOS HOTEL;
+
+	FILE *Arquivo;
+	//Ponteiro para o arquivo
+
+	Arquivo=fopen(Url,"rb");
+	//Abre o Arquivo
+	int Arquivo_Vazio=0;
+	int Aux=0;
+
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+			
+		do{
+			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);		
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+			Aux=-1;
+			for(int i = 0; i < Contador_Acomodacoes; i++){
+				if(Codigos[i] == 0){
+					///SE FOR IGUAL A 0 Nao faz nada...
+				}else if(Acomodacoes.Codigo == Codigos[i]){
+					Aux=i;
+					break;
+				}
+			}
+			if(!(Aux == -1)){
+				if(Acomodacoes.Codigo = Codigos[Aux]){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					Verde("\nAcomodacao disponivel\n");
+						//Pula o Ponteiro para o proximo caractere
+					Ler_Acomodacoes_Memoria(Acomodacoes);
+					
+					Arquivo_Vazio++;
+				}
+			}else{
+				Arquivo_Vazio++;
+			}
+		}while(!feof(Arquivo));
+		//Entra no loop se não estiver apontando para o final do arquivo;
+		if(Arquivo_Vazio==0){
+			Vermelho("O Arquivo está vazio\n");
+	}
+	PAUSA;
+}
+
+fclose(Arquivo);
+	//Fecha o Arquivo;
+}
+
 int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]){
 	FLUXO Fluxo;
 	FILE *Arquivo;

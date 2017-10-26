@@ -93,6 +93,8 @@ void Modo_De_Pagamento(int Modo){
 		case Cheque:
 			printf("Cheque\n");	
 		break;
+		default:
+			Vermelho("INVALIDO\n");
 		//Verifica o Caso definido no enum de registro e mostra o modo para o usuario
 	}
 }
@@ -260,8 +262,6 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 	PESQUISA Pesquisar;
 	Pesquisar = Tipo_Pesquisa();
 	Data = Pesquisa(Pesquisar);
-	printf("\nNome Hospede:");
-	scanf("%s",Reserva->Nome_Hospede);
 	int Codigo_Hospede_A_Ser_Validado,Codigo_Acomodacao_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
 	//Codigos a serem validados
 	while(Auxiliar == 0){//Repete loop enquanto auxiliar se mantem no 0
@@ -284,6 +284,7 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			}
 		}
 	}
+    Nome_Hospede_Codigo(Reserva->Codigo_Hospede, Reserva->Nome_Hospede);
 	printf("Codigo da Acomodacao:");
 	scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);	
 	Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
@@ -363,7 +364,7 @@ void Main_Reserva(MODO Modo){
 
 	while(1){
 		OrdenaValoresTxt();
-		Acao = Opcao_Acoes();
+		Acao = Opcao_Acoes_Reserva();
 		//Retorna um inteiro referente a Ação (Case)
 		//limpa a tela
 		switch (Acao){
@@ -386,23 +387,6 @@ void Main_Reserva(MODO Modo){
 					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
 				}
 				break;	
-
-			case Editar:
-				if ((Modo.Nivel_De_Permissao >=2 && Modo.Nivel_De_Permissao <=3)||(Modo.Nivel_De_Permissao >=6 && Modo.Nivel_De_Permissao <=7)||(Modo.Nivel_De_Permissao >=10 && Modo.Nivel_De_Permissao <=11)||(Modo.Nivel_De_Permissao >=14 && Modo.Nivel_De_Permissao <=15)){
-					if(Modo.Modo_de_Abertura == Arquivo_Binario){
-						printf("Digite o codigo a ser editado: ");
-						scanf("%d",&Codigo);
-						Apagar_Modificar_Reserva_Bin("Arquivos/Reserva.bin",Codigo,1,Modo);
-					}else if(Modo.Modo_de_Abertura == Arquivo_Texto){
-						printf("Digite o codigo a ser editado: ");
-						scanf("%d",&Codigo);
-						Apagar_Modificar("Arquivos/Reserva.txt",Codigo,1,Modo,Dados_Reserva);
-					}
-				}else{
-					Vermelho("O Usuario não tem o nivel de permissão adequado para realizar esta ação.");
-				}
-				break;
-
 			case Apagar:
 				if ((Modo.Nivel_De_Permissao%2)){//Se for impar retorna 1 e somente numeros impares tem a permissao de Apagar
 					if(Modo.Modo_de_Abertura == Arquivo_Binario){
@@ -787,15 +771,7 @@ void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Mo
 
 				fread(&Reserva, sizeof(RESERVA),1,Arquivo); 
 				//Le o arquivo Arquivo Binario e passa dados para struct
-				if(Modificar==1){
-					//Entra no modo Editar
-					Criar_Modificar_Reserva(Arquivo_Binario, Codigo);
-					//Chama a funcao para editar o arquivo
-					Verde("\nEditado com Sucesso");
-					system("clear");
-					//Limpa tela
-				}
-				//Se nao entrar no if so apaga o dado
+				//Apaga o dado
 				while(!feof(Arquivo)){
 					//Vai ate o Final do Arquivo
 					fread(&Reserva, sizeof(RESERVA),1,Arquivo);
@@ -821,7 +797,59 @@ void Apagar_Modificar_Reserva_Bin(char Url[99], int Codigo,int Modificar,MODO Mo
 		}
 	}
 }
+/*
+void Apagar_Fluxo(char Url[99], int Codigo,int Modificar,MODO Modo){
+	if(Modo.Modo_de_Abertura == Arquivo_Binario){
+		RESERVA Reserva;
+		//Cria uma Variavel do tipo Dados_Reserva
+		FILE *Arquivo, *Arquivo_Temporario;
+		//Cria 2ponteiros do tipo FILE
+		Arquivo=fopen(Url,Modo.Leitura);
+		//Abre o aqruivo principal em modo leitura
+		Arquivo_Temporario = fopen("Arquivos/Temp",Modo.Concatenacao);
+		//Abre o arquivo que sera apagado em modo de concatenacao
+		int Campo_Struct = Retorna_Campo_Struct_Reserva(Url, Codigo);
+		//Variavel Campo_Struct recebe quantas structs teve que pular para achar o codigo
+		if(Campo_Struct == -1){//Se for retornado -1 mostra que nao foi encotrado o codigo digitado
+			Vermelho("O codigo digitado não foi encontrado");
+		}else{
+			if(Confirmacao()){//Se a confirmacao retornar 1 
+				for(int i=1;i<Campo_Struct;i++){
+					//Vai ate o campo do codigo
+					fread(&Reserva, sizeof(RESERVA),1,Arquivo);
+					fwrite(&Reserva, sizeof(RESERVA),1,Arquivo_Temporario); 
+					//Escreve no Arquivo temporario
+				}
 
+				fread(&Reserva, sizeof(RESERVA),1,Arquivo); 
+				//Le o arquivo Arquivo Binario e passa dados para struct
+				//Apaga o dado
+				while(!feof(Arquivo)){
+					//Vai ate o Final do Arquivo
+					fread(&Reserva, sizeof(RESERVA),1,Arquivo);
+					if(feof(Arquivo)){
+						//Sai caso esteja no fim do arquivo;
+						break;
+					}
+					fwrite(&Reserva, sizeof(RESERVA),1,Arquivo_Temporario); 
+						//Printa no Arquivo Temporario
+				}
+				fclose(Arquivo_Temporario);
+				fclose(Arquivo);
+					//Fecha ambos os Arquivos
+				remove(Url);
+					//Remove o Arquivo Original
+				rename("Arquivos/Temp",Url);
+					//Renomeia o Arquivo
+				if(Modificar==0){
+					Verde("\nExcluído com Sucesso");
+					//Mostra que foi apagado com sucesso
+				}
+			}
+		}
+	}
+}
+*/
 /*
 #ifdef Debug
 printf("");

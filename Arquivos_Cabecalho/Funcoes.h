@@ -195,6 +195,24 @@ int Opcao_Acoes(){
 	return Acao;
 }
 
+int Opcao_Acoes_Reserva(){
+	int Acao;
+	
+	printf("\nDigite:"
+			"\n\t1\tPara Ler Reservas Cadastradas"
+			"\n\t2\tPara Criar Reserva"
+			"\n\t3\tPara Cancelar Reserva"
+			"\n\t?\tSair\n\t");
+		scanf("%d",&Acao);
+	if(Acao == 3){
+		Acao = 4;//evitar fadiga
+	}else if(Acao == 4){//evitar fadiga parte 2
+		Acao = 5;
+	}
+		system("clear");
+	return Acao;
+}
+
 int Modulo(){
 	int Registro = 0;
 	do{
