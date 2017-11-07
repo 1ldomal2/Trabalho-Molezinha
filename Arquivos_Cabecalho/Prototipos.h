@@ -129,7 +129,7 @@ int Retorna_Codigos_Reserva(int Codigos[]);
 void Main_Pesquisa();	
 int Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]);
 PESQUISA Tipo_Pesquisa();
-DATA Pesquisa(PESQUISA Pesquisa);
+DATA Pesquisa(PESQUISA Pesquisa,int *Indice_Disponiveis,int Vetor_Cod_Acomodacao_Disponivel[]);
 int Retorna_Acomodacao_Disponiveis_Por_Periodo(int Acomodacao_Disponiveis[],PESQUISA Pesquisa_Entrada,PESQUISA Pesquisa_Saida);
 void Pequisa_Quantidade(int Acomodacao_Invalida[],int Inicio_Vetor,int Quantidade);
 void Pequisa_Facilidades(int Acomodacao_Invalida[],int Inicio_Vetor);
@@ -140,4 +140,10 @@ int Todas_Acomodacoes_TXT(char Url[99], int Acomodacoes_Disponiveis[],int Acomod
 void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]);
 void Mostra_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]);	
 int Todas_Acomodacoes_BIN(char Url[99], int Acomodacoes_Disponiveis[],int Acomodacoes_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);	
+int Retorna_Acomodacoes_Indisponiveis_Com_Codigo_Categoria(int Codigo_Categoria, int Modo_Abertura, int Acomodacao_Indisponiveis[], int Contador_Acomodacao_Indisponiveis);	
+int Retorna_Acomodacoes_Indisponiveis_Com_Quantidade_Pessoas(int Adultos, int Criancas,int Codigo_Acomodacao_Invalidas[], int Indice_Invalido);
+int Retorna_Acomodacoes_Indisponiveis_Com_Facilidades(FACILIDADES Facilidade,int Codigo_Acomodacao_Invalidas[], int Indice_Invalido);
+//Importar/Exportar XML
+void Exportar();
+IMPORTACAO_EXPORTACAO Set_On_Off();	
 #endif

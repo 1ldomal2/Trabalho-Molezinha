@@ -35,9 +35,13 @@ void Main_Acomodacoes(MODO Modo){
 	//Caso algum esteja vazio indica que nao é possivel manipular dados hotel
 	if(Vazio_Hotel == 1){
 		Vermelho("Não é possivel Manipular as Acomodaçoes pois não há hotéis cadastradas \n");
+		Verde("\nDigite 1 e aperte algo para continuar");
+		PAUSA
 	}else if (Vazio_Categoria == 1)
 	{
 		Vermelho("Não é possivel Manipular as Acomodaçoes pois não há categorias cadastradas \n");
+		Verde("\nDigite 1 e aperte algo para continuar");
+		PAUSA
 	}else{
 		while(1){
 			OrdenaValoresTxt();
@@ -199,8 +203,13 @@ void Ler_Acomodacoes_Memoria(ACOMODACOES Acomodacoes){
 	printf("Ar Condicionado 	%d\n",Acomodacoes.Facilidades.Ar_Condicionado);
 	printf("Frigobar\t\t%d\n",Acomodacoes.Facilidades.Frigobar);
 	printf("Banheira\t\t%d\n",Acomodacoes.Facilidades.Banheira);
-	printf("Internet\t\t%d\n",Acomodacoes.Facilidades.Internet);
-	printf("Codigo da Categoria:\t%d\n",Acomodacoes.Cod_Categoria);
+	printf("Internet\t\t");
+	if(Acomodacoes.Facilidades.Internet>0){
+		Verde("Sim");
+	}else{
+		Vermelho("Não");
+	}
+	printf("\nCodigo da Categoria:\t%d\n",Acomodacoes.Cod_Categoria);
 	printf("Codigo do Hotel:\t%d\n",Acomodacoes.Cod_Hotel);
 	
 	printf("____________________________________________________\n");

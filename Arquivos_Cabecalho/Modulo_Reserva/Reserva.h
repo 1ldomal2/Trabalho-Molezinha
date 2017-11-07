@@ -25,7 +25,6 @@ void DebugFluxo(char Url[99], FLUXO *Fluxo){
 	Arquivo = fopen(Url,"rb");
 	Vermelho("\nMostrar Fluxo\n");
 	printf("%s",Url);
-	scanf("%d",&Bug);
 	Verificacao_Arquivo(Url,Arquivo_Binario);
 	while(!feof(Arquivo)){
 		DEBUG("WHILE");
@@ -261,7 +260,7 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 	Modo_de_Abertura=Configuracoes();
 	PESQUISA Pesquisar;
 	Pesquisar = Tipo_Pesquisa();
-	Data = Pesquisa(Pesquisar);
+	Data = Pesquisa(Pesquisar,0,NULL);
 	int Codigo_Hospede_A_Ser_Validado,Codigo_Acomodacao_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
 	//Codigos a serem validados
 	while(Auxiliar == 0){//Repete loop enquanto auxiliar se mantem no 0

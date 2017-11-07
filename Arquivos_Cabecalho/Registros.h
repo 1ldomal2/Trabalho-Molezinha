@@ -7,7 +7,7 @@
 enum Modo_de_Abertura{Arquivo_Texto=1,Arquivo_Binario,Banco_De_Dados,Nuvem};
 enum Registro{Dados_Hotel=1,Dados_Hospede,Dados_Acomodacoes,Dados_Codigo_Categoria,Dados_Produtos,Dados_Fornecedores,Dados_Funcionarios,Dados_Reserva};	
 enum Acoes{Ler=1,Criar,Editar,Apagar};	
-enum Menu_Inicial{Registro = 1, Reserva, Pesquisa_Enum};
+enum Menu_Inicial{Registro = 1, Reserva, Pesquisa_Enum, Importar_ExportarXml};
 enum Pagamento{Prazo=0,Vista};
 enum On{On=1,Ok=1,Off=0,};
 enum Tipo_Pagamento{Especie=1,Debito,Credito,Cheque};
@@ -179,6 +179,18 @@ typedef struct Fluxo{
 	DATA Data_Saida;
 	int Vetor_Dias[Tamanho2];
 }FLUXO;
+
+typedef struct Tipo_Eportacao{
+	int Hotel;
+	int Hospede;
+	int Acomodacoes;
+	int Codigo_Categoria;
+	int Produtos ;
+	int Fornecedores;
+	int Funcionarios;
+	int Reserva;
+	int Fluxo;
+}IMPORTACAO_EXPORTACAO;
 
 
 

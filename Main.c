@@ -4,7 +4,9 @@
 //
 //Macros
 int Bug;
+char BUGS[999];
 #define PAUSA 	scanf("%d",&Bug);
+#define PAUSA_ 	scanf("%[qwertyuiopasdfghjklzxcvbnm]s",BUGS);
 #define DEBUG(TEXTO) printf("\n%s%s \t Linha = %d \t %s%s\n","\33[1;31m",__FILE__, __LINE__,TEXTO,"\33[0;29m");//scanf("%d",&Bug)
 #define DEBUGINT(TEXTO,INT) printf("\n%s%s \t Linha = %d \t %s%d%s\n","\33[1;32m",__FILE__,__LINE__,TEXTO,INT,"\33[0;29m");//scanf("%d",&Bug)
 #define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO);
@@ -34,6 +36,9 @@ int Bug;
 //Modulo_Reserva
 #include "Arquivos_Cabecalho/Modulo_Reserva/Reserva.h"
 #include "Arquivos_Cabecalho/Modulo_Reserva/Pesquisa.h"
+//Modulo Importacao/ExportacaoXML
+#include "Arquivos_Cabecalho/Importacao_Exportacao/Importacao.h"
+
 
 
 //Macro
@@ -60,6 +65,8 @@ int main(int argc, char const *argv[])
 		Modo.Nivel_De_Permissao = Permissao;
 		//LOGIN retorna o tipo de permissao de 1 a 15
 		while(Loop){
+			Loop=1;
+			Loop1=1;
 			OrdenaValoresTxt();
 			//Ordena os Txt em ordem crescente
 
@@ -120,6 +127,10 @@ int main(int argc, char const *argv[])
 				break;
 				case Pesquisa_Enum:
 					Main_Pesquisa();
+					system("clear");
+				break;
+				case Importar_ExportarXml:
+					Exportar();
 					system("clear");
 				break;
 				case 0:

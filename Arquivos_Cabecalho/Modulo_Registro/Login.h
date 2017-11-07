@@ -50,8 +50,6 @@ int Login(MODO Modo){
 			{
 				if (strcmp(Senha_Digitada,"1")==0)
 				{
-					Vermelho("DEPOIS TEM QUE APAGAR  1 1 1 \n");
-					Verde("Da linha 48 a 59 Login.h");
 					return 15;
 					//Modo god tem todas as permiossoes
 				}

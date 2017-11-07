@@ -1,0 +1,593 @@
+/*problema com 
+	Com Cripitografia de senha 
+		e
+	RESERVA 
+	int Codigo_Produto[Tamanho2];//Linha Exclusiva
+	int Quantidade_De_Produtos[Tamanho2];//Linha Exclusiva
+	int Prazo_Vista[Tamanho2];//Linha Exclusiva
+
+
+	
+
+	*/
+
+	#ifndef _Importacao_
+	#define _Importacao_
+	
+	//Vai ler dos Arquivos
+	//Passa pro buffer
+	//Muda confi
+	//Salva em Csv
+	
+	
+	//TEM QUE PEGAR A URL QUE QUER SALVAR E CRIAR A PASTA
+	
+	/*
+	Arquivos/Hospede.bin 			Arquivos/Hospede.txt
+	Arquivos/Hotel.bin 				Arquivos/Hotel.txt
+	Arquivos/Acomodacoes.bin 		Arquivos/Acomodacoes.txt
+	Arquivos/Codigo_Categoria.bin 	Arquivos/Codigo_Categoria.txt
+	Arquivos/Fornecedores.bin 		Arquivos/Fornecedores.txt
+	Arquivos/Funcionarios.bin 		Arquivos/Funcionarios.txt
+	Arquivos/Produtos.bin 			Arquivos/Produtos.txt
+	Arquivos/Reserva.bin 			Arquivos/Reserva.txt
+	#######################Arquivos/Reserva#################
+	Arquivos/Reserva/
+	*/
+	IMPORTACAO_EXPORTACAO Set_On_Off(){
+		IMPORTACAO_EXPORTACAO On_Off;
+		int Modo_Abertura = Configuracoes();
+		printf("Digite ");
+		Verde("1 (ON) ");
+		printf("ou ");
+		Vermelho("0 (OFF)\n");
+		//Tutorial
+		do{
+			printf("\nHotel:");
+			scanf("%d%*c",&On_Off.Hotel);
+			if(On_Off.Hotel == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Hotel.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Hotel =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Hotel.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Hotel =0;
+					}
+				}	
+			}
+		}while(On_Off.Hotel!=0 && On_Off.Hotel!=1 );
+		
+	
+		do{
+			printf("\nHospede:");
+			scanf("%d%*c",&On_Off.Hospede);
+			if(On_Off.Hospede == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Hospede.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Hospede =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Hospede.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Hospede =0;
+					}
+				}	
+			}
+		}while(On_Off.Hospede!=0 && On_Off.Hospede!=1 );
+		
+		do{
+			printf("\nAcomodacoes:");
+			scanf("%d%*c",&On_Off.Acomodacoes);
+			if(On_Off.Acomodacoes == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Acomodacoes.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Acomodacoes =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Acomodacoes.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Acomodacoes =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Acomodacoes!=0 && On_Off.Acomodacoes!=1 );
+	
+		do{
+			printf("\nCodigo_Categoria:");
+			scanf("%d%*c",&On_Off.Codigo_Categoria);
+			if(On_Off.Codigo_Categoria == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Codigo_Categoria.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Codigo_Categoria =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Codigo_Categoria.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Codigo_Categoria =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Codigo_Categoria!=0 && On_Off.Codigo_Categoria!=1 );
+	
+		do{
+			printf("\nProdutos:");
+			scanf("%d%*c",&On_Off.Produtos);
+			if(On_Off.Produtos == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Produtos.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Produtos =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Produtos.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Produtos =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Produtos!=0 && On_Off.Produtos!=1 );
+	
+		do{
+			printf("\nFornecedores:");
+			scanf("%d%*c",&On_Off.Fornecedores);
+			if(On_Off.Fornecedores == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Fornecedores.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Fornecedores =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Fornecedores.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Fornecedores =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Fornecedores!=0 && On_Off.Fornecedores!=1 );
+	
+		do{
+			printf("\nFuncionarios:");
+			scanf("%d%*c",&On_Off.Funcionarios);
+			if(On_Off.Funcionarios == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Funcionarios.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Funcionarios =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Funcionarios.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Funcionarios =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Funcionarios!=0 && On_Off.Funcionarios!=1 );
+	
+		do{
+			printf("\nReserva:");
+			scanf("%d%*c",&On_Off.Reserva);
+			if(On_Off.Reserva == 1){
+				if(Modo_Abertura == Arquivo_Texto){
+					if(Arquivo_Texto_Vazio("Arquivos/Reserva.txt")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Reserva =0;
+					}	
+				}else{
+					if(Arquivo_Binario_Vazio("Arquivos/Reserva.bin")){
+						Vermelho("Não é possivel exportar pois o arquivo esta vazio");
+						On_Off.Reserva =0;
+					}
+				}	
+			}
+	
+		}while(On_Off.Reserva!=0 && On_Off.Reserva!=1 );
+	
+		system("clear");
+		return On_Off;
+	}
+	
+	
+	void Exportar(){
+	
+		//Variaveis
+		int Loop=1,Indice[]={1,1,1,1,1,1,1,1,1};
+		int Modo_Abertura=Configuracoes();
+		IMPORTACAO_EXPORTACAO On_Off=Set_On_Off();
+	
+		FILE *Arquivo,*Exporta;
+	
+		DADOS_HOTEL *Hotel = malloc(sizeof(DADOS_HOTEL)); 
+		DADOS_HOSPEDE *Hospede = malloc(sizeof(DADOS_HOSPEDE)); 
+		ACOMODACOES *Acomodacoes=malloc(sizeof(ACOMODACOES));
+		CODIGO_CATEGORIA *Codigo_Categoria = malloc(sizeof(CODIGO_CATEGORIA)); 
+		PRODUTOS *Produtos = malloc(sizeof(PRODUTOS)); 
+		FORNECEDORES *Fornecedores = malloc(sizeof(FORNECEDORES)); 
+		FUNCIONARIOS *Funcionarios = malloc(sizeof(FUNCIONARIOS)); 
+		RESERVA *Reserva = malloc(sizeof(RESERVA)); 
+		FLUXO *Fluxo = malloc(sizeof(FLUXO));
+	
+	
+		//Cria um Arquivo
+		char Url[Tamanho2];
+		printf("Digite o Local para Exportar\n");
+		scanf("%s",Url);
+		strcat(Url,".xml");
+		//Verificacao_Arquivo(Url,Arquivo_Texto);
+		Exporta=fopen(Url,"w");
+	
+		//Le do Txt
+	
+		if(On_Off.Hotel==1){
+	
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Hotel.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Hotel.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+			
+			while(Loop){//Passa do Arquivo pra Memoria
+				Hotel=realloc(Hotel,Indice[0]*sizeof(DADOS_HOTEL));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Hotel[(Indice[0])-1], sizeof(DADOS_HOTEL),1,Arquivo);//Realoca o ponteiro
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[0]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+			//Pega dados 
+			
+	
+			fprintf(Exporta, "<tabela=DADOS_HOTEL>\n");
+			for (int i = 0; i < Indice[0]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Hotel[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome_Fantasia>%s</Nome_Fantasia>\n",Hotel[i].Nome_Fantasia);
+					fprintf(Exporta, "\t\t<Razao_Social>%s</Razao_Social>\n",Hotel[i].Razao_Social);
+					fprintf(Exporta, "\t\t<Inscricao_Estadual>%s</Inscricao_Estadual>\n",Hotel[i].Inscricao_Estadual);
+					fprintf(Exporta, "\t\t<CNPJ>%s</CNPJ>\n",Hotel[i].CNPJ);
+					fprintf(Exporta, "\t\t<Logradouro>%s</Logradouro>\n",Hotel[i].Endereco.Logradouro);
+					fprintf(Exporta, "\t\t<Numero>%s</Numero>\n",Hotel[i].Endereco.Numero);
+					fprintf(Exporta, "\t\t<Bairro>%s</Bairro>\n",Hotel[i].Endereco.Bairro);
+					fprintf(Exporta, "\t\t<Cidade>%s</Cidade>\n",Hotel[i].Endereco.Cidade);
+					fprintf(Exporta, "\t\t<Telefone>%s</Telefone>\n",Hotel[i].Telefone);
+					fprintf(Exporta, "\t\t<Email>%s</Email>\n",Hotel[i].Email);
+					fprintf(Exporta, "\t\t<Dono_Gerente>%s</Dono_Gerente>\n",Hotel[i].Dono_Gerente);
+					fprintf(Exporta, "\t\t<Telefone_Gerente>%s</Telefone_Gerente>\n",Hotel[i].Telefone_Gerente);
+					fprintf(Exporta, "\t\t<Check_in>%s</Check_in>\n",Hotel[i].Check_in);
+					fprintf(Exporta, "\t\t<Check_out>%s</Check_out>\n",Hotel[i].Check_out);
+					fprintf(Exporta, "\t\t<Lucro>%d</Lucro>\n",Hotel[i].Lucro);
+				fprintf(Exporta, "\t</registro>\n");
+			}
+			fprintf(Exporta, "</tabela=DADOS_HOTEL>\n");
+			//Salva em Xml
+		}
+	
+		if(On_Off.Hospede==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Hospede.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Hospede.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+			
+			while(Loop){//Passa do Arquivo pra Memoria
+				Hospede=realloc(Hospede,Indice[1]*sizeof(DADOS_HOSPEDE));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Hospede[(Indice[1])-1], sizeof(DADOS_HOSPEDE),1,Arquivo);//Realoca o ponteiro
+				}else{//Txt
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[1]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=DADOS_HOSPEDE>\n");
+			for (int i = 0; i < Indice[1]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Hospede[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome>%s</Nome>\n",Hospede[i].Nome);
+					fprintf(Exporta, "\t\t<CPF>%s</CPF>\n",Hospede[i].CPF);
+					fprintf(Exporta, "\t\t<Logradouro>%s</Logradouro>\n",Hospede[i].Endereco.Logradouro);
+					fprintf(Exporta, "\t\t<Numero>%s</Numero>\n",Hospede[i].Endereco.Numero);
+					fprintf(Exporta, "\t\t<Bairro>%s</Bairro>\n",Hospede[i].Endereco.Bairro);
+					fprintf(Exporta, "\t\t<Cidade>%s</Cidade>\n",Hospede[i].Endereco.Cidade);
+					fprintf(Exporta, "\t\t<Telefone>%s</Telefone>\n",Hospede[i].Telefone);
+					fprintf(Exporta, "\t\t<Email>%s</Email>\n",Hospede[i].Email);
+					fprintf(Exporta, "\t\t<Sexo>%s</Sexo>\n",Hospede[i].Sexo);
+					fprintf(Exporta, "\t\t<Estado_Civil>%s</Estado_Civil>\n",Hospede[i].Estado_Civil);
+					fprintf(Exporta, "\t\t<Data_Nascimento>%s</Data_Nascimento>\n",Hospede[i].Data_Nascimento);
+				fprintf(Exporta, "\t</registro>\n");
+			}
+			fprintf(Exporta, "</tabela=DADOS_HOSPEDE>\n");
+		}
+	
+		if(On_Off.Codigo_Categoria==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Codigo_Categoria.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Codigo_Categoria.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+			
+			while(Loop){//Passa do Arquivo pra Memoria
+				Codigo_Categoria=realloc(Codigo_Categoria,Indice[2]*sizeof(CODIGO_CATEGORIA));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Codigo_Categoria[(Indice[2])-1], sizeof(CODIGO_CATEGORIA),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+	
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[2]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);
+	
+	
+			fprintf(Exporta, "<tabela=CODIGO_CATEGORIA>\n");
+			for (int i = 0; i < Indice[2]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Codigo_Categoria[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome>%s</Nome>\n",Codigo_Categoria[i].Nome);
+					fprintf(Exporta, "\t\t<Descricao>%s</Descricao>\n",Codigo_Categoria[i].Descricao);
+					fprintf(Exporta, "\t\t<Valor_Diaria>%.2f</Valor_Diaria>\n",Codigo_Categoria[i].Valor_Diaria);
+					fprintf(Exporta, "\t\t<Capacidade_Adulto>%i</Capacidade_Adulto>\n",Codigo_Categoria[i].Capacidade_Adulto);
+					fprintf(Exporta, "\t\t<Capacidade_Crianca>%i</Capacidade_Crianca>\n",Codigo_Categoria[i].Capacidade_Crianca);
+				fprintf(Exporta, "\t</registro>\n");
+			}
+			fprintf(Exporta, "</tabela=CODIGO_CATEGORIA>\n");
+		}
+	
+		if(On_Off.Acomodacoes==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Acomodacoes.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Acomodacoes.txt","r");//Somente leitura
+			}
+	
+			//Abre o Arquivo
+			while(Loop){//Passa do Arquivo pra Memoria
+				Acomodacoes=realloc(Acomodacoes,Indice[3]*sizeof(ACOMODACOES));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Acomodacoes[(Indice[3])-1], sizeof(ACOMODACOES),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[3]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=ACOMODACOES>\n");
+			for (int i = 0; i < Indice[3]-1; ++i)//Salva em Txt
+			{fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Acomodacoes[i].Codigo);
+					fprintf(Exporta, "\t\t<Descricao>%s</Descricao>\n",Acomodacoes[i].Descricao);
+					fprintf(Exporta, "\t\t<Televisao>%d</Televisao>\n",Acomodacoes[i].Facilidades.Televisao);
+					fprintf(Exporta, "\t\t<Ar_Condicionado>%d</Ar_Condicionado>\n",Acomodacoes[i].Facilidades.Ar_Condicionado);
+					fprintf(Exporta, "\t\t<Frigobar>%d</Frigobar>\n",Acomodacoes[i].Facilidades.Frigobar);
+					fprintf(Exporta, "\t\t<Internet>%d</Internet>\n",Acomodacoes[i].Facilidades.Internet);
+					fprintf(Exporta, "\t\t<Banheira>%d</Banheira>\n",Acomodacoes[i].Facilidades.Banheira);
+					fprintf(Exporta, "\t\t<Cod_Categoria>%d</Cod_Categoria>\n",Acomodacoes[i].Cod_Categoria);
+					fprintf(Exporta, "\t\t<Cod_Hotel>%d</Cod_Hotel>\n",Acomodacoes[i].Cod_Hotel);
+				fprintf(Exporta, "\t</registro>\n");
+			}
+			fprintf(Exporta, "</tabela=ACOMODACOES>\n");
+		}
+	
+		if(On_Off.Fornecedores==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Fornecedores.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Fornecedores.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+	
+			while(Loop){//Passa do Arquivo pra Memoria
+				Fornecedores=realloc(Fornecedores,Indice[4]*sizeof(FORNECEDORES));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Fornecedores[(Indice[4])-1], sizeof(FORNECEDORES),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[4]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+	
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=FORNECEDORES>\n");
+			for (int i = 0; i < Indice[4]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Fornecedores[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome_Fantasia>%s</Nome_Fantasia>\n",Fornecedores[i].Nome_Fantasia);
+					fprintf(Exporta, "\t\t<Razao_Social>%s</Razao_Social>\n",Fornecedores[i].Razao_Social);
+					fprintf(Exporta, "\t\t<Inscricao_Estadual>%s</Inscricao_Estadual>\n",Fornecedores[i].Inscricao_Estadual);
+					fprintf(Exporta, "\t\t<CNPJ>%s</CNPJ>\n",Fornecedores[i].CNPJ);
+					fprintf(Exporta, "\t\t<Logradouro>%s</Logradouro>\n",Fornecedores[i].Endereco.Logradouro);
+					fprintf(Exporta, "\t\t<Numero>%s</Numero>\n",Fornecedores[i].Endereco.Numero);
+					fprintf(Exporta, "\t\t<Bairro>%s</Bairro>\n",Fornecedores[i].Endereco.Bairro);
+					fprintf(Exporta, "\t\t<Cidade>%s</Cidade>\n",Fornecedores[i].Endereco.Cidade);
+					fprintf(Exporta, "\t\t<Telefone>%s</Telefone>\n",Fornecedores[i].Telefone);
+					fprintf(Exporta, "\t\t<Email>%s</Email>\n",Fornecedores[i].Email);
+				fprintf(Exporta, "\t</registro>\n");
+	
+			}
+			fprintf(Exporta, "</tabela=FORNECEDORES>\n");
+		}
+	
+		if(On_Off.Funcionarios==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Funcionarios.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Funcionarios.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+	
+			while(Loop){//Passa do Arquivo pra Memoria
+				Funcionarios=realloc(Funcionarios,Indice[5]*sizeof(FUNCIONARIOS));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Funcionarios[(Indice[5])-1], sizeof(FUNCIONARIOS),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+	
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[5]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+	
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=FUNCIONARIOS>\n");
+			for (int i = 0; i < Indice[5]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Funcionarios[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome>%s</Nome>\n",Funcionarios[i].Nome);
+					fprintf(Exporta, "\t\t<Usuario>%s</Usuario>\n",Funcionarios[i].Usuario);
+					fprintf(Exporta, "\t\t<Senha>%s</Senha>\n",Funcionarios[i].Senha);//OLHAR SE ESTA CRIPITOGRAFADA
+					fprintf(Exporta, "\t\t<Permissao>%d</Permissao>\n",Funcionarios[i].Permissao);
+				fprintf(Exporta, "\t</registro>\n");
+	
+			}
+			fprintf(Exporta, "</tabela=FUNCIONARIOS>\n");
+		}
+	
+		if(On_Off.Produtos==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Produtos.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Produtos.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+	
+	
+			while(Loop){//Passa do Arquivo pra Memoria
+				Produtos=realloc(Produtos,Indice[6]*sizeof(PRODUTOS));//Realoca o ponteiro
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Produtos[(Indice[6])-1], sizeof(PRODUTOS),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[6]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=PRODUTOS>\n");
+			for (int i = 0; i < Indice[6]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Produtos[i].Codigo);
+					fprintf(Exporta, "\t\t<Estoque>%u</Estoque>\n",Produtos[i].Estoque);
+					fprintf(Exporta, "\t\t<Estoque_Minimo>%u</Estoque_Minimo>\n",Produtos[i].Estoque_Minimo);
+					fprintf(Exporta, "\t\t<Descricao>%s</Descricao>\n",Produtos[i].Descricao);
+					fprintf(Exporta, "\t\t<Preco_Custo>%.2f</Preco_Custo>\n",Produtos[i].Preco_Custo);
+					fprintf(Exporta, "\t\t<Preco_Venda>%.2f</Preco_Venda>\n",Produtos[i].Preco_Venda);
+					fprintf(Exporta, "\t\t<Cod_Hotel>%d</Cod_Hotel>\n",Produtos[i].Cod_Hotel);
+				fprintf(Exporta, "\t</registro>\n");
+	
+			}
+			fprintf(Exporta, "</tabela=PRODUTOS>\n");
+		}
+	
+		if(On_Off.Reserva==1){
+			if(Modo_Abertura==Arquivo_Binario){//Bin
+				Arquivo=fopen("Arquivos/Reserva.bin","rb");//Somente leitura
+			}else{//Txt
+				Arquivo=fopen("Arquivos/Reserva.txt","r");//Somente leitura
+			}
+			//Abre o Arquivo
+	
+			while(Loop){//Passa do Arquivo pra Memoria
+				Reserva=realloc(Reserva,Indice[7]*sizeof(RESERVA));//Realoca o ponteiro
+				
+				if(Modo_Abertura==Arquivo_Binario){//Bin
+					fread(&Reserva[(Indice[7])-1], sizeof(RESERVA),1,Arquivo);//
+				}else{
+					//CHAMA A FUNÇÂO DE LEITURA
+				}
+				if(feof(Arquivo)){
+					break;//Sai do loop ao chegar no fim do arquivo
+				}
+				Indice[7]++;//Adiciona 1 ao Contador;
+			}
+			fclose(Arquivo);//Fecha o Arquivo
+			
+	
+			//Escrevendo em XML
+			fprintf(Exporta, "<tabela=RESERVA>\n");
+			for (int i = 0; i < Indice[7]-1; ++i)//Salva em Txt
+			{
+				fprintf(Exporta, "\t<registro>\n");
+					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Reserva[i].Codigo);
+					fprintf(Exporta, "\t\t<Nome_Hospede>%s</Nome_Hospede>\n",Reserva[i].Nome_Hospede);
+					fprintf(Exporta, "\t\t<Codigo_Hospede>%d</Codigo_Hospede>\n",Reserva[i].Codigo_Hospede);
+					fprintf(Exporta, "\t\t<Cod_Acomodacao>%d</Cod_Acomodacao>\n",Reserva[i].Cod_Acomodacao);
+					fprintf(Exporta, "\t\t<Data_Entrada.Dia>%u</Data_Entrada.Dia>\n",Reserva[i].Data_Entrada.Dia);
+					fprintf(Exporta, "\t\t<Data_Entrada.Mes>%u</Data_Entrada.Mes>\n",Reserva[i].Data_Entrada.Mes);
+					fprintf(Exporta, "\t\t<Data_Entrada.Ano>%u</Data_Entrada.Ano>\n",Reserva[i].Data_Entrada.Ano);
+					fprintf(Exporta, "\t\t<Data_Saida.Dia>%u</Data_Saida.Dia>\n",Reserva[i].Data_Saida.Dia);
+					fprintf(Exporta, "\t\t<Data_Saida.Mes>%u</Data_Saida.Mes>\n",Reserva[i].Data_Saida.Mes);
+					fprintf(Exporta, "\t\t<Data_Saida.Ano>%u</Data_Saida.Ano>\n",Reserva[i].Data_Saida.Ano);
+					fprintf(Exporta, "\t\t<Data_Vencimento_Fatura.Dia>%u</Data_Vencimento_Fatura.Dia>\n",Reserva[i].Data_Vencimento_Fatura.Dia);
+					fprintf(Exporta, "\t\t<Data_Vencimento_Fatura.Mes>%u</Data_Vencimento_Fatura.Mes>\n",Reserva[i].Data_Vencimento_Fatura.Mes);
+					fprintf(Exporta, "\t\t<Data_Vencimento_Fatura.Ano>%u</Data_Vencimento_Fatura.Ano>\n",Reserva[i].Data_Vencimento_Fatura.Ano);
+					fprintf(Exporta, "\t\t<Valor_Fatura>%.2f</Valor_Fatura>\n",Reserva[i].Valor_Fatura);
+					fprintf(Exporta, "\t\t<Pago>%d</Pago>\n",Reserva[i].Pago);
+					fprintf(Exporta, "\t\t<Valor_Conta>%.2f</Valor_Conta>\n",Reserva[i].Valor_Conta);
+					fprintf(Exporta, "\t\t<Modo_Pagamento>%d</Modo_Pagamento>\n",Reserva[i].Modo_Pagamento);
+					//VOLTAR E IMPLEMENTAR EXPORTACAO DE PRODUTO ASSIM QUE ACABAR FLUXO DE CAIXA
+					//fprintf(Exporta, "\t\t<Codigo_Produto>%d</Codigo_Produto>\n",Reserva[i].Codigo_Produto);
+					//fprintf(Exporta, "\t\t<Quantidade_De_Produtos>%d</Quantidade_De_Produtos>\n",Reserva[i].Quantidade_De_Produtos);
+					//fprintf(Exporta, "\t\t<Prazo_Vista>%d</Prazo_Vista>\n",Reserva[i].Prazo_Vista);
+				fprintf(Exporta, "\t</registro>\n");
+	
+			}
+			fprintf(Exporta, "</tabela=RESERVA>\n");		
+		}
+	fclose(Exporta);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	#endif

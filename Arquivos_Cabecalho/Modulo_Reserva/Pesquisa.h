@@ -106,57 +106,12 @@ int Todas_Acomodacoes_BIN(char Url[99], int Acomodacoes_Disponiveis[],int Acomod
 }
 
 void Main_Pesquisa(){
-	int Acomodacao_Disponiveis[999] = {0},Acomodacao_Indisponiveis[999] = {0};
-	int Contador_Acomodacao_Indisponiveis = 0, Contador_Acomodacao_Disponiveis = 0;
-	char Arquivo_Fluxo[999];
-	DATA Data_Entrada,Data_Saida,Data;
-	do{
-		Verde("\nDigite a data referente a Entrada");
-		Recebe_Data(&Data_Entrada,1);
-		Verde("\nDigite a data referente a Saida");
-		Data_Saida.Ano = Data_Entrada.Ano;
-		Data_Saida.Mes = Data_Entrada.Mes;		
-		Recebe_Data(&Data_Saida,2);
-		Data.Dia = Data_Entrada.Dia;
-		Data.Mes = Data_Entrada.Mes;
-		Data.Ano = Data_Entrada.Ano;
-		Data.Dia_Saida = Data_Saida.Dia;
-		if(Data.Dia_Saida <Data_Entrada.Dia){
-			Vermelho("O dia de entrada não pode ser anterior ao dia de saida");
-		}
-	}while(Data.Dia_Saida < Data.Dia);
-	//Equanto a data de entrada for menor que a data de saida repete o loop
-	//Recebe dados da Data
-	//PESQUISA Tipo_Pesquisa(); IMPLEMENTAR DPS
-	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/");
-	Cria_Pasta(Arquivo_Fluxo);
-	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u",Data_Entrada.Ano);
-	printf("%s",Arquivo_Fluxo);
-	Cria_Pasta(Arquivo_Fluxo);
-	//Cria Pasta	
-	system("clear");
-	sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Data_Entrada.Ano,Data_Entrada.Mes);
-	Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);
-	//Cria arquivo
-	if(Arquivo_Binario_Vazio(Arquivo_Fluxo) == 0){
-		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Data_Entrada, Data_Saida,Acomodacao_Indisponiveis);
-		
-	}
-	if(Configuracoes() == Arquivo_Binario){
-		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_BIN("Arquivos/Acomodacoes.bin", Acomodacao_Disponiveis, Acomodacao_Indisponiveis, Contador_Acomodacao_Indisponiveis);
-		Mostra_Acomodacoes_BIN(Contador_Acomodacao_Disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.bin");
-		Verde("\nDigite 1 para continuar\n");
-		PAUSA;
-
-	}else if(Configuracoes() == Arquivo_Texto){
-		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt", Acomodacao_Disponiveis, Acomodacao_Indisponiveis, Contador_Acomodacao_Indisponiveis);
-		Mostra_Acomodacoes_TXT(Contador_Acomodacao_Disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.txt");
-		Verde("\nDigite 1 para continuar\n");
-		PAUSA;
-		
-		//Mostra todas Acomodacoes Disponiveis da pesquisa
-	}
-//	Verifica_Fluxo(char Url[999], DATA Data_Entrada,DATA Data_Saida, int Acomodacao_Indisponiveis[]){
+	int Indice_Disponiveis,Vetor_Cod_Acomodacao_Disponivel[Tamanho2];
+	DATA Data;
+	PESQUISA Pesquisar;
+	Pesquisar = Tipo_Pesquisa();
+	Data=Pesquisa(Pesquisar,&Indice_Disponiveis,Vetor_Cod_Acomodacao_Disponivel);
+	
 		
 }
 void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[]){
@@ -251,7 +206,6 @@ void Mostra_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[])
 	if(Arquivo_Vazio==0){
 		Vermelho("O Arquivo está vazio\n");
 	}
-	PAUSA;
 }
 
 fclose(Arquivo);
@@ -311,7 +265,6 @@ void Mostra_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[])
 		if(Arquivo_Vazio==0){
 			Vermelho("O Arquivo está vazio\n");
 	}
-	PAUSA;
 }
 
 fclose(Arquivo);
@@ -414,7 +367,242 @@ PESQUISA Tipo_Pesquisa(){
 
 	return Pesquisa;
 }
-DATA Pesquisa(PESQUISA Pesquisa){
+
+int Retorna_Acomodacoes_Indisponiveis_Com_Codigo_Categoria(int Codigo_Categoria, int Modo_Abertura, int Acomodacao_Indisponiveis[], int Contador_Acomodacao_Indisponiveis){
+	//Funcao para retornar todas as acomodacoes que possuem o codigo digitado pelo usuario
+	FILE *Arquivo;
+	//Ponteiro para o arquivo
+	//Contador acomodacoes indisponiveiss
+	ACOMODACOES Acomodacoes;
+	//Cria uma variavel do tipo AcomodacaoL;
+	if(Modo_Abertura == Arquivo_Texto){
+		char Temporario[Tamanho2];
+		//Temporario para pular dados nao correspondentes ao codigo
+
+		Arquivo=fopen("Arquivos/Acomodacoes.txt","r");
+			//Abre o Arquivo
+		int Arquivo_Vazio=0;
+
+	
+		if(Arquivo==NULL){
+			Vermelho("O Arquivo não foi aberto corretamente\n");
+		}else{
+			
+			do{
+				fscanf(Arquivo,"%d",&Acomodacoes.Codigo);
+				getc(Arquivo);
+				for(int i = 0; i < 6; i++){
+					fscanf(Arquivo,"%[^;]s",Temporario);
+					getc(Arquivo);
+				}
+				fscanf(Arquivo,"%d",&Acomodacoes.Cod_Categoria);
+				getc(Arquivo);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					//Expreção Regular
+				if(Acomodacoes.Cod_Categoria == Codigo_Categoria){
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+				}else{
+					Acomodacao_Indisponiveis[Contador_Acomodacao_Indisponiveis] = Acomodacoes.Codigo;
+					//Adiciona o codigo nao correspondente ao vetor
+					Contador_Acomodacao_Indisponiveis++;
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+					//Expressao para pular o resto dos dados ate o fim do arquivo
+				}
+				
+					
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+					//Pula o Ponteiro para o proximo caractere
+				
+			}while(!feof(Arquivo));//Entra no loop se não estiver apontando para o final do arquivo;
+			fclose(Arquivo);
+			
+		}		
+	}else if(Modo_Abertura == Arquivo_Binario){
+		
+		Arquivo = fopen("Arquivos/Acomodacoes.bin","rb");
+		int Arquivo_Vazio=0;
+		if(Arquivo == NULL){
+			Vermelho("\nNao foi possivel abrir o arquivo!");
+		}else{
+			while(!feof(Arquivo)){
+				fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				if(Acomodacoes.Cod_Categoria != Codigo_Categoria){
+					Acomodacao_Indisponiveis[Contador_Acomodacao_Indisponiveis] = Acomodacoes.Codigo;
+					//Adiciona o codigo nao correspondente ao vetor
+					Contador_Acomodacao_Indisponiveis++;
+				}
+				//Contador para verificar se o arquivo está em branco
+			}
+			fclose(Arquivo);
+		}
+	}
+	return Contador_Acomodacao_Indisponiveis;
+}
+int Retorna_Acomodacoes_Indisponiveis_Com_Quantidade_Pessoas(int Adultos, int Criancas,int Codigo_Acomodacao_Invalidas[], int Indice_Invalido){
+	FILE *Arquivo;
+	CODIGO_CATEGORIA Codigo_Categoria;
+	ACOMODACOES Acomodacoes;
+	char Temporario[Tamanho2];
+	int Codigo_Categoria_OK[Tamanho2],Indice_Codigo_Categoria=0;
+	int Modo_Abertura=Configuracoes();
+	int Auxiliar = 0;
+	if(Modo_Abertura == Arquivo_Binario){
+		Arquivo = fopen("Arquivos/Codigo_Categoria.bin","rb");
+	}else if(Modo_Abertura == Arquivo_Texto){
+		Arquivo = fopen("Arquivos/Codigo_Categoria.txt","r");
+	}//Abre o arquivo
+
+	while(!feof(Arquivo)){
+		if(Modo_Abertura == Arquivo_Binario){
+			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);	
+		}
+		else if(Modo_Abertura == Arquivo_Texto){
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Codigo);
+			for(int i=0 ; i < 3;i++){
+				fscanf(Arquivo,"%[^;]s",Temporario);
+				getc(Arquivo);
+			}
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade_Adulto);
+			fscanf(Arquivo,"%d",&Codigo_Categoria.Capacidade_Crianca);
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+		}
+		if(feof(Arquivo)){
+			break;
+		}
+		if(Codigo_Categoria.Capacidade_Adulto >= Adultos){
+			if(Codigo_Categoria.Capacidade_Crianca >= Criancas){
+				Codigo_Categoria_OK[Indice_Codigo_Categoria] = Codigo_Categoria.Codigo;	
+				Indice_Codigo_Categoria++;
+			}
+		}
+	}//Preencher vetor com Codigo de acomodaçoes que se enquadrao na quantidade de pessoas 
+
+	fclose(Arquivo);
+	//Fecha o arquivo
+
+	if(Modo_Abertura == Arquivo_Binario){
+		Arquivo = fopen("Arquivos/Acomodacoes.bin","rb");
+	}else if(Modo_Abertura == Arquivo_Texto){
+		Arquivo = fopen("Arquivos/Acomodacoes.txt","r");
+	}//Abre o arquivo
+
+	while(!feof(Arquivo)){
+		if(Modo_Abertura == Arquivo_Binario){
+			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);	
+		}
+		else if(Modo_Abertura == Arquivo_Texto){
+			fscanf(Arquivo,"%d",&Acomodacoes.Codigo);
+			for(int i = 0 ; i < 7;	i++){
+				fscanf(Arquivo,"%[^;]s",Temporario);
+				getc(Arquivo);
+			}
+			fscanf(Arquivo,"%d",&Acomodacoes.Cod_Categoria);
+			getc(Arquivo);
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+		}
+		if(feof(Arquivo)){
+			break;
+		}
+		for(int i=0 ; i <= Indice_Codigo_Categoria; i++){
+			if(Acomodacoes.Cod_Categoria == Codigo_Categoria_OK[i]){
+				Auxiliar++;
+			}
+		}
+		if(Auxiliar == 0){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}
+	}//Preencher vetor com Codigo de acomodaçoes que se enquadrao na quantidade de pessoas 
+
+	fclose(Arquivo);
+	//Fecha o arquivo
+	return Indice_Invalido;
+}
+
+int Retorna_Acomodacoes_Indisponiveis_Com_Facilidades(FACILIDADES Facilidade,int Codigo_Acomodacao_Invalidas[], int Indice_Invalido){
+	FILE *Arquivo;
+	ACOMODACOES Acomodacoes;
+	char Temporario[Tamanho2];
+	int Codigo_Acomodacao_OK[Tamanho2],Indice_Codigo_Acomodacao=0;
+	int Modo_Abertura=Configuracoes();
+	int Auxiliar = 0;
+	//Declara variaveis necessarias
+	if(Modo_Abertura == Arquivo_Binario){
+		Arquivo = fopen("Arquivos/Acomodacoes.bin","rb");
+	}else if(Modo_Abertura == Arquivo_Texto){
+		Arquivo = fopen("Arquivos/Acomodacoes.txt","r");
+	}//Abre o arquivo
+
+	while(!feof(Arquivo)){
+		if(Modo_Abertura == Arquivo_Binario){
+			fread(&Acomodacoes, sizeof(ACOMODACOES),1,Arquivo);	
+		}
+		else if(Modo_Abertura == Arquivo_Texto){
+			fscanf(Arquivo,"%d",&Acomodacoes.Codigo);
+			getc(Arquivo);
+			fscanf(Arquivo,"%[^;]s",Temporario);
+			getc(Arquivo);
+			//PULA CAMPO DE DESCRICAO POIS NAO INTERESSA
+			fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Televisao);
+			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Ar_Condicionado);
+			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Frigobar);
+			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Internet);
+			getc(Arquivo);
+			fscanf(Arquivo,"%d",&Acomodacoes.Facilidades.Banheira);
+			getc(Arquivo);
+			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+		}
+		if(feof(Arquivo)){
+			break;
+		}
+
+		/*
+		BLOCO DE IF para verifica se o usuario quer a Facilidade = 1 e se o lido do arquivo nao possui
+			Ou se o usuario nao quer a facilidade = 0 e o lido do arquivo possui tal facilidade
+		*/
+		if((Facilidade.Televisao == 0 && Acomodacoes.Facilidades.Televisao >= 1) || (Facilidade.Televisao == 1 && Acomodacoes.Facilidades.Televisao == 0)){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}else if((Facilidade.Ar_Condicionado == 0 && Acomodacoes.Facilidades.Ar_Condicionado >= 1) || (Facilidade.Ar_Condicionado == 1 && Acomodacoes.Facilidades.Ar_Condicionado == 0)){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}else if((Facilidade.Frigobar == 0 && Acomodacoes.Facilidades.Frigobar >= 1) || (Facilidade.Frigobar == 1 && Acomodacoes.Facilidades.Frigobar == 0)){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}else if((Facilidade.Internet == 0 && Acomodacoes.Facilidades.Internet >= 1) || (Facilidade.Internet == 1 && Acomodacoes.Facilidades.Internet == 0)){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}else if((Facilidade.Banheira == 0 && Acomodacoes.Facilidades.Banheira >= 1) || (Facilidade.Banheira == 1 && Acomodacoes.Facilidades.Banheira == 0)){
+			Codigo_Acomodacao_Invalidas[Indice_Invalido] = Acomodacoes.Codigo;
+			Indice_Invalido++;
+		}
+	}//Preencher vetor com Codigo de acomodaçoes que se enquadrao na quantidade de pessoas 
+	fclose(Arquivo);
+	//Fecha o arquivo
+	return Indice_Invalido;
+	//Retorna indice de facilidades invalidas
+}
+
+
+
+DATA Pesquisa(PESQUISA Pesquisa,int *Indice_Disponiveis,int Vetor_Cod_Acomodacao_Disponivel[]){
 	int Modo_Abertura=Configuracoes();
 	int Ok=0;
 	int Contador=0;
@@ -425,6 +613,8 @@ DATA Pesquisa(PESQUISA Pesquisa){
 	int Contador_Acomodacao_Indisponiveis = 0;
 	int Acomodacao_Existentes[999]={0};
 	DATA Data;
+	//Variaveis
+
 	if(Pesquisa.Data==1){
 		do{
 			Verde("\nDigite a data referente a Entrada");
@@ -447,7 +637,7 @@ DATA Pesquisa(PESQUISA Pesquisa){
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/");
 		Cria_Pasta(Arquivo_Fluxo);
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u",Pesquisa.Data_Entrada.Ano);
-		printf("%s",Arquivo_Fluxo);
+		//printf("%s",Arquivo_Fluxo);
 		Cria_Pasta(Arquivo_Fluxo);
 			
 		system("clear");
@@ -455,22 +645,28 @@ DATA Pesquisa(PESQUISA Pesquisa){
 		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);
 		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Pesquisa.Data_Entrada,Pesquisa.Data_Saida, Acomodacao_Indisponiveis);
 		//quando chamo a função verifica fluxo eu retorno o contador e o vetor com os codigos das acomodações indisponiveis
-	}
+	}//Pesquisa por data
+
 	if(Pesquisa.Categoria_Acomodacao==1){
+		Verde("Confira a lista com as categorias cadastradas \n");
+		if(Modo_Abertura == Arquivo_Texto){
+			Ler_Codigo_Categoria_Txt("Arquivos/Codigo_Categoria.txt");
+		}else if(Modo_Abertura == Arquivo_Binario){
+			Ler_Codigo_Categoria_Bin("Arquivos/Codigo_Categoria.bin");
+		}
 		do{
-			printf("Digite a categoria da Acomodação");
+			printf("Digite o codigo da categoria da Acomodação");
 			scanf("%d",&Pesquisa.Codigo_Categoria);
-
 			Ok = Valida_Codigo_Acomodacao(Pesquisa.Codigo_Categoria,Modo_Abertura);
-
 			if(Ok==0){
 				Vermelho("O codigo não está cadastrado \n");
 			}
 		}while(Ok==0);
 		//Validar acomodação;
-		//Olhar no arquivo se está cadastrp
-	}
-	//Pega dados sobre a categoria da acomodação
+		//Olhar no arquivo se está cadastrado
+		Contador_Acomodacao_Indisponiveis += Retorna_Acomodacoes_Indisponiveis_Com_Codigo_Categoria(Pesquisa.Codigo_Categoria, Modo_Abertura, Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);	
+			
+	}//Pesquisa por Categoria de Acomodação
 
 	if(Pesquisa.Quantidade_Pessoas==1){
 		do{
@@ -484,61 +680,75 @@ DATA Pesquisa(PESQUISA Pesquisa){
 		do{
 			printf("Digite a Quantidade de Crianças ");
 			scanf("%d",&Pesquisa.Quantidade_Criancas);
-			if(Pesquisa.Quantidade_Criancas){
+			if(Pesquisa.Quantidade_Criancas < 0){
 				Vermelho("\nDigite um numero maior ou igual a zero\n");
 			}
 		}while(Pesquisa.Quantidade_Criancas<0);
 		//Valida para não colocar um numero negativo
-	}
-	//Pega dados referente a quantidade de pessoas tanto criança quanto adultos
-
+		Contador_Acomodacao_Indisponiveis += Retorna_Acomodacoes_Indisponiveis_Com_Quantidade_Pessoas(Pesquisa.Quantidade_Adultos, Pesquisa.Quantidade_Criancas,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		Contador_Acomodacao_Indisponiveis++;
+	}//Pesquisa por Quantidade de crianças
 	if(Pesquisa.Facilidade==1){
 		do{
-			printf("Digite a quantidade de Televisoes:");
+			printf("Digite 1 para acomodacao com Televisoes ou 0 para sem:");
 			scanf("%d",&Pesquisa.Facilidades.Televisao);
 			if(Pesquisa.Facilidades.Televisao<0){
-				Vermelho("0 não é um valor valido");
+				Vermelho("Digite apenas 1 para sim e 0 para nao");
 			}
-		}while(Pesquisa.Facilidades.Televisao<0);
+		}while(Pesquisa.Facilidades.Televisao < 0 || Pesquisa.Facilidades.Televisao > 1);
 		
 		do{
-			printf("Digite a quantidade de Ar Condicionado:");
+			printf("Digite 1 para acomodacao com Ar Condicionado ou 0 para sem:");
 			scanf("%d",&Pesquisa.Facilidades.Ar_Condicionado);
 			if(Pesquisa.Facilidades.Ar_Condicionado<0){
-				Vermelho("0 não é um valor valido");
+				Vermelho("Digite apenas 1 para sim e 0 para nao");
 			}
-			}while(Pesquisa.Facilidades.Ar_Condicionado<0);
+			}while(Pesquisa.Facilidades.Televisao < 0 || Pesquisa.Facilidades.Televisao > 1);
 		
 		do{
-			printf("Digite a quantidade de Frigobar:");
+			printf("Digite 1 para acomodacao com Frigobar ou 0 para sem:");
 			scanf("%d",&Pesquisa.Facilidades.Frigobar);
 			if(Pesquisa.Facilidades.Frigobar<0){
-				Vermelho("0 não é um valor valido");
+				Vermelho("Digite apenas 1 para sim e 0 para nao");
 			}
-			}while(Pesquisa.Facilidades.Frigobar<0);
+			}while(Pesquisa.Facilidades.Televisao < 0 || Pesquisa.Facilidades.Televisao > 1);
 		
 		do{
-			printf("Possui Internet ?:");
+			printf("Digite 1 para acomodacao com Internet ou 0 para sem: ");
 			scanf("%d",&Pesquisa.Facilidades.Internet);
 			if(Pesquisa.Facilidades.Internet<0){
-				Vermelho("0 não é um valor valido");
+				Vermelho("Digite apenas 1 para sim e 0 para nao");
 			}
-			}while(Pesquisa.Facilidades.Internet<0);
+			}while(Pesquisa.Facilidades.Televisao < 0 || Pesquisa.Facilidades.Televisao > 1);
 		
 		do{
-			printf("Digite a quantidade de Banheiras:");
+			printf("Digite 1 para acomodacao com Banheiras ou 0 para sem:");
 			scanf("%d",&Pesquisa.Facilidades.Banheira);
 			if(Pesquisa.Facilidades.Banheira<0){
-				Vermelho("0 não é um valor valido");
+				Vermelho("Digite apenas 1 para sim e 0 para nao");
 			}
-		}while(Pesquisa.Facilidades.Banheira<0);
-
+		}while(Pesquisa.Facilidades.Televisao < 0 || Pesquisa.Facilidades.Televisao > 1);
+		Contador_Acomodacao_Indisponiveis += Retorna_Acomodacoes_Indisponiveis_Com_Facilidades(Pesquisa.Facilidades,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		//Ve qual Cod Categoria que tem a quantidade minima //Pegar da ultima função salva
 	}
 	//pega dados sobre as Facilidades(coisas que a acomodaçao possui)
-	
-	Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
-	//agora temos que subistituir as acomodações existentes 
-
+	if(Modo_Abertura == Arquivo_Texto){
+		Tamanho_Acomodacoes_disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		Verde("Acomodações Dispniveis\n");
+	   	Mostra_Acomodacoes_TXT(Tamanho_Acomodacoes_disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.txt");
+	}else if(Modo_Abertura == Arquivo_Binario){
+		Tamanho_Acomodacoes_disponiveis = Todas_Acomodacoes_BIN("Arquivos/Acomodacoes.bin",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		Verde("Acomodações Dispniveis\n");
+	   	Mostra_Acomodacoes_BIN(Tamanho_Acomodacoes_disponiveis, Acomodacao_Disponiveis, "Arquivos/Acomodacoes.bin");
+	}
+	Verde("\n Digite 1 e pressione ENTER para continuar");
+	PAUSA;
+	if(Vetor_Cod_Acomodacao_Disponivel != NULL && Indice_Disponiveis != NULL){
+		*Indice_Disponiveis == Tamanho_Acomodacoes_disponiveis;
+		for(int i = 0; i < Tamanho_Acomodacoes_disponiveis; i++){
+			Vetor_Cod_Acomodacao_Disponivel[i] = Acomodacao_Disponiveis[i];
+		}
+	}
 return Data;
 
 }
@@ -568,7 +778,7 @@ int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura){
 		//Ponteiro para Arquivo
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
-		Arquivo=fopen("Arquivos/Acomodacoes.txt","r");
+		Arquivo=fopen("Arquivos/Codigo_Categoria.txt","r");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -577,7 +787,7 @@ int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura){
 		}
 		break;
 		case Arquivo_Binario:
-		Arquivo=fopen("Arquivos/Acomodacoes.bin","rb");
+		Arquivo=fopen("Arquivos/Codigo_Categoria.bin","rb");
 			//Abre o Arquivo em Modo Leitura
 		if(Arquivo==NULL){
 				//Se retornar Null é porque nao conseguiu abrir o arquivo e provavelmente ele não existe
@@ -612,11 +822,11 @@ int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura){
 
 	}else if (Modo_de_Abertura == Arquivo_Binario)
 	{
-		ACOMODACOES Codigo_Categoria;
+		CODIGO_CATEGORIA Codigo_Categoria;
 		Contador1=0;
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
-			fread(&Codigo_Categoria, sizeof(ACOMODACOES),1,Arquivo);
+			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){
 				break;
@@ -632,13 +842,12 @@ int Valida_Codigo_Acomodacao(int Codigo, int Modo_de_Abertura){
 		Quick_Sort(Vetor_Codigos,0,Contador1);
 		//Ordena o Vetor;
 	}
-		for (int i = 0; i < Contador1; ++i)
+	for (int i = 0; i <= Contador1; ++i){
+		if (Codigo == Vetor_Codigos[i])
 		{
-			if (Codigo == Vetor_Codigos[i])
-			{
-				return 1;
-			}
+			return 1;
 		}
+	}
 	return 0;
 }
 
