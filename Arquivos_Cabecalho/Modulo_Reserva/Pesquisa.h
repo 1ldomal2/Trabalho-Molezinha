@@ -601,7 +601,6 @@ int Retorna_Acomodacoes_Indisponiveis_Com_Facilidades(FACILIDADES Facilidade,int
 }
 
 
-
 DATA Pesquisa(PESQUISA Pesquisa,int *Indice_Disponiveis,int Vetor_Cod_Acomodacao_Disponivel[]){
 	int Modo_Abertura=Configuracoes();
 	int Ok=0;
@@ -637,10 +636,9 @@ DATA Pesquisa(PESQUISA Pesquisa,int *Indice_Disponiveis,int Vetor_Cod_Acomodacao
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/");
 		Cria_Pasta(Arquivo_Fluxo);
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u",Pesquisa.Data_Entrada.Ano);
-		//printf("%s",Arquivo_Fluxo);
 		Cria_Pasta(Arquivo_Fluxo);
-			
 		system("clear");
+		//Cria pasta caso nao exista para evitar erro de caminho invalido
 		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Pesquisa.Data_Entrada.Ano,Pesquisa.Data_Entrada.Mes);
 		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);
 		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Pesquisa.Data_Entrada,Pesquisa.Data_Saida, Acomodacao_Indisponiveis);

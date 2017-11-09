@@ -827,53 +827,7 @@ int Ler_Configuracoes_Retorna_Modo_de_Abertura(){
 	return Modo_Abertura;
 }
 
-void Recebe_Dados_Produtos(int Codigo[],int Quantidade[],int Pagamento[]){
-	int Loop=1,Indice=0;
-	while(Loop){
-		int Codigo_Produto_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
-		
-		//Adapta A variavel de acordo com o modo de abertura
-		while(Auxiliar == 0){
-			printf("Codigo do Produto:");
-			scanf("%d",&Codigo_Produto_A_Ser_Validado);
-			//Recebe o codigo de Hotel OBS O Codigo do hotel é importante para vincular o produto ao hotel alem de automatizar o preço de venda de acordo com a porcentagem de lucro cadastrada no hotel
-			if (Valida_Codigo_Produto(Codigo_Produto_A_Ser_Validado, Ler_Configuracoes_Retorna_Modo_de_Abertura()))
-			{//Verifica se o codigo do hotel está cadastro 
-				Codigo[Indice] = Codigo_Produto_A_Ser_Validado;
-				//Atribui o codigo digitado a struct	
-				Auxiliar = 1;		
-				//Variavel para sair do loop
-			}else{
-				Vermelho("\nCodigo não cadastrado\n\n");
-				printf("Deseja sair sem efetuar o cadastro?(1 - Sim | 2 - Não)");
-				scanf("%d",&Sair_Da_Validacao);
-				if(Sair_Da_Validacao == 1){
-					Loop=0;
-					break;
-					//Sai do loop
-				}	
-			}
-		}
-		if(Auxiliar==1){
-			do{
-				printf("Digite o Quantidade do produto");
-				scanf("%d",&Quantidade[Indice]);
-			}while(Quantidade[Indice]<=0);
-			do{
-				printf("Digite o Pagamento do produto");
-				Vermelho(" 0 - Prazo");
-				Verde(" 1 - A vista");
-				scanf("%d",&Pagamento[Indice]);	
-			}while(Pagamento[Indice]!=Prazo && Pagamento[Indice]!=Vista);
-			Indice++;
-			printf("Deseja implementar outro Produto à lista ");
-			Verde("1 - Sim ");
-			Vermelho("0 - Não");
-			scanf("%d",&Loop);		
-		}
-		
-	}
-}
+
 int Valida_Codigo_Produto(int Codigo, int Modo_de_Abertura){
 	FILE *Arquivo;
 	char Temporario[9999];

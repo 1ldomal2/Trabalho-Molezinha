@@ -115,7 +115,10 @@ void Gravar_Reserva_Txt(char Url[99],RESERVA *Reserva){
 		Vermelho("Erro com Codigo do Hospede");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
 	}else if(Reserva->Cod_Acomodacao == 0){
 		Vermelho("Erro com Codigo de acomodacao");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
-	}else{
+	}else if(Reserva->Codigo == 0){
+		//Codigo da Reserva vem com erro usuario digitou codigo de produto invalido
+		Vermelho("Erro com Codigo de produtos");//Mostra mensagem de erro e nao deixa salvar no arquivo de BIN
+}	else{
 		fprintf(Arquivo,"%d;",Reserva->Codigo);
 		fprintf(Arquivo,"%s;",Reserva->Nome_Hospede);
 		fprintf(Arquivo,"%d;",Reserva->Codigo_Hospede);
@@ -259,8 +262,6 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 	char Arquivo_Fluxo[Tamanho2];
 	Modo_de_Abertura=Configuracoes();
 	PESQUISA Pesquisar;
-	Pesquisar = Tipo_Pesquisa();
-	Data = Pesquisa(Pesquisar,0,NULL);
 	int Codigo_Hospede_A_Ser_Validado,Codigo_Acomodacao_A_Ser_Validado,Auxiliar=0,Sair_Da_Validacao = 0;
 	//Codigos a serem validados
 	while(Auxiliar == 0){//Repete loop enquanto auxiliar se mantem no 0
@@ -289,27 +290,35 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 		printf("Codigo da Acomodacao:");
 		scanf("%d",&Codigo_Acomodacao_A_Ser_Validado);	
 		Reserva->Cod_Acomodacao = Codigo_Acomodacao_A_Ser_Validado;	
-		if(Pesquisar.Data == 1){
-			Reserva->Data_Entrada=Data;
-			Reserva->Data_Saida=Data;
-			Reserva->Data_Saida.Dia=Data.Dia_Saida;
-		}else{
-			printf("Digite o dia de entrada");
-			scanf("%u",&Reserva->Data_Entrada.Dia);
-			printf("Digite o mes de entrada");
-			scanf("%u",&Reserva->Data_Entrada.Mes);
-			printf("Digite o ano de entrada");
-			scanf("%u",&Reserva->Data_Entrada.Ano);
-			printf("Digite o dia de saida");
-			Reserva->Data_Saida = Reserva->Data_Entrada;
-			scanf("%u",&Reserva->Data_Saida.Dia);
-			Verde("A reserva será efetuada no periodo de:");
-			printf("%u/%u/%u a %u/%u/%u", Reserva->Data_Entrada.Dia,Reserva->Data_Entrada.Mes,Reserva->Data_Entrada.Ano,Reserva->Data_Saida.Dia,Reserva->Data_Saida.Mes,Reserva->Data_Saida.Ano);
-		}
-		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Reserva->Data_Entrada.Ano,Reserva->Data_Entrada.Mes);	
-		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);			
+
+		do{
+			Verde("\nDigite a data referente a Entrada");
+			Recebe_Data(&Reserva->Data_Entrada,1);
+			Verde("\nDigite a data referente a Saida");
+			Reserva->Data_Saida.Ano = Reserva->Data_Entrada.Ano;
+			Reserva->Data_Saida.Mes = Reserva->Data_Entrada.Mes;		
+			Recebe_Data(&Reserva->Data_Saida,2);
+			if(Reserva->Data_Saida.Dia < Reserva->Data_Entrada.Dia){
+				Vermelho("O dia de entrada não pode ser anterior ao dia de saida");
+			}
+		}while(Reserva->Data_Saida.Dia < Reserva->Data_Entrada.Dia);
+		//Recebe data que sera efetuada a reserva
+
+		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/");
+		Cria_Pasta(Arquivo_Fluxo);
+		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u",Reserva->Data_Entrada.Ano);
+		Cria_Pasta(Arquivo_Fluxo);
+		system("clear");
+		//Cria pasta caso nao exista para evitar erro de caminho invalido
+		sprintf(Arquivo_Fluxo,"Arquivos/Reserva/%u/%u",Reserva->Data_Entrada.Ano,Reserva->Data_Entrada.Mes);
+
+		Verificacao_Arquivo(Arquivo_Fluxo,Arquivo_Binario);
 		Contador_Acomodacao_Indisponiveis = Verifica_Fluxo(Arquivo_Fluxo, Reserva->Data_Entrada,Reserva->Data_Saida, Acomodacao_Indisponiveis);
-		Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		if(Modo_de_Abertura == Arquivo_Texto){
+			Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_TXT("Arquivos/Acomodacoes.txt",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		}else if(Modo_de_Abertura == Arquivo_Binario){
+			Contador_Acomodacao_Disponiveis = Todas_Acomodacoes_BIN("Arquivos/Acomodacoes.bin",Acomodacao_Disponiveis,Acomodacao_Indisponiveis,Contador_Acomodacao_Indisponiveis);
+		}
 		//Retorna os Codigos de acomodaacoes Disponiveis para cadastro e a quantidade
 		Auxiliar = 0;
 		//Zera auxiliar para poder validar a Acomodacao
@@ -324,6 +333,8 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 			 printf("%u/%u/%u a  %u/%u/%u", Reserva->Data_Entrada.Dia,Reserva->Data_Entrada.Mes,Reserva->Data_Entrada.Ano,Reserva->Data_Saida.Dia,Reserva->Data_Saida.Mes,Reserva->Data_Saida.Ano);
 			 Reserva->Cod_Acomodacao = 0;
 		}else{
+			Verde("A reserva será efetuada no periodo de:");
+			printf("%u/%u/%u a %u/%u/%u\n", Reserva->Data_Entrada.Dia,Reserva->Data_Entrada.Mes,Reserva->Data_Entrada.Ano,Reserva->Data_Saida.Dia,Reserva->Data_Saida.Mes,Reserva->Data_Saida.Ano);
 			printf("Digite o dia de Vencimento da Fatura");
 			scanf("%u",&Reserva->Data_Vencimento_Fatura.Dia);
 			printf("Digite o mes de Vencimento da Fatura");
@@ -346,7 +357,59 @@ void Recebe_Dados_Reserva(RESERVA *Reserva){
 					Vermelho("\nDigite um opção Valida\n");
 				}
 			}while(Reserva->Modo_Pagamento<1 || Reserva->Modo_Pagamento>4);
-			Recebe_Dados_Produtos(Reserva->Codigo_Produto,Reserva->Quantidade_De_Produtos,Reserva->Prazo_Vista);
+
+			int Loop=1,Indice=0;
+			while(Loop){
+				int Codigo_Produto_A_Ser_Validado,Sair_Da_Validacao = 0;
+				
+				Auxiliar=0;
+				//Adapta A variavel de acordo com o modo de abertura
+				while(Auxiliar == 0){
+					printf("Codigo do Produto:");
+					scanf("%d",&Codigo_Produto_A_Ser_Validado);
+					//Recebe o codigo de Hotel OBS O Codigo do hotel é importante para vincular o produto ao hotel alem de automatizar o preço de venda de acordo com a porcentagem de lucro cadastrada no hotel
+					if (Valida_Codigo_Produto(Codigo_Produto_A_Ser_Validado, Modo_de_Abertura))
+					{//Verifica se o codigo do hotel está cadastro 
+						Reserva->Codigo_Produto[Indice] = Codigo_Produto_A_Ser_Validado;
+						//Atribui o codigo digitado a struct	
+						Auxiliar = 1;		
+						//Variavel para sair do loop
+					}else{
+						Vermelho("\nCodigo não cadastrado\n\n");
+						printf("Deseja sair SEM efetuar o cadastro?(1 - Sim | 2 - Não)");
+						scanf("%d",&Sair_Da_Validacao);
+						if(Sair_Da_Validacao == 1){
+							Reserva->Codigo = 0;
+							//zera codigo de reserva indicando que nao fara o cadastro
+							Loop=0;
+							break;
+							//Sai do loop
+						}	
+					}
+				}
+				if(Auxiliar != 1){
+					Reserva->Codigo = 0;
+					//zera codigo de reserva indicando que nao fara o cadastro
+
+				}
+				if(Auxiliar==1){
+					do{
+						printf("Digite o Quantidade do produto");
+						scanf("%d",&Reserva->Quantidade_De_Produtos[Indice]);
+					}while(Reserva->Quantidade_De_Produtos[Indice]<=0);
+					do{
+						printf("Digite o Pagamento do produto");
+						Vermelho(" 0 - Prazo");
+						Verde(" 1 - A vista");
+						scanf("%d",&Reserva->Prazo_Vista[Indice]);	
+					}while(Reserva->Prazo_Vista[Indice]!=Prazo && Reserva->Prazo_Vista[Indice]!=Vista);
+					Indice++;
+					printf("Deseja implementar outro Produto à lista ");
+					Verde("1 - Sim ");
+					Vermelho("0 - Não");
+					scanf("%d",&Loop);		
+				}				
+			}
 		}
 	}
 	//RECEBER DADOS PRODUTOS
@@ -565,9 +628,12 @@ void Gravar_Reserva_Bin(char Url[99],RESERVA *Reserva){
 	}
 	
 	if(Reserva->Codigo_Hospede == 0){//Se codigo do hotel voltar como 0 indica que o codigo do hotel nao foi validado
-		Vermelho("Erro com Codigo do Hospede");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+		Vermelho("Erro com Codigo do Hospede");//Mostra mensagem de erro e nao deixa salvar no arquivo de BIN
 	}else if(Reserva->Cod_Acomodacao == 0){
-		Vermelho("Erro com Codigo de acomodacao");//Mostra mensagem de erro e nao deixa salvar no arquivo de TXT
+		Vermelho("Erro com Codigo de acomodacao");//Mostra mensagem de erro e nao deixa salvar no arquivo de BIN
+	}else if(Reserva->Codigo == 0){
+			//Codigo da Reserva vem com erro usuario digitou codigo de produto invalido
+		Vermelho("Erro com Codigo de produtos");//Mostra mensagem de erro e nao deixa salvar no arquivo de BIN
 	}else{
 		fwrite(Reserva, sizeof(RESERVA), 1, Arquivo); 
 			//Primeiro argumento é um ponteiro .... como proceder
