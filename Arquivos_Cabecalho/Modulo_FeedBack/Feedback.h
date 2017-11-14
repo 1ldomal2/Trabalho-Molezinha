@@ -16,7 +16,9 @@ void MainFeedback(){
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;
 				}else{
-					//Chamar funcao para printar na tela com filtro de sexo
+					Filtro_Hospede_Sexo(Tela);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;						
 				}
 			break;
 			case Acomodacoes:
@@ -35,7 +37,9 @@ void MainFeedback(){
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;
 				}else{
-					//Chamar funcao para printar na tela com filtro de sexo
+					Filtro_Hospede_Sexo(Csv);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
 				}
 			break;
 			case Acomodacoes:
@@ -225,12 +229,13 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 		}
 	}
 }
-/*void Filtro_Hospede_Sexo(int Modo_Feedback){
+void Filtro_Hospede_Sexo(int Modo_Feedback){
 	//Funcao para realizar filtro por codigos de hospede
 	int Modo_Abertura = Configuracoes();
 	int Sexo = 0;
 	do{
 		Verde("Digite 1 - Masculino\n2 - Feminino\n3 - Outro:\n");
+		scanf("%d",&Sexo);
 		if(Sexo < 1 || Sexo > 3){
 			Vermelho("Digite um valor valido para sexo");
 		}
@@ -241,11 +246,9 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 	int Codigos[Quantidade_Codigos];
 	int Contador_Codigos = 0;
 	int Indice_Iguais = 0;
+	int Auxiliar = 0;
 	//Vetor de codigos com a quantidade exata do range de codigos que foi passado, e contador de condigos
-	for(int i = Codigo_Inicial; i <= Codigo_Final; i++){
-		Codigos[Contador_Codigos] = i;
-		Contador_Codigos++;
-	}
+	
 	if(Modo_Abertura == Arquivo_Texto){
 	//Caso modo de abertura seja TXT
 	char Url[Tamanho2],Temporario[Tamanho2];
@@ -260,8 +263,7 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 	Arquivo=fopen(Url,"r");
 		//Abre o Arquivo
 	int Arquivo_Vazio=0;
-		
-	
+
 	if(Arquivo==NULL){
 		Vermelho("O Arquivo não foi aberto corretamente\n");
 	}else{
@@ -269,81 +271,90 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 			fscanf(Arquivo,"%d",&Hospede.Codigo);
 				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
 				//Expreção Regular
-			getc(Arquivo);
-			//Pula o Ponteiro para o proximo caractere
-			for(int i = 0;i < Quantidade_Codigos; i++){
-				if(Codigos[i] == Hospede.Codigo){
-					if(feof(Arquivo)){
-						//Verifica se esta no fim do arquivo
-						break;
-						//Sai do loop
-					}
-					fscanf(Arquivo,"%[^;]s",Hospede.Nome);
-					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
-					//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Sexo);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Estado_Civil);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.CPF);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Logradouro);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Numero);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Bairro);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Cidade);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Telefone);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Email);
-						//Expreção Regular
-					getc(Arquivo);
-						//Pula o Ponteiro para o proximo caractere
-					fscanf(Arquivo,"%[^;]s",Hospede.Data_Nascimento);
-						//Expreção Regular
-					getc(Arquivo);
-					getc(Arquivo);
-					//Pula o Ponteiro para o proximo caracte (pula o \n)
-					if(Modo_Feedback == Tela){
-						Ler_Hospede_Memoria(Hospede);
-					}else if(Modo_Feedback == Csv){
-						Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
-						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
-					}
-					
-				}
-			}
 			if(feof(Arquivo)){
 				//Verifica se esta no fim do arquivo
 				break;
 				//Sai do loop
 			}
-			fscanf(Arquivo,"%[^\n]s",Temporario);
+			getc(Arquivo);
+			//Pula o Ponteiro para o proximo caractere
+			fscanf(Arquivo,"%[^;]s",Hospede.Nome);
+			//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+			//Expreção Regular
+			getc(Arquivo);
+				//Pula o Ponteiro para o proximo caractere
+			fscanf(Arquivo,"%[^;]s",Hospede.Sexo);
+				//Expreção Regular
+			getc(Arquivo);
+			Auxiliar = 0;
+			if(Sexo == 1){
+				if(strcmp(Hospede.Sexo, "Masculino") == 0 || strcmp(Hospede.Sexo, "masculino") == 0){
+					Auxiliar = 1;
+				}
+			}else if(Sexo == 2){
+				if(strcmp(Hospede.Sexo, "Feminino") == 0 || strcmp(Hospede.Sexo, "feminino") == 0){
+					Auxiliar = 1;
+				}
+			}else if(Sexo == 3){
+				if(Hospede.Sexo[0] != 'F' && Hospede.Sexo[0] != 'f' && Hospede.Sexo[0] != 'M' && Hospede.Sexo[0] != 'm'){
+					Auxiliar = 1;
+				}
+			}
+			//Bloco de IFs para comparar qual sexo foi selecionado no inicio e verificar se no arquivo tem o sexo desejado, caso tenha habilita auxiliar com 1
+			if(Auxiliar == 1){//Se auxiliar 1 le restante dos dados e chama funcao para gerar CSV ou printar na Tela
+				//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Estado_Civil);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.CPF);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Logradouro);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Numero);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Bairro);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Endereco.Cidade);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Telefone);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Email);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Hospede.Data_Nascimento);
+					//Expreção Regular
+				getc(Arquivo);
+				getc(Arquivo);
+				//Pula o Ponteiro para o proximo caracte (pula o \n)
+				if(Modo_Feedback == Tela){
+					Ler_Hospede_Memoria(Hospede);
+				}else if(Modo_Feedback == Csv){
+					Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
+					//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+				}
+			}else{
+				Auxiliar = 0;
+				fscanf(Arquivo,"%[^\n]s",Temporario);
+				//Pula resto dos campos pois nao interessa
+			}
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		
 	}
-
 	fclose(Arquivo);
 		//Fecha o Arquivo;
 	}else{
@@ -365,17 +376,28 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 					break;
 					//Sai do loop
 				}
-				for(int i = 0;i < Quantidade_Codigos; i++){
-					if(Codigos[i] == Hospede.Codigo){
-						if(Modo_Feedback == Tela){
-							Ler_Hospede_Memoria(Hospede);
-						}else if(Modo_Feedback == Csv){
-							Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
-							system("clear");
-							printf("\n");
-						}
+				if(Sexo == 1){
+					if(Hospede.Sexo[0] == 'M' || Hospede.Sexo[0] == 'm'){
+						Auxiliar = 1;
+					}
+				}else if(Sexo == 2){
+					if(Hospede.Sexo[0] == 'F' || Hospede.Sexo[0] == 'f'){
+						Auxiliar = 1;
+					}
+				}else if(Sexo == 3){
+					if(Hospede.Sexo[0] != 'F' && Hospede.Sexo[0] != 'f' && Hospede.Sexo[0] != 'M' && Hospede.Sexo[0] != 'm'){
+						Auxiliar = 1;
 					}
 				}
+				if(Auxiliar == 1){
+					if(Modo_Feedback == Tela){
+						Ler_Hospede_Memoria(Hospede);
+					}else if(Modo_Feedback == Csv){
+						Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
+						system("clear");
+						printf("\n");
+					}
+				}	
 			}
 			fclose(Arquivo);
 			
@@ -383,6 +405,6 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 	}
 
 }
-*/
+
 
 #endif

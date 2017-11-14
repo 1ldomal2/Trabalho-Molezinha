@@ -152,4 +152,5 @@ IMPORTACAO_EXPORTACAO Set_On_Off();
 void MainFeedback();
 int Tipo_Listagem_Hospede();
 void Filtro_Hospede_Codigos(int Modo_Feedback);	
+void Filtro_Hospede_Sexo(int Modo_Feedback);	
 #endif
