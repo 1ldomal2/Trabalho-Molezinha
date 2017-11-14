@@ -1113,7 +1113,7 @@
 
 												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 												getc(Arquivo);
-												fscanf(Arquivo,"%[^>]s",Produtos[Indice[4]-1].Descricao);
+												fscanf(Arquivo,"%[^<]s",Produtos[Indice[4]-1].Descricao);
 												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 												getc(Arquivo);
 
@@ -1190,61 +1190,61 @@
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Nome_Fantasia);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Nome_Fantasia);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Razao_Social);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Razao_Social);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Inscricao_Estadual);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Inscricao_Estadual);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].CNPJ);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].CNPJ);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Endereco.Logradouro);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Endereco.Logradouro);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Endereco.Numero);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Endereco.Numero);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Endereco.Bairro);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Endereco.Bairro);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Endereco.Cidade);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Endereco.Cidade);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Telefone);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Telefone);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Email);
+													fscanf(Arquivo,"%[^<]s",Fornecedores[Indice[5]-1].Email);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 													
@@ -1303,19 +1303,19 @@
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Nome);
+														fscanf(Arquivo,"%[^<]s",Funcionarios[Indice[6]-1].Nome);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Usuario);
+														fscanf(Arquivo,"%[^<]s",Funcionarios[Indice[6]-1].Usuario);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Senha);
+														fscanf(Arquivo,"%[^<]s",Funcionarios[Indice[6]-1].Senha);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
