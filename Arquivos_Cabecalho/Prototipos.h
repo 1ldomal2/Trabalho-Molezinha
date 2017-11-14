@@ -8,6 +8,8 @@
 
 //Funçoes
 //void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo);
+int MenuInicialFeedback();	
+int MenuListagemFeedback();	
 void Cria_Pasta(char Url[99]);	
 int Opcao_Acoes();
 int Main_All();
@@ -146,4 +148,8 @@ int Retorna_Acomodacoes_Indisponiveis_Com_Facilidades(FACILIDADES Facilidade,int
 //Importar/Exportar XML
 void Exportar();
 IMPORTACAO_EXPORTACAO Set_On_Off();	
+//FeedBack
+void MainFeedback();
+int Tipo_Listagem_Hospede();
+void Filtro_Hospede_Codigos(int Modo_Feedback);	
 #endif

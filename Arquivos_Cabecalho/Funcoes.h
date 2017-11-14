@@ -17,6 +17,7 @@ Falta fazer :
 
 //Prototipos de Função
 /*
+int MenuInicialFeedback();	
 int Opcao_Acoes();
 int Main_All();
 void Apagar_Modificar(char Url[99], int Codigo,int Modificar,MODO Modo,int Registro);
@@ -220,7 +221,8 @@ int Modulo(){
 		"\n\t1\tPara Registros"
 		"\n\t2\tPara Reservas"
 		"\n\t3\tPara Pesquisas"
-		"\n\t4\tPara Importar/Exportar XML"
+		"\n\t4\tFeedBack"
+		"\n\t5\tPara Importar/Exportar XML"
 		"\n\t0\tSair\n\t");
 		scanf("%d",&Registro);
 		system("clear");
@@ -808,6 +810,34 @@ int Converter_Decimal_Binario(int n0,int n1,int n2,int n3){
 	n3=n3*pow(2,3);
 	int Binario = n0+n1+n2+n3;
 	return Binario;
+}
+
+int MenuInicialFeedback(){
+	int Tipo_Listagem = 0;
+	do{
+		printf("Digite 1 para listagem na tela ou 2 para gerar csv");
+		scanf("%d",&Tipo_Listagem);
+		if(Tipo_Listagem > 2 || Tipo_Listagem < 1){
+			Vermelho("Digite um valor válido");
+		}
+	}while(Tipo_Listagem > 2 || Tipo_Listagem < 1);
+	return Tipo_Listagem;
+}
+int MenuListagemFeedback(){
+	int Tipo_Listagem = 0;
+	do{
+		Verde("Escolha qual dado deseja listar\n");
+		printf("1 - Hospedes\n"
+		"2 - Acomodações\n"
+		"3 - Reservas\n"
+		"4 - Produtos\n");
+		
+		scanf("%d",&Tipo_Listagem);
+		if(Tipo_Listagem > 4 || Tipo_Listagem < 1){
+			Vermelho("Digite um valor válido");
+		}
+	}while(Tipo_Listagem > 4 || Tipo_Listagem < 1);
+	return Tipo_Listagem;
 }
 
 int Ler_Configuracoes_Retorna_Modo_de_Abertura(){

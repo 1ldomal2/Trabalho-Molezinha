@@ -38,6 +38,8 @@ char BUGS[999];
 #include "Arquivos_Cabecalho/Modulo_Reserva/Pesquisa.h"
 //Modulo Importacao/ExportacaoXML
 #include "Arquivos_Cabecalho/Importacao_Exportacao/Importacao.h"
+//Modulo FeedBack
+#include "Arquivos_Cabecalho/Modulo_FeedBack/Feedback.h"
 
 
 
@@ -129,15 +131,16 @@ int main(int argc, char const *argv[])
 					Main_Pesquisa();
 					system("clear");
 				break;
+				case Feedback:
+					MainFeedback();	
+					system("clear");
+				break;
 				case Importar_ExportarXml:
 					Exportar();
 					system("clear");
 				break;
 				case 0:
 					system("clear");
-					Importacao();
-					DEBUG("EXPORTOU Depois Colocar no lugar certo");
-					PAUSA
 					Loop=0;
 				break;
 				default:
