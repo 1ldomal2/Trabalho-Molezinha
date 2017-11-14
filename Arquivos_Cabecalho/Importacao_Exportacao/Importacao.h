@@ -1,24 +1,5 @@
-/*problema com 
-	Com Cripitografia de senha 
-		e
-	RESERVA 
-	int Codigo_Produto[Tamanho2];//Linha Exclusiva
-	int Quantidade_De_Produtos[Tamanho2];//Linha Exclusiva
-	int Prazo_Vista[Tamanho2];//Linha Exclusiva
-
-
-	
-
-	*/
-
 	#ifndef _Importacao_
 	#define _Importacao_
-	
-	//Vai ler dos Arquivos
-	//Passa pro buffer
-	//Muda confi
-	//Salva em Csv
-	
 	
 	//TEM QUE PEGAR A URL QUE QUER SALVAR E CRIAR A PASTA
 	
@@ -276,7 +257,7 @@
 					fprintf(Exporta, "\t\t<Lucro>%d</Lucro>\n",Hotel[i].Lucro);
 				fprintf(Exporta, "\t</registro>\n");
 			}
-			fprintf(Exporta, "</tabela=DADOS_HOTEL>\n");
+			fprintf(Exporta, "</tabela>\n");
 			//Salva em Xml
 		}
 	
@@ -321,7 +302,7 @@
 					fprintf(Exporta, "\t\t<Data_Nascimento>%s</Data_Nascimento>\n",Hospede[i].Data_Nascimento);
 				fprintf(Exporta, "\t</registro>\n");
 			}
-			fprintf(Exporta, "</tabela=DADOS_HOSPEDE>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Codigo_Categoria==1){
@@ -360,7 +341,7 @@
 					fprintf(Exporta, "\t\t<Capacidade_Crianca>%i</Capacidade_Crianca>\n",Codigo_Categoria[i].Capacidade_Crianca);
 				fprintf(Exporta, "\t</registro>\n");
 			}
-			fprintf(Exporta, "</tabela=CODIGO_CATEGORIA>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Acomodacoes==1){
@@ -399,7 +380,7 @@
 					fprintf(Exporta, "\t\t<Cod_Hotel>%d</Cod_Hotel>\n",Acomodacoes[i].Cod_Hotel);
 				fprintf(Exporta, "\t</registro>\n");
 			}
-			fprintf(Exporta, "</tabela=ACOMODACOES>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Fornecedores==1){
@@ -443,7 +424,7 @@
 				fprintf(Exporta, "\t</registro>\n");
 	
 			}
-			fprintf(Exporta, "</tabela=FORNECEDORES>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Funcionarios==1){
@@ -482,7 +463,7 @@
 				fprintf(Exporta, "\t</registro>\n");
 	
 			}
-			fprintf(Exporta, "</tabela=FUNCIONARIOS>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Produtos==1){
@@ -522,7 +503,7 @@
 				fprintf(Exporta, "\t</registro>\n");
 	
 			}
-			fprintf(Exporta, "</tabela=PRODUTOS>\n");
+			fprintf(Exporta, "</tabela>\n");
 		}
 	
 		if(On_Off.Reserva==1){
@@ -578,10 +559,759 @@
 				fprintf(Exporta, "\t</registro>\n");
 	
 			}
-			fprintf(Exporta, "</tabela=RESERVA>\n");		
+			fprintf(Exporta, "</tabela>\n");		
 		}
 	fclose(Exporta);
 	}
+
+
+
+
+
+	
+void Importacao(){
+	int Loop=1,Indice[]={1,1,1,1,1,1,1,1,1};
+
+
+	DADOS_HOTEL *Hotel = malloc(sizeof(DADOS_HOTEL)); 
+	DADOS_HOSPEDE *Hospede = malloc(sizeof(DADOS_HOSPEDE)); 
+	ACOMODACOES *Acomodacoes=malloc(sizeof(ACOMODACOES));
+	CODIGO_CATEGORIA *Codigo_Categoria = malloc(sizeof(CODIGO_CATEGORIA)); 
+	PRODUTOS *Produtos = malloc(sizeof(PRODUTOS)); 
+	FORNECEDORES *Fornecedores = malloc(sizeof(FORNECEDORES)); 
+	FUNCIONARIOS *Funcionarios = malloc(sizeof(FUNCIONARIOS)); 
+	RESERVA *Reserva = malloc(sizeof(RESERVA)); 
+	FLUXO *Fluxo = malloc(sizeof(FLUXO));
+
+	char Url[Tamanho2],Temp[Tamanho2];
+	char Tag[Tamanho2];
+	int Contador=0;
+	FILE *Arquivo,*Salvar;
+	int Modo_Abertura = Configuracoes();
+	//{ Cria as Variaveis }//
+	
+	
+	
+	Verde("Caso o Arquivo esteja nesta pasta digite apenas o nome do arquivo caso contrario digite todo o caminho");
+	printf("\nDigite o Local do Arquivo:");
+	scanf("%s",Url);
+	strcat(Url,".xml");
+	//{ Pega url do arquivo }//
+	
+	
+	
+	Arquivo=fopen(Url,"r");
+	if(Arquivo==NULL){
+		Vermelho(Url);
+		printf(" não é um arquivo válido\n");
+		return;
+	}else{
+	//{ Abre arquivo em modo txt }//
+		do{
+			fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+			getc(Arquivo);//pula<
+			fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+			getc(Arquivo);//pula>
+			getc(Arquivo);//pula\n
+			//Le tag 
+			
+			if(strcmp(Tag,"tabela=DADOS_HOTEL")==0){ //Verifica se está na  tabela Hospede
+				while(Loop){
+					fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+					getc(Arquivo);//pula<
+					fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+					getc(Arquivo);//pula>
+					getc(Arquivo);//pula\n
+					//Le tag
+					
+					if(strcmp (Tag,"/tabela")==0){
+						Indice[0]--;//Corrige o Indice
+
+						if (Modo_Abertura==Arquivo_Binario)
+						{
+							Salvar=fopen("Arquivos/Hotel.bin","wb");
+							fclose(Salvar);
+							//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+							for (int i = 0; i < Indice[0]; ++i)
+							{
+								Gravar_Hotel_Bin("Arquivos/IMPORTADO",&Hotel[i]);
+								system("clear");
+							}
+							
+						}else{
+							Salvar=fopen("Arquivos/Hotel.bin","w");
+							fclose(Salvar);
+							//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+							for (int i = 0; i < Indice[0]; ++i)
+							{
+								Gravar_Hotel_Txt("Arquivos/IMPORTADO",&Hotel[i]);
+								system("clear");
+							}
+						}
+						break;//significa que chegou ao fim da tag
+					}else{
+						if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+							Hotel=realloc(Hotel,Indice[0]*sizeof(DADOS_HOTEL));//Realoca o ponteiro
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%d",&Hotel[Indice[0]-1].Codigo);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Nome_Fantasia);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Razao_Social);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Inscricao_Estadual);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].CNPJ);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Endereco.Logradouro);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Endereco.Numero);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Endereco.Bairro);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Endereco.Cidade);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Telefone);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Email);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Dono_Gerente);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Telefone_Gerente);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Check_in);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%[^<]s",Hotel[Indice[0]-1].Check_out);
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+
+							fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+							getc(Arquivo);
+							fscanf(Arquivo,"%d",&Hotel[Indice[0]-1].Lucro);				
+							fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+							getc(Arquivo);
+							
+							
+						}else{
+							if(strcmp (Tag,"/registro")==0){
+								Indice[0]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+							}
+						}
+					}
+				}
+			}else{
+				if(strcmp(Tag,"tabela=DADOS_HOSPEDE")==0){ //Verifica se está na  tabela Hospede
+					while(Loop){
+						fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+						getc(Arquivo);//pula<
+						fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+						getc(Arquivo);//pula>
+						getc(Arquivo);//pula\n
+						//Le tag
+						
+						if(strcmp (Tag,"/tabela")==0){
+							Indice[1]--;//Corrige o Indice
+
+							if (Modo_Abertura==Arquivo_Binario)
+							{
+								Salvar=fopen("Arquivos/Hospede.bin","wb");
+								fclose(Salvar);
+								//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+								for (int i = 0; i < Indice[1]; ++i)
+								{
+									Gravar_Hospede_Bin("Arquivos/IMPORTADO",&Hospede[i]);
+									system("clear");
+								}
+								
+							}else{
+								Salvar=fopen("Arquivos/Hospede.bin","w");
+								fclose(Salvar);
+								//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+								for (int i = 0; i < Indice[1]; ++i)
+								{
+									Gravar_Hospede_Txt("Arquivos/IMPORTADO",&Hospede[i]);
+									system("clear");
+								}
+							}
+							break;//significa que chegou ao fim da tag
+						}else{
+							if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+								Hospede=realloc(Hospede,Indice[1]*sizeof(DADOS_HOSPEDE));//Realoca o ponteiro
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%d",&Hospede[Indice[1]-1].Codigo);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Nome);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].CPF);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Endereco.Logradouro);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Endereco.Numero);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Endereco.Bairro);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Endereco.Cidade);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Telefone);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Email);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Sexo);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Estado_Civil);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);
+
+								fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+								getc(Arquivo);
+								fscanf(Arquivo,"%[^<]s",Hospede[Indice[1]-1].Data_Nascimento);
+								fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+								getc(Arquivo);							
+								
+							}else{
+								if(strcmp (Tag,"/registro")==0){
+									Indice[1]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+								}
+							}
+						}
+					}
+				}else{
+					if(strcmp(Tag,"tabela=CODIGO_CATEGORIA")==0){ //Verifica se está na  tabela Codigo_Categoria
+						while(Loop){
+							fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+							getc(Arquivo);//pula<
+							fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+							getc(Arquivo);//pula>
+							getc(Arquivo);//pula\n
+							//Le tag
+							
+							if(strcmp (Tag,"/tabela")==0){
+								Indice[2]--;//Corrige o Indice
+
+								if (Modo_Abertura==Arquivo_Binario)
+								{
+									Salvar=fopen("Arquivos/Codigo_Categoria.bin","wb");
+									fclose(Salvar);
+									//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+									for (int i = 0; i < Indice[2]; ++i)
+									{
+										Gravar_Codigo_Categoria_Bin("Arquivos/IMPORTADO",&Codigo_Categoria[i]);
+										system("clear");
+									}
+									
+								}else{
+									Salvar=fopen("Arquivos/Codigo_Categoria.bin","w");
+									fclose(Salvar);
+									//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+									for (int i = 0; i < Indice[2]; ++i)
+									{
+										Gravar_Codigo_Categoria_Txt("Arquivos/IMPORTADO",&Codigo_Categoria[i]);
+										system("clear");
+									}
+								}
+								break;//significa que chegou ao fim da tag
+							}else{
+								if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+									Codigo_Categoria=realloc(Codigo_Categoria,Indice[2]*sizeof(CODIGO_CATEGORIA));//Realoca o ponteiro
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%d",&Codigo_Categoria[Indice[2]-1].Codigo);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%[^<]s",Codigo_Categoria[Indice[2]-1].Nome);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%[^<]s",Codigo_Categoria[Indice[2]-1].Descricao);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%f",&Codigo_Categoria[Indice[2]-1].Valor_Diaria);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%d",&Codigo_Categoria[Indice[2]-1].Capacidade_Adulto);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+
+									fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+									getc(Arquivo);
+									fscanf(Arquivo,"%d",&Codigo_Categoria[Indice[2]-1].Capacidade_Crianca);
+									fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+									getc(Arquivo);
+								}else{
+									if(strcmp (Tag,"/registro")==0){
+										Indice[2]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+									}
+								}
+							}
+						}
+					}else{
+						if(strcmp(Tag,"tabela=ACOMODACOES")==0){ //Verifica se está na  tabela Acomodacoes
+							while(Loop){
+								fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+								getc(Arquivo);//pula<
+								fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+								getc(Arquivo);//pula>
+								getc(Arquivo);//pula\n
+								//Le tag
+								
+								if(strcmp (Tag,"/tabela")==0){
+									Indice[3]--;//Corrige o Indice
+
+									if (Modo_Abertura==Arquivo_Binario)
+									{
+										Salvar=fopen("Arquivos/Acomodacoes.bin","wb");
+										fclose(Salvar);
+										//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+										for (int i = 0; i < Indice[3]; ++i)
+										{
+											Gravar_Acomodacoes_Bin("Arquivos/IMPORTADO",&Acomodacoes[i]);
+											system("clear");
+										}
+										
+									}else{
+										Salvar=fopen("Arquivos/Acomodacoes.bin","w");
+										fclose(Salvar);
+										//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+										for (int i = 0; i < Indice[3]; ++i)
+										{
+											Gravar_Acomodacoes_Txt("Arquivos/IMPORTADO",&Acomodacoes[i]);
+											system("clear");
+										}
+									}
+									break;//significa que chegou ao fim da tag
+								}else{
+									if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+										Acomodacoes=realloc(Acomodacoes,Indice[3]*sizeof(ACOMODACOES));//Realoca o ponteiro
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Codigo);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%[^<]s",Acomodacoes[Indice[3]-1].Descricao);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Facilidades.Televisao);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Facilidades.Ar_Condicionado);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Facilidades.Frigobar);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Facilidades.Internet);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Facilidades.Banheira);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Cod_Categoria);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+
+										fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+										getc(Arquivo);
+										fscanf(Arquivo,"%d",&Acomodacoes[Indice[3]-1].Cod_Hotel);
+										fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+										getc(Arquivo);
+										
+									}else{
+										if(strcmp (Tag,"/registro")==0){
+											Indice[3]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+										}
+									}
+								}
+							}
+						}else{
+							if(strcmp(Tag,"tabela=PRODUTOS")==0){ //Verifica se está na  tabela Produtos
+								while(Loop){
+									fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+									getc(Arquivo);//pula<
+									fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+									getc(Arquivo);//pula>
+									getc(Arquivo);//pula\n
+									//Le tag
+									
+									if(strcmp (Tag,"/tabela")==0){
+										Indice[4]--;//Corrige o Indice
+
+										if (Modo_Abertura==Arquivo_Binario)
+										{
+											Salvar=fopen("Arquivos/Produtos.bin","wb");
+											fclose(Salvar);
+											//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+											for (int i = 0; i < Indice[4]; ++i)
+											{
+												Gravar_Produtos_Bin("Arquivos/IMPORTADO",&Produtos[i]);
+												system("clear");
+											}
+											
+										}else{
+											Salvar=fopen("Arquivos/Produtos.bin","w");
+											fclose(Salvar);
+											//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+											for (int i = 0; i < Indice[4]; ++i)
+											{
+												Gravar_Produtos_Txt("Arquivos/IMPORTADO",&Produtos[i]);
+												system("clear");
+											}
+										}
+										break;//significa que chegou ao fim da tag
+									}else{
+										if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+											Produtos=realloc(Produtos,Indice[4]*sizeof(PRODUTOS));//Realoca o ponteiro
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%d",&Produtos[Indice[4]-1].Codigo);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%u",&Produtos[Indice[4]-1].Estoque);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%u",&Produtos[Indice[4]-1].Estoque_Minimo);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%[^>]s",Produtos[Indice[4]-1].Descricao);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%f",&Produtos[Indice[4]-1].Preco_Custo);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%f",&Produtos[Indice[4]-1].Preco_Venda);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+
+											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+											getc(Arquivo);
+											fscanf(Arquivo,"%d",&Produtos[Indice[4]-1].Cod_Hotel);
+											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+											getc(Arquivo);
+											
+										}else{
+											if(strcmp (Tag,"/registro")==0){
+												Indice[4]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+											}
+										}
+									}
+								}
+							}else{
+								if(strcmp(Tag,"tabela=RESERVA")==0){ //Verifica se está na  tabela Reserva
+									while(Loop){
+										fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
+										getc(Arquivo);//pula<
+										fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
+										getc(Arquivo);//pula>
+										getc(Arquivo);//pula\n
+										//Le tag
+										
+										if(strcmp (Tag,"/tabela")==0){
+											Indice[5]--;//Corrige o Indice
+
+											if (Modo_Abertura==Arquivo_Binario)
+											{
+												Salvar=fopen("Arquivos/Reserva.bin","wb");
+												fclose(Salvar);
+												//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+												for (int i = 0; i < Indice[5]; ++i)
+												{
+													Gravar_Reserva_Bin("Arquivos/IMPORTADO",&Reserva[i]);
+													system("clear");
+												}
+												
+											}else{
+												Salvar=fopen("Arquivos/Reserva.bin","w");
+												fclose(Salvar);
+												//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
+												for (int i = 0; i < Indice[5]; ++i)
+												{
+													Gravar_Reserva_Txt("Arquivos/IMPORTADO",&Reserva[i]);
+													system("clear");
+												}
+											}
+											break;//significa que chegou ao fim da tag
+										}else{
+											if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
+
+												Reserva=realloc(Reserva,Indice[5]*sizeof(RESERVA));//Realoca o ponteiro
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Codigo);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%[^>]s",Reserva[Indice[5]-1].Nome_Hospede);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Cod_Acomodacao);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Entrada.Dia);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Entrada.Mes);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Entrada.Ano);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Saida.Dia);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Saida.Mes);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Saida.Ano);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Vencimento_Fatura.Dia);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Vencimento_Fatura.Mes);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Data_Vencimento_Fatura.Ano);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%f",&Reserva[Indice[5]-1].Valor_Fatura);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Pago);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%f",&Reserva[Indice[5]-1].Valor_Conta);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Modo_Pagamento);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+												
+												fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+												getc(Arquivo);
+												fscanf(Arquivo,"%d",&Reserva[Indice[5]-1].Modo_Pagamento);
+												fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+												getc(Arquivo);
+												
+											}else{
+												if(strcmp (Tag,"/registro")==0){
+													Indice[5]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+												}
+											}
+										}
+									}
+								}else{
+
+								}
+							}
+						}
+					}
+				}
+
+			}
+		}while(Loop);
+	}
+}
 	
 	
 	
@@ -589,5 +1319,4 @@
 	
 	
 	
-	
-	#endif
+#endif

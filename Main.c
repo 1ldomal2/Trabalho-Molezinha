@@ -135,6 +135,9 @@ int main(int argc, char const *argv[])
 				break;
 				case 0:
 					system("clear");
+					Importacao();
+					DEBUG("EXPORTOU Depois Colocar no lugar certo");
+					PAUSA
 					Loop=0;
 				break;
 				default:
