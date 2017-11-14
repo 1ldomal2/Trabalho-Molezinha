@@ -1162,7 +1162,7 @@
 													//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
 													for (int i = 0; i < Indice[5]; ++i)
 													{
-														Gravar_Produtos_Bin("Arquivos/Fornecedores.bin",&Fornecedores[i]);
+														Gravar_Fornecedores_Bin("Arquivos/Fornecedores.bin",&Fornecedores[i]);
 														system("clear");
 													}
 													
@@ -1172,7 +1172,7 @@
 													//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
 													for (int i = 0; i < Indice[5]; ++i)
 													{
-														Gravar_Produtos_Txt("Arquivos/Fornecedores.txt",&Fornecedores[i]);
+														Gravar_Fornecedores_Txt("Arquivos/Fornecedores.txt",&Fornecedores[i]);
 														system("clear");
 													}
 												}
@@ -1238,13 +1238,13 @@
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",&Fornecedores[Indice[5]-1].Telefone);
+													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Telefone);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 
 													fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 													getc(Arquivo);
-													fscanf(Arquivo,"%[^>]s",&Fornecedores[Indice[5]-1].Email);
+													fscanf(Arquivo,"%[^>]s",Fornecedores[Indice[5]-1].Email);
 													fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 													getc(Arquivo);
 													
@@ -1256,7 +1256,7 @@
 											}
 										}
 									}else{
-										if(strcmp(Tag,"tabela=FUNCIONARIOS")==0){ //Verifica se está na  tabela Funcionario
+										if(strcmp(Tag,"tabela=FUNCIONARIOS")==0){ //Verifica se está na  tabela Funcionarios
 											while(Loop){
 												fscanf(Arquivo,"%[^<]s",Temp);//Le a até o inicio da tag
 												getc(Arquivo);//pula<
@@ -1270,58 +1270,58 @@
 
 													if (Modo_Abertura==Arquivo_Binario)
 													{
-														Salvar=fopen("Arquivos/Funcionario.bin","wb");
+														Salvar=fopen("Arquivos/Funcionarios.bin","wb");
 														fclose(Salvar);
 														//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
 														for (int i = 0; i < Indice[6]; ++i)
 														{
-															Gravar_Funcionario_Bin("Arquivos/Funcionario.bin",&Funcionario[i]);
+															Gravar_Funcionarios_Bin("Arquivos/Funcionarios.bin",&Funcionarios[i]);
 															system("clear");
 														}
 														
 													}else{
-														Salvar=fopen("Arquivos/Funcionario.bin","w");
+														Salvar=fopen("Arquivos/Funcionarios.bin","w");
 														fclose(Salvar);
 														//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
 														for (int i = 0; i < Indice[6]; ++i)
 														{
-															Gravar_Funcionario_Txt("Arquivos/Funcionario.txt",&Funcionario[i]);
+															Gravar_Funcionarios_Txt("Arquivos/Funcionarios.txt",&Funcionarios[i]);
 															system("clear");
 														}
 													}
 													break;//significa que chegou ao fim da tag
 												}else{
-													if(strcmp (Tag,"registro")==0){//Entramos em uma nova Funcionario
+													if(strcmp (Tag,"registro")==0){//Entramos em uma nova Funcionarios
 
-														Funcionario=realloc(Funcionario,Indice[6]*sizeof(FUNCIONARIOS));//Realoca o ponteiro
+														Funcionarios=realloc(Funcionarios,Indice[6]*sizeof(FUNCIONARIOS));//Realoca o ponteiro
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%d",&Funcionario[Indice[6]-1].Codigo);
+														fscanf(Arquivo,"%d",&Funcionarios[Indice[6]-1].Codigo);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",Funcionario[Indice[6]-1].Nome);
+														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Nome);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",&Funcionario[Indice[6]-1].Usuario);
+														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Usuario);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%[^>]s",&Funcionario[Indice[6]-1].Senha);
+														fscanf(Arquivo,"%[^>]s",Funcionarios[Indice[6]-1].Senha);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
 														fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 														getc(Arquivo);
-														fscanf(Arquivo,"%d",&Funcionario[Indice[6]-1].Permissao);
+														fscanf(Arquivo,"%d",&Funcionarios[Indice[6]-1].Permissao);
 														fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 														getc(Arquivo);
 
