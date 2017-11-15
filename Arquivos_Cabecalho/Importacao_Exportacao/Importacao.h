@@ -15,6 +15,61 @@
 	#######################Arquivos/Reserva#################
 	Arquivos/Reserva/
 	*/
+/*
+	void Main_IE();
+	IMPORTACAO_EXPORTACAO Set_On_Off();
+	void Exportar();
+	void Importacao();
+*/
+	void Main_IE();
+	IMPORTACAO_EXPORTACAO Set_On_Off();
+	void Exportar();
+	void Importacao();
+
+	void Main_IE(){
+		int Opcao=0;
+		do{
+			printf("\nDigite:\n");
+			Amarelo("0");
+			printf(" para ");
+			Amarelo("voltar\n");
+			Verde("1");
+			printf(" para ");
+			Verde("Importar\n")
+			Vermelho("2");
+			printf(" para ");
+			Vermelho("Exportar\n");
+			//Msgs
+			scanf("%d",&Opcao);
+
+			if(Opcao < 0 || Opcao > 2){
+				system("clear");
+				printf("Digite '0', '1' ou '2'\n");
+
+			}
+		}while(Opcao < 0 || Opcao > 2);
+
+		
+		switch (Opcao){
+
+			case 0:
+				return;
+			break;
+
+			case 1:
+				Importacao();
+			break;
+
+			case 2:
+				Exportar();
+			break;
+
+		}
+		//Tomada de decisao
+		
+		return ;
+	}
+
 	IMPORTACAO_EXPORTACAO Set_On_Off(){
 		IMPORTACAO_EXPORTACAO On_Off;
 		int Modo_Abertura = Configuracoes();
@@ -208,7 +263,7 @@
 		//Le do Txt
 	
 		if(On_Off.Hotel==1){
-	
+			
 			if(Modo_Abertura==Arquivo_Binario){//Bin
 				Arquivo=fopen("Arquivos/Hotel.bin","rb");//Somente leitura
 			}else{//Txt
@@ -221,7 +276,40 @@
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Hotel[(Indice[0])-1], sizeof(DADOS_HOTEL),1,Arquivo);//Realoca o ponteiro
 				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+					fscanf(Arquivo,"%d",&Hotel[(Indice[0])-1].Codigo);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					getc(Arquivo);
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Nome_Fantasia);					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Razao_Social);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Inscricao_Estadual);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].CNPJ);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Endereco.Logradouro);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Endereco.Numero);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Endereco.Bairro);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Endereco.Cidade);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Telefone);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Email);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Dono_Gerente);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Telefone_Gerente);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Check_in);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%[^;]s",Hotel[(Indice[0])-1].Check_out);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%d",&Hotel[(Indice[0])-1].Lucro);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				
 				if(feof(Arquivo)){
@@ -231,7 +319,6 @@
 			}
 			fclose(Arquivo);//Fecha o Arquivo
 			//Pega dados 
-			
 	
 			fprintf(Exporta, "<tabela=DADOS_HOTEL>\n");
 			for (int i = 0; i < Indice[0]-1; ++i)//Salva em Txt
@@ -258,7 +345,7 @@
 			fprintf(Exporta, "</tabela>\n");
 			//Salva em Xml
 		}
-	
+
 		if(On_Off.Hospede==1){
 			if(Modo_Abertura==Arquivo_Binario){//Bin
 				Arquivo=fopen("Arquivos/Hospede.bin","rb");//Somente leitura
@@ -272,7 +359,31 @@
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Hospede[(Indice[1])-1], sizeof(DADOS_HOSPEDE),1,Arquivo);//Realoca o ponteiro
 				}else{//Txt
-					//CHAMA A FUNÇÂO DE LEITURA
+					fscanf(Arquivo,"%d",&Hospede[(Indice[1])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Nome);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Sexo);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Estado_Civil);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].CPF);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Endereco.Logradouro);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Endereco.Numero);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Endereco.Bairro);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Endereco.Cidade);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Telefone);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Email);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Hospede[(Indice[1])-1].Data_Nascimento);//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				
 				if(feof(Arquivo)){
@@ -316,7 +427,18 @@
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Codigo_Categoria[(Indice[2])-1], sizeof(CODIGO_CATEGORIA),1,Arquivo);//
 				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+					
+					fscanf(Arquivo,"%d",&Codigo_Categoria[(Indice[2])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%[^;]s",Codigo_Categoria[(Indice[2])-1].Descricao);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%f",&Codigo_Categoria[(Indice[2])-1].Valor_Diaria);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Codigo_Categoria[(Indice[2])-1].Capacidade_Adulto);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Codigo_Categoria[(Indice[2])-1].Capacidade_Crianca);//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 	
 				if(feof(Arquivo)){
@@ -355,7 +477,26 @@
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Acomodacoes[(Indice[3])-1], sizeof(ACOMODACOES),1,Arquivo);//
 				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+					
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Acomodacoes[(Indice[3])-1].Descricao);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Facilidades.Televisao);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Facilidades.Ar_Condicionado);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Facilidades.Frigobar);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Facilidades.Internet);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Facilidades.Banheira);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Cod_Categoria);//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Acomodacoes[(Indice[3])-1].Cod_Hotel);//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				if(feof(Arquivo)){
 					break;//Sai do loop ao chegar no fim do arquivo
@@ -394,7 +535,29 @@
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Fornecedores[(Indice[4])-1], sizeof(FORNECEDORES),1,Arquivo);//
 				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+					fscanf(Arquivo,"%d",&Fornecedores[(Indice[4])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Nome_Fantasia);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Razao_Social);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Inscricao_Estadual);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].CNPJ);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Endereco.Logradouro);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Endereco.Numero);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Endereco.Bairro);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Endereco.Cidade);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Telefone);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Fornecedores[(Indice[4])-1].Email);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				if(feof(Arquivo)){
 					break;//Sai do loop ao chegar no fim do arquivo
@@ -437,8 +600,18 @@
 				Funcionarios=realloc(Funcionarios,Indice[5]*sizeof(FUNCIONARIOS));//Realoca o ponteiro
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Funcionarios[(Indice[5])-1], sizeof(FUNCIONARIOS),1,Arquivo);//
-				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+				}else{//TXT
+					fscanf(Arquivo,"%d",&Funcionarios[(Indice[5])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Funcionarios[(Indice[5])-1].Nome);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Funcionarios[(Indice[5])-1].Usuario);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Funcionarios[(Indice[5])-1].Senha);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Funcionarios[(Indice[5])-1].Permissao);//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 	
 				if(feof(Arquivo)){
@@ -477,8 +650,22 @@
 				Produtos=realloc(Produtos,Indice[6]*sizeof(PRODUTOS));//Realoca o ponteiro
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Produtos[(Indice[6])-1], sizeof(PRODUTOS),1,Arquivo);//
-				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+				}else{					
+					fscanf(Arquivo,"%d",&Produtos[(Indice[6])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" //Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%u",&Produtos[(Indice[6])-1].Estoque);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";" //Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%u",&Produtos[(Indice[6])-1].Estoque_Minimo);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Produtos[(Indice[6])-1].Descricao);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%f",&Produtos[(Indice[6])-1].Preco_Custo);//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%f",&Produtos[(Indice[6])-1].Preco_Venda);//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Produtos[(Indice[6])-1].Cod_Hotel);//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				if(feof(Arquivo)){
 					break;//Sai do loop ao chegar no fim do arquivo
@@ -517,8 +704,42 @@
 				
 				if(Modo_Abertura==Arquivo_Binario){//Bin
 					fread(&Reserva[(Indice[7])-1], sizeof(RESERVA),1,Arquivo);//
-				}else{
-					//CHAMA A FUNÇÂO DE LEITURA
+				}else{						
+					fscanf(Arquivo,"%d",&Reserva[(Indice[7])-1].Codigo);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%[^;]s",Reserva[(Indice[7])-1].Nome_Hospede);//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"//Expreção Regular
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%d",&Reserva[(Indice[7])-1].Codigo_Hospede);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%d",&Reserva[(Indice[7])-1].Cod_Acomodacao);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Entrada.Dia);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Entrada.Mes);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Entrada.Ano);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Saida.Dia);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Saida.Mes);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Saida.Ano);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Vencimento_Fatura.Dia);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Vencimento_Fatura.Mes);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+					fscanf(Arquivo,"%u",&Reserva[(Indice[7])-1].Data_Vencimento_Fatura.Ano);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%f",&Reserva[(Indice[7])-1].Valor_Fatura);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%d",&Reserva[(Indice[7])-1].Pago);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%f",&Reserva[(Indice[7])-1].Valor_Conta);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					fscanf(Arquivo,"%d",&Reserva[(Indice[7])-1].Modo_Pagamento);
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+					getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
 				}
 				if(feof(Arquivo)){
 					break;//Sai do loop ao chegar no fim do arquivo
