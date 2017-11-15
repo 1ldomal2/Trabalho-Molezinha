@@ -136,7 +136,7 @@ int main(int argc, char const *argv[])
 					system("clear");
 				break;
 				case Importar_ExportarXml:
-					Exportar();
+					Main_IE();
 					system("clear");
 				break;
 				case 0:

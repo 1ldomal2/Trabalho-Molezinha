@@ -15,6 +15,7 @@ enum Mes{Janeiro=1,Fevereiro,Marco,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubr
 enum Listagem{Tela = 1, Csv};
 enum CampoLista{Hospedes = 1,Acomodacoes,Reservas,Produtos};
 enum Filtro_Hospede{Codigo = 1, Sexo};
+enum Filtro_Acomodacao{Categoria = 2,Data_Disponivel};
 
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
