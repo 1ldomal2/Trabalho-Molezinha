@@ -97,7 +97,7 @@ void Nome_Hospede_Codigo(int Codigo, char Nome_Hospede[]){
 	FILE *Arquivo;
 	int Loop = 1;
 	DADOS_HOSPEDE Hospede;
-	char Temporario;
+	char Temporario[Tamanho2];
 	if(Configuracoes() == Arquivo_Binario){
 		Arquivo = fopen("Arquivos/Hospede.bin","rb");
 		if(Arquivo == NULL){
@@ -141,8 +141,8 @@ void Nome_Hospede_Codigo(int Codigo, char Nome_Hospede[]){
 					strcpy(Nome_Hospede,Hospede.Nome);
 					Loop = 0;
 				}else{
-					fscanf(Arquivo,"%[^\n]s",&Temporario);
-					getc(Arquivo);getc(Arquivo);
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
 				}getc(Arquivo);
 					//Pula o Ponteiro para o proximo caractere
 								

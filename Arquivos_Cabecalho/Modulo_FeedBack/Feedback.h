@@ -537,6 +537,9 @@ void Filtro_Acomodacao_CodCategoria(int Modo_Feedback){
 				break;
 				//Sai do loop
 			}
+			//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+			//Expreção Regular
+			getc(Arquivo);
 			fscanf(Arquivo,"%[^;]s",Acomodacoes.Descricao);
 			//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
 			//Expreção Regular

@@ -813,10 +813,6 @@ int Valida_Hospede_Reserva(int Codigo, int Modo_de_Abertura){
 			//Soma no contador de contador
 		}
 	}
-	if(Contador1!=1){
-		Quick_Sort(Vetor_Codigos,0,Contador1);
-		//Ordena o Vetor;
-	}
 		for (int i = 0; i < Contador1; ++i)
 		{
 			if (Codigo == Vetor_Codigos[i])
