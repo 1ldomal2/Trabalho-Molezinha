@@ -454,7 +454,6 @@
 			{
 				fprintf(Exporta, "\t<registro>\n");
 					fprintf(Exporta, "\t\t<Codigo>%d</Codigo>\n",Codigo_Categoria[i].Codigo);
-					fprintf(Exporta, "\t\t<Nome>%s</Nome>\n",Codigo_Categoria[i].Nome);
 					fprintf(Exporta, "\t\t<Descricao>%s</Descricao>\n",Codigo_Categoria[i].Descricao);
 					fprintf(Exporta, "\t\t<Valor_Diaria>%.2f</Valor_Diaria>\n",Codigo_Categoria[i].Valor_Diaria);
 					fprintf(Exporta, "\t\t<Capacidade_Adulto>%i</Capacidade_Adulto>\n",Codigo_Categoria[i].Capacidade_Adulto);
