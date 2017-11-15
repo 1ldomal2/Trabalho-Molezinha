@@ -12,9 +12,8 @@ void Gera_CSV_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[
 void Gera_CSV_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]);
 void Filtro_Acomodacao_Data_Disponivel(int Modo_Feedback);
 void Filtro_Acomodacao_CodCategoria(int Modo_Feedback);
+int Tipo_Listagem_Reserva();
 */
-
-
 void MainFeedback(){
 	int Tipo_Listagem = MenuInicialFeedback();
 	int Campo_Lista = MenuListagemFeedback();
@@ -50,6 +49,20 @@ void MainFeedback(){
 				}
 			break;
 			case Reservas:
+				Tipo_Reservas = Tipo_Listagem_Reserva();
+				if(Tipo_Reservas == Cod_Acomodacao){
+					//Criar funcao para lista de codigo da acomodacao
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;
+				}else if(Tipo_Reservas==Codigo_Hospede){
+					//Criar funcao para lista de codigo da acomodacao
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}else if(Tipo_Reservas==Data_Reservado){
+					Filtro_Reserva_Data(Tela);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}
 			break;
 			case Produtos:
 			break;
@@ -85,11 +98,39 @@ void MainFeedback(){
 				}
 			break;
 			case Reservas:
+				Tipo_Reservas = Tipo_Listagem_Reserva();
+				if(Tipo_Reservas == Cod_Acomodacao){
+					//Criar funcao para lista de codigo da acomodacao
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;
+				}else if(Tipo_Reservas==Codigo_Hospede){
+					//Criar funcao para lista de codigo da acomodacao
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}else if(Tipo_Reservas==Data_Reservado){
+					Filtro_Reserva_Data(Csv);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}
 			break;
 			case Produtos:
 			break;
 		}
 	}
+}
+
+int Tipo_Listagem_Reserva(){
+	//Funcao para saber o filtro que o usuario deseja utilizar
+	int Filtro;
+	do{
+		printf("Digite 1 para filtrar por codigo acomodacao e 2 para filtar por codigo hospede e 3 para filtrar por data reservado");
+		scanf("%d",&Filtro);
+		if(Filtro < 1 || Filtro > 3){
+			Vermelho("Digite 1 opcao valida\n");
+		}
+	}while(Filtro < 1 || Filtro > 3);
+	return Filtro;
+	//Retorna o filtro
 }
 
 int Tipo_Listagem_Acomodacao(){
@@ -119,6 +160,185 @@ int Tipo_Listagem_Hospede(){
 	return Filtro;
 	//Retorna o filtro
 }
+
+void Filtro_Reserva_Data(int Modo_Feedback){
+	//Funcao para filtro de reserva com base em determinada data
+	int Modo_Abertura = Configuracoes();
+	PESQUISA Pesquisa;
+	DATA Data;
+	RESERVA Reserva;
+	int Tamanho_Acomodacoes_disponiveis = 0, loop = 1;
+	int Acomodacao_Disponiveis[999], Acomodacao_Indisponiveis[9999];
+	char Arquivo_Fluxo[999];
+	int Contador_Acomodacao_Indisponiveis = 0;
+	//Declara variaveis para bom funcionamento da funcao
+	do{
+		Verde("\nDigite a data referente a Entrada");
+		Recebe_Data(&Pesquisa.Data_Entrada,1);
+		Verde("\nDigite a data referente a Saida");
+		Pesquisa.Data_Saida.Ano = Pesquisa.Data_Entrada.Ano;
+		Pesquisa.Data_Saida.Mes = Pesquisa.Data_Entrada.Mes;		
+		Recebe_Data(&Pesquisa.Data_Saida,2);
+		Data.Dia = Pesquisa.Data_Entrada.Dia;
+		Data.Mes = Pesquisa.Data_Entrada.Mes;
+		Data.Ano = Pesquisa.Data_Entrada.Ano;
+		Data.Dia_Saida = Pesquisa.Data_Saida.Dia;
+		if(Data.Dia_Saida < Pesquisa.Data_Entrada.Dia){
+			Vermelho("O dia de entrada não pode ser anterior ao dia de saida");
+		}
+	}while(Data.Dia_Saida < Pesquisa.Data_Entrada.Dia);
+	//Loop que repete equanto o não for digitado uma data valida
+	FILE *Arquivo;
+	if(Modo_Abertura == Arquivo_Binario){
+		Arquivo = fopen("Arquivos/Reserva.bin", "rb");
+		while(loop){
+			fread(&Reserva, sizeof(RESERVA),1,Arquivo);
+			//Le struct do binario
+			if(feof(Arquivo)){
+				loop = 0;
+				break;
+				//Se chega no fim do arquivo sai do loop
+			}else{
+				//Se nao executa funcao
+				if(Reserva.Data_Entrada.Ano == Pesquisa.Data_Entrada.Ano && Reserva.Data_Entrada.Mes == Pesquisa.Data_Entrada.Mes){
+					if(Reserva.Data_Saida.Dia >= Pesquisa.Data_Entrada.Dia && Reserva.Data_Saida.Dia <= Pesquisa.Data_Saida.Dia){
+						//Verifica se ano e mes sao iguais ao passado e se a data esta entre a a lida do arquivo
+						if(Modo_Feedback == Tela){
+							//Caso modo de printar na tela
+								Ler_Reserva_Memoria(Reserva);
+								//Chama funcao para ler da memoria e mostrar na tela
+						}else{
+								FILE *ApagaAnterior;
+								ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+								//Apaga se tiver algo no arquivo que sera gerado
+								fclose(ApagaAnterior);
+								Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);
+								system("clear");	
+						}
+					}else if(Reserva.Data_Entrada.Dia >= Pesquisa.Data_Entrada.Dia && Reserva.Data_Entrada.Dia <= Pesquisa.Data_Saida.Dia){
+						if(Modo_Feedback == Tela){
+							Ler_Reserva_Memoria(Reserva);
+						}else{
+							FILE *ApagaAnterior;
+							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+							fclose(ApagaAnterior);
+							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+							system("clear");
+						}
+					}else if(Reserva.Data_Entrada.Dia <= Pesquisa.Data_Entrada.Dia && Reserva.Data_Saida.Dia >= Pesquisa.Data_Saida.Dia){
+						if(Modo_Feedback == Tela){
+							Ler_Reserva_Memoria(Reserva);
+						}else{
+							FILE *ApagaAnterior;
+							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+							fclose(ApagaAnterior);
+							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+							system("clear");
+						}
+					}
+					//Faz o mesmo que no primeiro if
+				}
+			}
+		}
+	}else{
+		//Caso arquivo TXT 
+		Arquivo = fopen("Arquivos/Reserva.txt", "r");
+		//Abre arquivo TXT de Reserva
+		while(loop){
+			fscanf(Arquivo,"%d",&Reserva.Codigo);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+				//Expreção Regular
+			getc(Arquivo);
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+			fscanf(Arquivo,"%[^;]s",Reserva.Nome_Hospede);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+				//Expreção Regular
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%d",&Reserva.Codigo_Hospede);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%d",&Reserva.Cod_Acomodacao);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Dia);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Mes);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Entrada.Ano);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%u",&Reserva.Data_Saida.Dia);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Saida.Mes);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Saida.Ano);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Dia);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Mes);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o /)
+			fscanf(Arquivo,"%u",&Reserva.Data_Vencimento_Fatura.Ano);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%f",&Reserva.Valor_Fatura);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%d",&Reserva.Pago);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%f",&Reserva.Valor_Conta);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			fscanf(Arquivo,"%d",&Reserva.Modo_Pagamento);
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o ;)
+			//FAZER METODO PARA LER MATRIZ NO TXT
+			getc(Arquivo);//Pula o Ponteiro para o proximo caracte (pula o \n)
+			if(feof(Arquivo)){
+				loop = 0;
+				break;
+				//Se chega no fim do arquivo sai do loop
+			}else{
+				//Se nao executa funcao
+				if(Reserva.Data_Entrada.Ano == Pesquisa.Data_Entrada.Ano && Reserva.Data_Entrada.Mes == Pesquisa.Data_Entrada.Mes){
+					if(Reserva.Data_Saida.Dia >= Pesquisa.Data_Entrada.Dia && Reserva.Data_Saida.Dia <= Pesquisa.Data_Saida.Dia){
+						//Verifica se ano e mes sao iguais ao passado e se a data esta entre a a lida do arquivo
+						if(Modo_Feedback == Tela){
+							//Caso modo de printar na tela
+								Ler_Reserva_Memoria(Reserva);
+								//Chama funcao para ler da memoria e mostrar na tela
+						}else{
+								FILE *ApagaAnterior;
+								ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+								//Apaga se tiver algo no arquivo que sera gerado
+								fclose(ApagaAnterior);
+								Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);
+								system("clear");	
+						}
+					}else if(Reserva.Data_Entrada.Dia >= Pesquisa.Data_Entrada.Dia && Reserva.Data_Entrada.Dia <= Pesquisa.Data_Saida.Dia){
+						if(Modo_Feedback == Tela){
+							Ler_Reserva_Memoria(Reserva);
+						}else{
+							FILE *ApagaAnterior;
+							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+							fclose(ApagaAnterior);
+							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+							system("clear");
+						}
+					}else if(Reserva.Data_Entrada.Dia <= Pesquisa.Data_Entrada.Dia && Reserva.Data_Saida.Dia >= Pesquisa.Data_Saida.Dia){
+						if(Modo_Feedback == Tela){
+							Ler_Reserva_Memoria(Reserva);
+						}else{
+							FILE *ApagaAnterior;
+							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
+							fclose(ApagaAnterior);
+							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+							system("clear");
+						}
+					}
+					//Faz o mesmo que no primeiro if
+				}
+			}
+		}
+	}
+}
+
 void Filtro_Acomodacao_Codigos(int Modo_Feedback){
 	//Funcao para realizar filtro por codigos de hospede
 	int Modo_Abertura = Configuracoes();
@@ -999,12 +1219,8 @@ void Filtro_Hospede_Sexo(int Modo_Feedback){
 					}
 				}	
 			}
-			fclose(Arquivo);
-			
+			fclose(Arquivo);	
 		}
 	}
-
 }
-
-
 #endif

@@ -159,5 +159,6 @@ void Gera_CSV_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[
 void Gera_CSV_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[]);
 void Filtro_Acomodacao_Data_Disponivel(int Modo_Feedback);
 void Filtro_Acomodacao_CodCategoria(int Modo_Feedback);
-
+int Tipo_Listagem_Reserva();
+void Filtro_Reserva_Data(int Modo_Feedback);
 #endif
