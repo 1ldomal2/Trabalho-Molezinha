@@ -814,8 +814,11 @@
 		
 		Arquivo=fopen(Url,"r");
 		if(Arquivo==NULL){
+			system("clear");
 			Vermelho(Url);
 			printf(" não é um arquivo válido\n");
+			Verde("\n\nDigite um numero  e pressione enter para Continuar");
+			PAUSA
 			return;
 		}else{
 		//{ Abre arquivo em modo txt }//
@@ -1236,11 +1239,6 @@
 											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 											getc(Arquivo);
 
-											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
-											getc(Arquivo);
-											fscanf(Arquivo,"%[^<]s",Codigo_Categoria[Indice[2]-1].Nome);
-											fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
-											getc(Arquivo);
 
 
 											fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
@@ -1561,17 +1559,16 @@
 													fscanf(Arquivo,"%[^>]s",Tag);//pula até o >
 													getc(Arquivo);//pula>
 													getc(Arquivo);//pula\n
-													//Le tag
-													
+													//Le tag													
 													if(strcmp (Tag,"/tabela")==0){
-														Indice[6]--;//Corrige o Indice
+														Indice[7]--;//Corrige o Indice
 
 														if (Modo_Abertura==Arquivo_Binario)
 														{
 															Salvar=fopen("Arquivos/Reserva.bin","wb");
 															fclose(Salvar);
 															//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
-															for (int i = 0; i < Indice[6]; ++i)
+															for (int i = 0; i < Indice[7]; ++i)
 															{
 																Gravar_Reserva_Bin("Arquivos/Reserva.bin",&Reserva[i]);
 																system("clear");
@@ -1581,8 +1578,9 @@
 															Salvar=fopen("Arquivos/Reserva.bin","w");
 															fclose(Salvar);
 															//Apaga o arquivo antigo pois abre em modo escrita e logo em seguida fecha para evitar erros
-															for (int i = 0; i < Indice[6]; ++i)
+															for (int i = 0; i < Indice[7]; ++i)
 															{
+																DEBUG("gravou um registro")
 																Gravar_Reserva_Txt("Arquivos/Reserva.txt",&Reserva[i]);
 																system("clear");
 															}
@@ -1591,114 +1589,113 @@
 													}else{
 														if(strcmp (Tag,"registro")==0){//Entramos em uma nova reserva
 
-															Reserva=realloc(Reserva,Indice[6]*sizeof(RESERVA));//Realoca o ponteiro
+															Reserva=realloc(Reserva,Indice[7]*sizeof(RESERVA));//Realoca o ponteiro
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Codigo);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Codigo);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%[^>]s",Reserva[Indice[6]-1].Nome_Hospede);
+															fscanf(Arquivo,"%[^<]s",Reserva[Indice[7]-1].Nome_Hospede);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Cod_Acomodacao);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Codigo_Hospede);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Entrada.Dia);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Cod_Acomodacao);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Entrada.Mes);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Entrada.Dia);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Entrada.Ano);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Entrada.Mes);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Saida.Dia);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Entrada.Ano);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Saida.Mes);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Saida.Dia);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Saida.Ano);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Saida.Mes);
+															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
+															getc(Arquivo);
+
+															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
+															getc(Arquivo);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Saida.Ano);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Vencimento_Fatura.Dia);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Vencimento_Fatura.Dia);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Vencimento_Fatura.Mes);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Vencimento_Fatura.Mes);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Data_Vencimento_Fatura.Ano);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Data_Vencimento_Fatura.Ano);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%f",&Reserva[Indice[6]-1].Valor_Fatura);
+															fscanf(Arquivo,"%f",&Reserva[Indice[7]-1].Valor_Fatura);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Pago);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Pago);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%f",&Reserva[Indice[6]-1].Valor_Conta);
+															fscanf(Arquivo,"%f",&Reserva[Indice[7]-1].Valor_Conta);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
 
 															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
 															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Modo_Pagamento);
+															fscanf(Arquivo,"%d",&Reserva[Indice[7]-1].Modo_Pagamento);
 															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
 															getc(Arquivo);
-															
-															fscanf(Arquivo,"%[^>]s",Temp);//pula até o >
-															getc(Arquivo);
-															fscanf(Arquivo,"%d",&Reserva[Indice[6]-1].Modo_Pagamento);
-															fscanf(Arquivo,"%[^\n]s",Temp);//pula até o \n
-															getc(Arquivo);
-															
 														}else{
 															if(strcmp (Tag,"/registro")==0){
-																Indice[6]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
+																Indice[7]++;//Adiciona um ao indice quando fechar a tag ou seja um reserva foi salva na memoria
 															}
 														}
 													}
@@ -1712,6 +1709,9 @@
 						}
 					}
 
+				}
+				if(feof(Arquivo)){
+					break;
 				}
 			}while(Loop);
 		}
