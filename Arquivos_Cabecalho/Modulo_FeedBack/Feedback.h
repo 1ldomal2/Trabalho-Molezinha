@@ -13,6 +13,11 @@ void Gera_CSV_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[
 void Filtro_Acomodacao_Data_Disponivel(int Modo_Feedback);
 void Filtro_Acomodacao_CodCategoria(int Modo_Feedback);
 int Tipo_Listagem_Reserva();
+void Filtro_Reserva_Codigo_Acomodacao(int Modo_Feedback);
+void Filtro_Reserva_Codigo_Hospede(int Modo_Feedback);
+void Filtro_Produtos_Codigos(int Modo_Feedback);
+void Filtro_Produtos_Codigos_Em_Estoque_Minimo(int Modo_Feedback);
+int Tipo_Listagem_Produtos();
 */
 void MainFeedback(){
 	int Tipo_Listagem = MenuInicialFeedback();
@@ -51,11 +56,11 @@ void MainFeedback(){
 			case Reservas:
 				Tipo_Reservas = Tipo_Listagem_Reserva();
 				if(Tipo_Reservas == Cod_Acomodacao){
-					//Criar funcao para lista de codigo da acomodacao
+					Filtro_Reserva_Codigo_Acomodacao(Tela);
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;
 				}else if(Tipo_Reservas==Codigo_Hospede){
-					//Criar funcao para lista de codigo da acomodacao
+					Filtro_Reserva_Codigo_Hospede(Tela);
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;	
 				}else if(Tipo_Reservas==Data_Reservado){
@@ -65,6 +70,16 @@ void MainFeedback(){
 				}
 			break;
 			case Produtos:
+				Tipo_Produtos = Tipo_Listagem_Produtos();
+				if(Tipo_Produtos == Consumo){
+					Filtro_Produtos_Codigos(Tela);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;
+				}else if(Tipo_Produtos==Estoque_Minimo){
+					Filtro_Produtos_Codigos_Em_Estoque_Minimo(Tela);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}
 			break;
 		}
 	}else if(Tipo_Listagem == Csv){
@@ -100,11 +115,11 @@ void MainFeedback(){
 			case Reservas:
 				Tipo_Reservas = Tipo_Listagem_Reserva();
 				if(Tipo_Reservas == Cod_Acomodacao){
-					//Criar funcao para lista de codigo da acomodacao
+					Filtro_Reserva_Codigo_Acomodacao(Csv);
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;
 				}else if(Tipo_Reservas==Codigo_Hospede){
-					//Criar funcao para lista de codigo da acomodacao
+					Filtro_Reserva_Codigo_Hospede(Csv);
 					Verde("Digite 1 e pressione enter para continuar");
 					PAUSA;	
 				}else if(Tipo_Reservas==Data_Reservado){
@@ -114,6 +129,16 @@ void MainFeedback(){
 				}
 			break;
 			case Produtos:
+				Tipo_Produtos = Tipo_Listagem_Produtos();
+				if(Tipo_Produtos == Consumo){
+					Filtro_Produtos_Codigos(Csv);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;
+				}else if(Tipo_Produtos==Estoque_Minimo){
+					Filtro_Produtos_Codigos_Em_Estoque_Minimo(Csv);
+					Verde("Digite 1 e pressione enter para continuar");
+					PAUSA;	
+				}
 			break;
 		}
 	}
@@ -124,6 +149,20 @@ int Tipo_Listagem_Reserva(){
 	int Filtro;
 	do{
 		printf("Digite 1 para filtrar por codigo acomodacao e 2 para filtar por codigo hospede e 3 para filtrar por data reservado");
+		scanf("%d",&Filtro);
+		if(Filtro < 1 || Filtro > 3){
+			Vermelho("Digite 1 opcao valida\n");
+		}
+	}while(Filtro < 1 || Filtro > 3);
+	return Filtro;
+	//Retorna o filtro
+}
+
+int Tipo_Listagem_Produtos(){
+	//Funcao para saber o filtro que o usuario deseja utilizar
+	int Filtro;
+	do{
+		printf("Digite 1 para filtrar por produtos de consumo e 2 para filtar por produtos em estoque minimo");
 		scanf("%d",&Filtro);
 		if(Filtro < 1 || Filtro > 3){
 			Vermelho("Digite 1 opcao valida\n");
@@ -159,6 +198,591 @@ int Tipo_Listagem_Hospede(){
 	}while(Filtro < 1 || Filtro > 2);
 	return Filtro;
 	//Retorna o filtro
+}
+
+void Filtro_Produtos_Codigos_Em_Estoque_Minimo(int Modo_Feedback){
+	//Funcao para realizar filtro por codigos de hospede
+	int Modo_Abertura = Configuracoes();
+	int Codigo_Inicial = 0;
+	int Codigo_Final = 0;
+	//Variaveis para receber o codigo inicial e final e fazer o range entre eles
+	Verde("Digite o range de codigos que sera printado:\n");
+	do{
+		Verde("Codigo Inicial = ");
+		scanf("%d",&Codigo_Inicial);
+		Verde("Codigo Final = ");
+		scanf("%d",&Codigo_Final);
+		if(Codigo_Inicial == 0 || Codigo_Final == 0 ){
+			Vermelho("O codigo inicial e final não pode ser 0 digite um valido");
+		}else if(Codigo_Final < Codigo_Inicial){
+			Vermelho("O codigo final não pode ser menor que o inicial");
+		}
+		//Mostra mensagem de erros ao usuario
+	}while(Codigo_Inicial == 0 || Codigo_Final == 0 || Codigo_Final < Codigo_Inicial);
+	//Loop que repete ate usuario digitiar valores validos para o range de codigos 
+	int Quantidade_Codigos = Codigo_Final - Codigo_Inicial + 1;
+	int Codigos[Quantidade_Codigos];
+	int Contador_Codigos = 0;
+	int Indice_Iguais = 0;
+	//Vetor de codigos com a quantidade exata do range de codigos que foi passado, e contador de condigos
+	for(int i = Codigo_Inicial; i <= Codigo_Final; i++){
+		Codigos[Contador_Codigos] = i;
+		Contador_Codigos++;
+	}
+	if(Modo_Abertura == Arquivo_Texto){
+	//Caso modo de abertura seja TXT
+	char Url[Tamanho2],Temporario[Tamanho2];
+	sprintf(Url,"Arquivos/Produtos.txt");
+	//Declara Array com a url
+	PRODUTOS Produtos;
+	//Cria uma variavel do tipo DADOS HOSPEDE;
+
+	FILE *Arquivo;
+		//Ponteiro para o arquivo
+
+	Arquivo=fopen(Url,"r");
+		//Abre o Arquivo
+	int Arquivo_Vazio=0;
+		
+	
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+		do{
+			fscanf(Arquivo,"%d",&Produtos.Codigo);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+				//Expreção Regular
+			getc(Arquivo);
+			//Pula o Ponteiro para o proximo caractere
+			for(int i = 0;i < Quantidade_Codigos; i++){
+				if(Codigos[i] == Produtos.Codigo){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					fscanf(Arquivo,"%u",&Produtos.Estoque);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%u",&Produtos.Estoque_Minimo);
+						//Expreção Regular
+					getc(Arquivo);
+					if(Produtos.Estoque_Minimo == Produtos.Estoque){
+							//Pula o Ponteiro para o proximo caractere
+						fscanf(Arquivo,"%[^;]s",Produtos.Descricao);
+						//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+						//Expreção Regular
+						getc(Arquivo);
+							//Pula o Ponteiro para o proximo caractere
+						fscanf(Arquivo,"%f",&Produtos.Preco_Custo);
+							//Expreção Regular
+						getc(Arquivo);
+						fscanf(Arquivo,"%f",&Produtos.Preco_Venda);
+							//Expreção Regular
+						getc(Arquivo);
+						fscanf(Arquivo,"%d",&Produtos.Cod_Hotel);
+							//Expreção Regular
+						getc(Arquivo);
+						getc(Arquivo);
+						//Pula o Ponteiro para o proximo caracte (pula o \n)
+						if(Modo_Feedback == Tela){
+							Ler_Produtos_Memoria(Produtos);
+						}else if(Modo_Feedback == Csv){
+							Gravar_Produtos_Txt("Arquivos/Produtos.csv",&Produtos);	
+							//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+							system("clear");
+							printf("\n");
+						}
+					}
+				}else{
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+				}
+			}
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+		}while(!feof(Arquivo));
+			//Entra no loop se não estiver apontando para o final do arquivo;
+		
+	}
+
+	fclose(Arquivo);
+		//Fecha o Arquivo;
+	}else{
+		//Caso modo de abertura seja BIN
+		FILE *Arquivo;
+		//Cria ponteiro de arquivo
+		PRODUTOS Produtos;
+		char Url[Tamanho2];
+		sprintf(Url,"Arquivos/Produtos.bin");
+		Arquivo = fopen(Url,"rb");
+		int Arquivo_Vazio=0;
+		if(Arquivo == NULL){
+			Vermelho("\nNao foi possivel abrir o arquivo!");
+		}else{
+			while(!feof(Arquivo)){
+				fread(&Produtos, sizeof(PRODUTOS),1,Arquivo);
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				for(int i = 0;i < Quantidade_Codigos; i++){
+					if(Codigos[i] == Produtos.Codigo){
+						if(Produtos.Estoque_Minimo == Produtos.Estoque){
+							if(Modo_Feedback == Tela){
+								Ler_Produtos_Memoria(Produtos);
+							}else if(Modo_Feedback == Csv){
+								Gravar_Produtos_Txt("Arquivos/Produtos.csv",&Produtos);	
+								system("clear");
+								printf("\n");
+							}
+						}	
+					}
+				}
+			}
+			fclose(Arquivo);	
+		}
+	}
+}
+
+void Filtro_Produtos_Codigos(int Modo_Feedback){
+	//Funcao para realizar filtro por codigos de hospede
+	int Modo_Abertura = Configuracoes();
+	int Codigo_Inicial = 0;
+	int Codigo_Final = 0;
+	//Variaveis para receber o codigo inicial e final e fazer o range entre eles
+	Verde("Digite o range de codigos que sera printado:\n");
+	do{
+		Verde("Codigo Inicial = ");
+		scanf("%d",&Codigo_Inicial);
+		Verde("Codigo Final = ");
+		scanf("%d",&Codigo_Final);
+		if(Codigo_Inicial == 0 || Codigo_Final == 0 ){
+			Vermelho("O codigo inicial e final não pode ser 0 digite um valido");
+		}else if(Codigo_Final < Codigo_Inicial){
+			Vermelho("O codigo final não pode ser menor que o inicial");
+		}
+		//Mostra mensagem de erros ao usuario
+	}while(Codigo_Inicial == 0 || Codigo_Final == 0 || Codigo_Final < Codigo_Inicial);
+	//Loop que repete ate usuario digitiar valores validos para o range de codigos 
+	int Quantidade_Codigos = Codigo_Final - Codigo_Inicial + 1;
+	int Codigos[Quantidade_Codigos];
+	int Contador_Codigos = 0;
+	int Indice_Iguais = 0;
+	//Vetor de codigos com a quantidade exata do range de codigos que foi passado, e contador de condigos
+	for(int i = Codigo_Inicial; i <= Codigo_Final; i++){
+		Codigos[Contador_Codigos] = i;
+		Contador_Codigos++;
+	}
+	if(Modo_Abertura == Arquivo_Texto){
+	//Caso modo de abertura seja TXT
+	char Url[Tamanho2],Temporario[Tamanho2];
+	sprintf(Url,"Arquivos/Produtos.txt");
+	//Declara Array com a url
+	PRODUTOS Produtos;
+	//Cria uma variavel do tipo DADOS HOSPEDE;
+
+	FILE *Arquivo;
+		//Ponteiro para o arquivo
+
+	Arquivo=fopen(Url,"r");
+		//Abre o Arquivo
+	int Arquivo_Vazio=0;
+		
+	
+	if(Arquivo==NULL){
+		Vermelho("O Arquivo não foi aberto corretamente\n");
+	}else{
+		do{
+			fscanf(Arquivo,"%d",&Produtos.Codigo);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+				//Expreção Regular
+			getc(Arquivo);
+			//Pula o Ponteiro para o proximo caractere
+			for(int i = 0;i < Quantidade_Codigos; i++){
+				if(Codigos[i] == Produtos.Codigo){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					fscanf(Arquivo,"%u",&Produtos.Estoque);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%u",&Produtos.Estoque_Minimo);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%[^;]s",Produtos.Descricao);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+					//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%f",&Produtos.Preco_Custo);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%f",&Produtos.Preco_Venda);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Produtos.Cod_Hotel);
+						//Expreção Regular
+					getc(Arquivo);
+					getc(Arquivo);
+					//Pula o Ponteiro para o proximo caracte (pula o \n)
+					if(Modo_Feedback == Tela){
+						Ler_Produtos_Memoria(Produtos);
+					}else if(Modo_Feedback == Csv){
+						Gravar_Produtos_Txt("Arquivos/Produtos.csv",&Produtos);	
+						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+						system("clear");
+						printf("\n");
+
+					}
+					
+				}else{
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+				}
+			}
+			if(feof(Arquivo)){
+				//Verifica se esta no fim do arquivo
+				break;
+				//Sai do loop
+			}
+		}while(!feof(Arquivo));
+			//Entra no loop se não estiver apontando para o final do arquivo;
+		
+	}
+
+	fclose(Arquivo);
+		//Fecha o Arquivo;
+	}else{
+		//Caso modo de abertura seja BIN
+		FILE *Arquivo;
+		//Cria ponteiro de arquivo
+		PRODUTOS Produtos;
+		char Url[Tamanho2];
+		sprintf(Url,"Arquivos/Produtos.bin");
+		Arquivo = fopen(Url,"rb");
+		int Arquivo_Vazio=0;
+		if(Arquivo == NULL){
+			Vermelho("\nNao foi possivel abrir o arquivo!");
+		}else{
+			while(!feof(Arquivo)){
+				fread(&Produtos, sizeof(PRODUTOS),1,Arquivo);
+				if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+				}
+				for(int i = 0;i < Quantidade_Codigos; i++){
+					if(Codigos[i] == Produtos.Codigo){
+						if(Modo_Feedback == Tela){
+							Ler_Produtos_Memoria(Produtos);
+						}else if(Modo_Feedback == Csv){
+							
+							Gravar_Produtos_Txt("Arquivos/Produtos.csv",&Produtos);	
+							system("clear");
+							printf("\n");
+						}
+					}
+				}
+			}
+			fclose(Arquivo);	
+		}
+	}
+}
+
+void Filtro_Reserva_Codigo_Acomodacao(int Modo_Feedback){
+	//Funcao para realizar filtro por codigos de hospede
+	int Modo_Abertura = Configuracoes();
+	int Codigo_Acomodacao = 0;
+	FILE *Arquivo;
+	//Variaveis para receber o codigo inicial e final e fazer o range entre eles
+	do{
+		Verde("Codigo Acomodação = ");
+		scanf("%d",&Codigo_Acomodacao);
+		if(Codigo_Acomodacao <= 0){
+			Vermelho("O codigo da acomodação não pode ser menor ou igual a 0");
+		}
+		//Mostra mensagem de erros ao usuario
+	}while(Codigo_Acomodacao <= 0);
+	//Loop que repete ate usuario digitiar valores validos para o range de codigos 
+	if(Modo_Abertura == Arquivo_Texto){
+		//Caso modo de abertura seja TXT
+		char Url[Tamanho2],Temporario[Tamanho2];
+		sprintf(Url,"Arquivos/Reserva.txt");
+		//Declara Array com a url
+		RESERVA Reserva;
+		//Cria uma variavel do tipo DADOS HOSPEDE;
+
+		FILE *Arquivo;
+			//Ponteiro para o arquivo
+
+		Arquivo=fopen(Url,"r");
+			//Abre o Arquivo
+		int Arquivo_Vazio=0;
+			
+		
+		if(Arquivo==NULL){
+			Vermelho("O Arquivo não foi aberto corretamente\n");
+		}else{
+			do{
+				fscanf(Arquivo,"%d",&Reserva.Codigo);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					//Expreção Regular
+				getc(Arquivo);
+				//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Reserva.Nome_Hospede);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+				//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%d",&Reserva.Codigo_Hospede);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%d",&Reserva.Cod_Acomodacao);
+					//Expreção Regular
+				getc(Arquivo);
+				if(Codigo_Acomodacao== Reserva.Cod_Acomodacao){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Dia);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Mes);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Ano);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Dia);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Mes);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Ano);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%f",&Reserva.Valor_Fatura);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Reserva.Pago);
+					//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%f",&Reserva.Valor_Conta);
+					//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Reserva.Modo_Pagamento);
+					getc(Arquivo);
+					getc(Arquivo);
+					//Pula o Ponteiro para o proximo caracte (pula o \n)
+					if(Modo_Feedback == Tela){
+						Ler_Reserva_Memoria(Reserva);
+					}else if(Modo_Feedback == Csv){
+						Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+							system("clear");
+							printf("\n");
+					}
+				}else{
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+				}
+			}while(!feof(Arquivo));
+				//Entra no loop se não estiver apontando para o final do arquivo;
+			fclose(Arquivo);
+		}
+	}else if(Modo_Abertura == Arquivo_Binario){
+		RESERVA Reserva;
+		char Url[Tamanho2],Temporario[Tamanho2];
+		sprintf(Url,"Arquivos/Reserva.bin");
+		Arquivo=fopen(Url,"rb");
+		do{
+			fread(&Reserva, sizeof(RESERVA),1,Arquivo);
+			if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+			}
+			if(Codigo_Acomodacao == Reserva.Cod_Acomodacao){	
+				if(Modo_Feedback == Tela){
+					Ler_Reserva_Memoria(Reserva);
+				}else if(Modo_Feedback == Csv){
+					Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+					//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+						system("clear");
+							printf("\n");
+				}
+			}
+			
+		}while(!feof(Arquivo));
+		fclose(Arquivo);
+	}
+}
+
+void Filtro_Reserva_Codigo_Hospede(int Modo_Feedback){
+	//Funcao para realizar filtro por codigos de hospede
+	int Modo_Abertura = Configuracoes();
+	int Codigo_Hospede = 0;
+	FILE *Arquivo;
+	//Variaveis para receber o codigo inicial e final e fazer o range entre eles
+	do{
+		Verde("Codigo Hospede = ");
+		scanf("%d",&Codigo_Hospede);
+		if(Codigo_Hospede <= 0){
+			Vermelho("O codigo do Hospede não pode ser menor ou igual a 0");
+		}
+		//Mostra mensagem de erros ao usuario
+	}while(Codigo_Hospede <= 0);
+	//Loop que repete ate usuario digitiar valores validos para o range de codigos 
+	if(Modo_Abertura == Arquivo_Texto){
+		//Caso modo de abertura seja TXT
+		char Url[Tamanho2],Temporario[Tamanho2];
+		sprintf(Url,"Arquivos/Reserva.txt");
+		//Declara Array com a url
+		RESERVA Reserva;
+		//Cria uma variavel do tipo DADOS HOSPEDE;
+
+		FILE *Arquivo;
+			//Ponteiro para o arquivo
+
+		Arquivo=fopen(Url,"r");
+			//Abre o Arquivo
+		int Arquivo_Vazio=0;
+			
+		
+		if(Arquivo==NULL){
+			Vermelho("O Arquivo não foi aberto corretamente\n");
+		}else{
+			do{
+				fscanf(Arquivo,"%d",&Reserva.Codigo);
+					//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"
+					//Expreção Regular
+				getc(Arquivo);
+				//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%[^;]s",Reserva.Nome_Hospede);
+				//[^;] Significa que a string tera todos os caracteres ate que se encontre um ";"7
+				//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				fscanf(Arquivo,"%d",&Reserva.Codigo_Hospede);
+					//Expreção Regular
+				getc(Arquivo);
+					//Pula o Ponteiro para o proximo caractere
+				if(Codigo_Hospede== Reserva.Codigo_Hospede){
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					fscanf(Arquivo,"%d",&Reserva.Cod_Acomodacao);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Dia);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Mes);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Entrada.Ano);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Dia);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Mes);
+						//Expreção Regular
+					getc(Arquivo);
+						//Pula o Ponteiro para o proximo caractere
+					fscanf(Arquivo,"%d",&Reserva.Data_Saida.Ano);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%f",&Reserva.Valor_Fatura);
+						//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Reserva.Pago);
+					//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%f",&Reserva.Valor_Conta);
+					//Expreção Regular
+					getc(Arquivo);
+					fscanf(Arquivo,"%d",&Reserva.Modo_Pagamento);
+					getc(Arquivo);
+					getc(Arquivo);
+					//Pula o Ponteiro para o proximo caracte (pula o \n)
+					if(Modo_Feedback == Tela){
+						Ler_Reserva_Memoria(Reserva);
+					}else if(Modo_Feedback == Csv){
+						Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+							system("clear");
+							printf("\n");
+					}
+				}else{
+					if(feof(Arquivo)){
+						//Verifica se esta no fim do arquivo
+						break;
+						//Sai do loop
+					}
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
+				}
+			}while(!feof(Arquivo));
+				//Entra no loop se não estiver apontando para o final do arquivo;
+			fclose(Arquivo);
+		}
+	}else if(Modo_Abertura == Arquivo_Binario){
+		RESERVA Reserva;
+		char Url[Tamanho2],Temporario[Tamanho2];
+		sprintf(Url,"Arquivos/Reserva.bin");
+		Arquivo=fopen(Url,"rb");
+		do{
+			fread(&Reserva, sizeof(RESERVA),1,Arquivo);
+			if(feof(Arquivo)){
+					//Verifica se esta no fim do arquivo
+					break;
+					//Sai do loop
+			}
+			if(Codigo_Hospede == Reserva.Codigo_Hospede){	
+				if(Modo_Feedback == Tela){
+					Ler_Reserva_Memoria(Reserva);
+				}else if(Modo_Feedback == Csv){
+					Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
+					//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+						system("clear");
+							printf("\n");
+				}
+			}
+			
+		}while(!feof(Arquivo));
+		fclose(Arquivo);
+	}
 }
 
 void Filtro_Reserva_Data(int Modo_Feedback){
@@ -208,10 +832,6 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 								Ler_Reserva_Memoria(Reserva);
 								//Chama funcao para ler da memoria e mostrar na tela
 						}else{
-								FILE *ApagaAnterior;
-								ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-								//Apaga se tiver algo no arquivo que sera gerado
-								fclose(ApagaAnterior);
 								Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);
 								system("clear");	
 						}
@@ -219,9 +839,6 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Reserva_Memoria(Reserva);
 						}else{
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-							fclose(ApagaAnterior);
 							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
 							system("clear");
 						}
@@ -229,9 +846,6 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Reserva_Memoria(Reserva);
 						}else{
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-							fclose(ApagaAnterior);
 							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
 							system("clear");
 						}
@@ -304,10 +918,7 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 								Ler_Reserva_Memoria(Reserva);
 								//Chama funcao para ler da memoria e mostrar na tela
 						}else{
-								FILE *ApagaAnterior;
-								ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-								//Apaga se tiver algo no arquivo que sera gerado
-								fclose(ApagaAnterior);
+								
 								Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);
 								system("clear");	
 						}
@@ -315,9 +926,7 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Reserva_Memoria(Reserva);
 						}else{
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-							fclose(ApagaAnterior);
+							
 							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
 							system("clear");
 						}
@@ -325,9 +934,7 @@ void Filtro_Reserva_Data(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Reserva_Memoria(Reserva);
 						}else{
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Reserva.csv","w");
-							fclose(ApagaAnterior);
+							
 							Gravar_Reserva_Txt("Arquivos/Reserva.csv",&Reserva);	
 							system("clear");
 						}
@@ -437,13 +1044,16 @@ void Filtro_Acomodacao_Codigos(int Modo_Feedback){
 					if(Modo_Feedback == Tela){
 						Ler_Acomodacoes_Memoria(Acomodacoes);
 					}else if(Modo_Feedback == Csv){
-						FILE *ApagaAnterior;
-						ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-						fclose(ApagaAnterior);
+						
 						Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
+							system("clear");
+							printf("\n");
 					}
 					
+				}else{
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
 				}
 			}
 			if(feof(Arquivo)){
@@ -451,8 +1061,6 @@ void Filtro_Acomodacao_Codigos(int Modo_Feedback){
 				break;
 				//Sai do loop
 			}
-			fscanf(Arquivo,"%[^\n]s",Temporario);
-			getc(Arquivo);
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		
@@ -484,9 +1092,7 @@ void Filtro_Acomodacao_Codigos(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Acomodacoes_Memoria(Acomodacoes);
 						}else if(Modo_Feedback == Csv){
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-							fclose(ApagaAnterior);
+							
 							Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 							system("clear");
 							printf("\n");
@@ -571,9 +1177,7 @@ void Gera_CSV_Acomodacoes_TXT(int Contador_Acomodacoes, int Codigos[], char Url[
 					getc(Arquivo);
 					getc(Arquivo);
 						//Pula o Ponteiro para o proximo caracte (pula o \n)
-					FILE *ApagaAnterior;
-					ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-					fclose(ApagaAnterior);
+					
 					Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 					system("clear");
 					printf("\n");
@@ -636,9 +1240,7 @@ void Gera_CSV_Acomodacoes_BIN(int Contador_Acomodacoes, int Codigos[], char Url[
 					}
 					Verde("\nAcomodacao disponivel\n");
 						//Pula o Ponteiro para o proximo caractere
-					FILE *ApagaAnterior;
-					ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-					fclose(ApagaAnterior);
+					
 					Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 					system("clear");
 					printf("\n");
@@ -805,9 +1407,7 @@ void Filtro_Acomodacao_CodCategoria(int Modo_Feedback){
 				if(Modo_Feedback == Tela){
 					Ler_Acomodacoes_Memoria(Acomodacoes);
 				}else if(Modo_Feedback == Csv){
-					FILE *ApagaAnterior;
-					ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-					fclose(ApagaAnterior);
+					
 					Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 					system("clear");
 					printf("\n");
@@ -853,9 +1453,6 @@ void Filtro_Acomodacao_CodCategoria(int Modo_Feedback){
 					if(Modo_Feedback == Tela){
 						Ler_Acomodacoes_Memoria(Acomodacoes);
 					}else if(Modo_Feedback == Csv){
-						FILE *ApagaAnterior;
-						ApagaAnterior = fopen("Arquivos/Acomodacoes.csv","w");
-						fclose(ApagaAnterior);
 						Gravar_Acomodacoes_Txt("Arquivos/Acomodacoes.csv",&Acomodacoes);	
 						system("clear");
 						printf("\n");
@@ -977,15 +1574,16 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 					if(Modo_Feedback == Tela){
 						Ler_Hospede_Memoria(Hospede);
 					}else if(Modo_Feedback == Csv){
-						FILE *ApagaAnterior;
-						ApagaAnterior = fopen("Arquivos/Hospedes.csv","w");
-						fclose(ApagaAnterior);
+						
 						Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
 						system("clear");
 						printf("\n");
 						//CRIAR E CHAMAR FUNCAO PARA GERAR ARQUIVO CSV
 					}
 					
+				}else{
+					fscanf(Arquivo,"%[^\n]s",Temporario);
+					getc(Arquivo);
 				}
 			}
 			if(feof(Arquivo)){
@@ -993,8 +1591,6 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 				break;
 				//Sai do loop
 			}
-			fscanf(Arquivo,"%[^\n]s",Temporario);
-			getc(Arquivo);
 		}while(!feof(Arquivo));
 			//Entra no loop se não estiver apontando para o final do arquivo;
 		
@@ -1026,9 +1622,7 @@ void Filtro_Hospede_Codigos(int Modo_Feedback){
 						if(Modo_Feedback == Tela){
 							Ler_Hospede_Memoria(Hospede);
 						}else if(Modo_Feedback == Csv){
-							FILE *ApagaAnterior;
-							ApagaAnterior = fopen("Arquivos/Hospedes.csv","w");
-							fclose(ApagaAnterior);
+						
 							Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
 							system("clear");
 							printf("\n");
@@ -1154,9 +1748,7 @@ void Filtro_Hospede_Sexo(int Modo_Feedback){
 				if(Modo_Feedback == Tela){
 					Ler_Hospede_Memoria(Hospede);
 				}else if(Modo_Feedback == Csv){
-					FILE *ApagaAnterior;
-					ApagaAnterior = fopen("Arquivos/Hospedes.csv","w");
-					fclose(ApagaAnterior);
+				
 					Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
 					system("clear");
 					printf("\n");
@@ -1210,9 +1802,7 @@ void Filtro_Hospede_Sexo(int Modo_Feedback){
 					if(Modo_Feedback == Tela){
 						Ler_Hospede_Memoria(Hospede);
 					}else if(Modo_Feedback == Csv){
-						FILE *ApagaAnterior;
-						ApagaAnterior = fopen("Arquivos/Hospedes.csv","w");
-						fclose(ApagaAnterior);
+						
 						Gravar_Hospede_Txt("Arquivos/Hospedes.csv",&Hospede);	
 						system("clear");
 						printf("\n");

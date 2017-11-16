@@ -161,4 +161,9 @@ void Filtro_Acomodacao_Data_Disponivel(int Modo_Feedback);
 void Filtro_Acomodacao_CodCategoria(int Modo_Feedback);
 int Tipo_Listagem_Reserva();
 void Filtro_Reserva_Data(int Modo_Feedback);
+void Filtro_Reserva_Codigo_Acomodacao(int Modo_Feedback);
+void Filtro_Reserva_Codigo_Hospede(int Modo_Feedback);
+int Tipo_Listagem_Produtos();
+void Filtro_Produtos_Codigos(int Modo_Feedback);
+void Filtro_Produtos_Codigos_Em_Estoque_Minimo(int Modo_Feedback);
 #endif

@@ -17,6 +17,7 @@ enum CampoLista{Hospedes = 1,Acomodacoes,Reservas,Produtos};
 enum Filtro_Hospede{Codigo = 1, Sexo};
 enum Filtro_Acomodacao{Categoria = 2,Data_Disponivel};
 enum Filtro_Reseva{Cod_Acomodacao = 1,Codigo_Hospede, Data_Reservado};
+enum Filtro_Produtos{Consumo = 1,Estoque_Minimo};
 
 //enum Registro{Codigo=0,Nome_Fantasia,Razao_Social,Hotel,Inscricao_Estadual,CNPJ,Logradouro,Numero,Bairro,Cidade,Telefone,Email,Dono_Gerente,Telefone_Gerente,Check_in,Check_out,Lucro};
 	//Enumerador para facilitar a leitura pois a onde estiver escrito tal palavra representara
