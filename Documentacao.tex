@@ -42,7 +42,7 @@
 
   \section{\#Arquivos de cabeçalho (Include)}
     Os arquivos de cabeçalho se estruturam em 4 pastas: \textit{ Pasta Raiz}, \textit{Importacao\_Exportacao}, \textit{Modulo\_FeedBack}, \textit{Modulo\_Registro} e \textit{Modulo\_Registro}.
-    \subsection{Pasta Raiz}
+    \subsection{Pasta\_Raiz}
       São os Arquivos e diretorios Dentro de  \textit{Arquivos\_Cabecalho}.\\
       \textit{Registros.h} Possui todas os  \textit{enum} e as \textit{structs} com os respectivos \textit{typdef}.\\
       \textit{Prototipos.h} Possui Todos os prototipos de funções.\\ 
@@ -55,10 +55,9 @@
       \textit{Reserva.h e Pesquisa.h} São arquivos voltados para a Pesquisa e o registro de reservas\\
     \subsection{Modulo\_Registro}
       \textit{Hotel.h, Hospede.h, Codigo\_Categoria.h, Acomodacoes.h, Login.h, Funcionarios.h, Fornecedores.h, Produtos.h} ,São arquivos que possuêm as funções especificas para registar determinada classe\\
-
   \newpage
-  \section{Funçõe por Arquivo}
-
+  \section{Funções por Arquivo}
+ 
 
 \subsection{Funcoes.h}
 \begin{lstlisting}
@@ -252,5 +251,198 @@ int Tipo_Listagem_Produtos();
 void Filtro_Produtos_Codigos(int Modo_Feedback);
 void Filtro_Produtos_Codigos_Em_Estoque_Minimo(int Modo_Feedback);
 \end{lstlisting}
+\section{Informações sobre  Funções}
+ \subsection{Cria\_Pasta}
+	Função recebe por parametro um char de 99 posições, e usa um comando específico do Linux para criar a pasta referente ao nome que foi recebido por parametro.
+\subsection{Verificacao\_All}
+	Função responsável por verificar se existe os arquivos de registro, tanto para arquivos com extensão .bin quanto para extensão .txt, caso esses arquivos não existam são criados através da função Verificacao\_ Arquivo.
+\subsection{OrdenaValoresTxt}
+	Função responsável por ordenar o conteúdo dos arquivos com extensão .txt, pois como toda linha começa com o codigo do dado que está sendo salvo é usado um comando interno do Linux para ordenar todo o arquivo de texto. Porém antes de realizar a ordenação a função chama a função de verificar se o arquivo que está sendo ordenado existe pois caso não exista pode causar erros.
+\subsection{Configuracoes}
+	Função responsável por verificar se o arquivo possui a extensão .txt ou .bin, na função é verificado se existe o arquivo Configuracoes.txt, pois ele indica onde os dados estão sendo salvos, ou seja se é arquivo do tipo binário ou texto. Ao final da função é retornado o modo de manipulação (binário ou texto).
+\subsection{Arquivo\_Texto\_Vazio}
+	A função recebe por referência um char contendo a url em que que o arquivo está salvo, feito isso o arquivo é aberto em modo de leitura,  para que assim possa ser verificado se o arquivo está vazio utilizando uma função interna do próprio C a feof(), se caso estiver no fim do arquivo já retorna sem incrementar no contador, se passar pelo feof() e não estiver no fim do arquivo é incrementado 1 no contador. Ao final da função o arquivo é fechado e verificado se o contador está igual a 0, se estiver zerado indica que o arquivo está vazio e então a função retorna 1, caso contrário é retornado 0 indicando que o arquivo não está vazio. 
+\subsection{Arquivo\_Binario\_Vazio}
+	A função recebe por referência um char contendo a url em que que o arquivo está salvo, feito isso o arquivo é aberto em modo de leitura, para que assim possa ser verificado se o arquivo está vazio utilizando uma função interna do próprio C a feof(), que caso se caso estiver no fim do arquivo já retorna sem incrementar no contador, se passar pelo feof() e não estiver no fim do arquivo é incrementado 1 no contador. Ao final da função o arquivo é fechado e verificado se o contador está igual a 0, se estiver zerado indica que o arquivo está vazio e então a função retorna 1, caso contrário é retornado 0 indicando que o arquivo não está vazio. 
+\subsection{Opcao\_Acoes}
+	Função responsável por mostrar ao usuário um menu com as seguites ações \textit{Criar, Editar, Apagar}, após mostrar o menu o usuário é lido para qual ação ele deseja realizar e é retornado essa ação. Caso seja digitado uma opção inválida é mostrado para o usuário que ele deve inserir uma opção válida e é repetido o menu.
+\subsection{Opcao\_Acoes\_Reserva}
+	Função semelhante a função de ações diversas \textit{Opcao\_Acoes}, ela é responsável por mostrar ao usuário um menu com as seguites ações \textit{Ler, Criar, Editar, Apagar}, após mostrar o menu para o usuário é lido qual ação ele deseja realizar e é retornado essa ação. Caso seja digitado uma opção inválida é mostrado para o usuário que ele deve inserir uma opção válida e é repetido o menu.
+\subsection{Modulo}
+	Função semelhante a função de ações diversas \textit{Opcao\_Acoes}, ela é responsável por mostrar ao usuário um menu com as seguites ações \textit{Registros, Reservas, Pesquisas, FeedBack, Importar/Exportar}, após mostrar o menu para o usuário é lido para qual das opções ele deseja ir e é retornado essa opção. Caso seja digitado uma opção inválida é mostrado para o usuário que ele deve inserir uma opção válida e é repetido o menu.
+\subsection{Main\_All}
+	Função semelhante a função de ações diversas \textit{Opcao\_Acoes}, ela é responsável por mostrar ao usuário um menu com as seguites ações \textit{Hotel, Hospedes, Acomodações, Categoria, Produtos, Fornecedores, Funcionários}, após mostrar o menu para o usuário é lido para qual das opções ele deseja ir e é retornado essa opção. Caso seja digitado uma opção inválida é mostrado para o usuário que ele deve inserir uma opção válida e é repetido o menu.
+\subsection{Apagar\_Modificar}
+	A função recebe um char contendo a URL em que o dado será apagado está e o código que o dado está, a função procura pelo código do dado que sera apagao ou modificado e leva o ponteiro até essa linha, feito isso é mostrado uma menssagem de confirmação de exclusão ou edição, caso o usuário confirme o dado é apagado ou editado. Para que isso ocorra é copiado para outro arquivo todos os dados anteriores e editado/apagado o dado referente ao código passado por parâmetro e copiado o restante dos dados para o arquivo temporário, após todos os dados serem copiados o arquivo temporário é renomeado e o arquivo anterior a edição ou deleção é apagado. Vale ressaltar que a função é modular ou seja, ela funciona para todos os módulos referente a arquivos com extensão .txt.
+\subsection{Confirmacao}
+	Função responsável por verificar se o usuário deseja realmente realizar a ação que ele pretende, pois assim que a ação for realizada será impossivel reverter o dado.
+\subsection{Intervalo\_Vetor}
+	Função responsável por verificar se o vetor passado por referência existe intervalos entre um código e outro, feito isso ela retorna em que posição esta o intervalo e caso não exista intervalo é retornado -1. 
+\subsection{Modo\_Manipulacao}
+	Função responsável por verificar em qual formato os dados serão gravados, as opções que o usuário irá visualizar são: \textit{Arquivo Texto, Arquivo Binário, Banco de Dados, Núvem}. Porém somente o arquivo texto e binário foram implentados, caso seja escolhida outra opção é mostrado para o usuário que aquela opção não foi implementada.
+\subsection{Quick\_Sort}
+	Função responsável por receber por referência um vetor, o inicio e o fim do mesmo para poder ordena-lo em ordem crescente. 
+\subsection{Retorna\_Linha\_Codigo}
+	Função recebe um char contendo a URL e o código para que possa abrir o arquivo e retornar em qual linha aquele arquivo se encotra.
+\subsection{Valida\_Codigo}
+	Função responsável por receber um código e verificar se ele existe, para seu funcionamento é recibido por parametro um char contendo a URL que o código está cadastrado, o modo de abertura (Texto ou Binário) e o tipo de dado que será validado o código.
+\subsection{Verificacao\_Arquivo}
+	Função responsável por receber por referência uma url contendo o local do arquivo e verificar se ele exista, caso o arquivo não exista ele é criado.
+\subsection{Modo\_Bin\_ou\_Txt}
+	Função responsável por escrever na struct o modo de abertura de cada tipo de dado, ou seja é escrito na struct MODO de abertura do arquivo, se é para escrita, leitura ou concatenação. Vale ressaltar que a função funciona tanto para arquivos texto quanto para arquivos binários.
+\subsection{Converter\_Decimal\_Binario}
+	Função responsável por receber um valor binário de quatro digitos e converte-lo em decimal.
+\subsection{MenuInicialFeedback}
+	Função responsável por mostrar o menu inicial do módulo de FeedBack para o usuário. Vale ressaltar que caso o usuário digite uma opção invalida é mostrado para ele que não é uma opção válida e repete o menu.
+\subsection{Ler\_Configuracoes\_Retorna\_Modo\_de\_Abertura}
+	Função responsável por abrir o arquivo de configurações e retornar se os dados estão sendo salvos em txt ou bin.
+\subsection{Valida\_Codigo\_Produto}
+	Função responsável por abrir o arquivo de produtos e verificar se o código recebido por paramêtro esta salvo dentro do arquivo, retornando 1 para verdadeiro e 0 para falso.
+\subsection{Ler\_Hotel\_Memoria}
+	Função responsavel para mostrar no terminal o conteudo da struct DADOS\_HOTEL passada por  refêrencia.
 
-\end{document}
+\subsection{Gravar\_Hotel\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo concatenação de texto e salva a struct DADOS\_HOTEL  no arquivo, é importante ressaltar que  a struct foi passada por referência e não por valor.
+
+\subsection{Ler\_Hotel\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo leitura de texto lé o seu conteudo de linha em linha (o que equivale a uma struct) e mostra seu conteúdo na tela. É importante ressaltar que esta função percorre todo o arquivo.txt o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Hotel\_Memoria} passando uma struct DADOS HOTEL  por vez.
+
+\subsection{Recebe\_Dados\_Hotel}
+	A função recebe uma struct  DADOS\_HOTEL por referência e prenche com valores digitados pelo usuário.
+
+\subsection{Main\_Hotel}
+	A função verifica se os arquivos referente ao backup do hotel existe caso não exista ela os cria. Sempre que a função é chamada ela ordena o conteudo do hotel.txt por meio da função \textit{OrdenaValoresTxt} e pede para que o usuário escolha uma ação:(\textit{Ler, Criar, Editar, Apagar})  e a chama caso o  o funcionário tenha o nivel de permisão adequado para realizar tal função.
+
+\subsection{Ler\_Hotel\_Bin}
+	Muito semelhante a \textit{Ler\_Hotel\_Txt}, a função abre o arquivo pela url que foi passada por parâmetro em modo leitura de arquivos binários e lé o conteudo referente a uma struct e mostra seu conteudo na tela.é importante ressaltar que esta função percorre todo o arquivo.bin o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Hotel\_Memoria} passando uma struct DADOS HOTEL  por vez.
+
+\subsection{Gravar\_Hotel\_Bin}
+	Muito semelhante a \textit{Gravar\_Hotel\_Txt}, esta função abre o arquivo pela url que foi passada por parâmetro em modo concatenação binária e salva a struct DADOS\_HOTEL  no arquivo, é importante ressaltar que  a struct foi passada por referência e nã ouo por valor.
+
+\subsection{Valida\_Acomadacao\_Hotel}
+	Esta função recebe um codigo por parametro e o pesquisa dentro de um arquivo .txt ou .bin, caso o codigo exista no arquivo é retornado \textbf{1} e caso não exista é retornado  \textbf{0}
+
+\subsection{Criar\_Modificar\_Hotel}
+	Esta função verifica qual o menor numero natural não utilizado como codigo e o usa para o codigo do novo hotel apos isto  chama a função \textit{Recebe\_Dados\_Hotel} para prencher a struct e e por fim ela salva a struct no arquivo atraves da função \textit{Gravar\_Hotel\_Txt} ou \textit{Gravar\_Hotel\_Bin}
+
+\subsection{Retorna\_Campo\_Struct\_Hotel}
+	Esta função le todas as structs do arquivo binário e retorna qual a posição da struct que possui o codigo passado por parametro,caso retorne \textbf{-1} é porque não há hoteis com este código.
+
+\subsection{Apagar\_Modificar\_Hotel\_Bin}
+	Está função abre um arquivo binario que teve sua  url passada por parametro, alem disso eśtá função recebe um codigo por parametro e uma flag.
+	a Funcionalidade principal destá função é transferir todos os dados de struct para um arquivo temporario exceto a struct com o codigo recebido. caso a flag esteja ligada no momento que o codigo é encontrado é chamada a função \textit{Criar\_Modificar\_Hotel} para repreencher a struct . apos a transferencia de todos os dados o arquivo original \textit{Hotel.bin} é apagado e o Temp é renomeado para \textit{Hotel.bin}
+
+
+\subsection{Ler\_Hospede\_Memoria}
+	Função responsavel para mostrar no terminal o conteudo da struct DADOS\_HOSPEDE passada por  refêrencia.
+
+\subsection{Gravar\_Hospede\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo concatenação de texto e salva a struct DADOS\_HOSPEDE  no arquivo, é importante ressaltar que  a struct foi passada por referência e não por valor.
+
+\subsection{Ler\_Hospede\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo leitura de texto lé o seu conteudo de linha em linha (o que equivale a uma struct) e mostra seu conteúdo na tela. É importante ressaltar que esta função percorre todo o arquivo.txt o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Hospede\_Memoria} passando uma struct DADOS Hospede  por vez.
+
+\subsection{Recebe\_Dados\_Hospede}
+	A função recebe uma struct  DADOS\_HOSPEDE por referência e prenche com valores digitados pelo usuário.
+
+\subsection{Main\_Hospede}
+	A função verifica se os arquivos referente ao backup do Hospede existe caso não exista ela os cria. Sempre que a função é chamada ela ordena o conteudo do Hospede.txt por meio da função \textit{OrdenaValoresTxt} e pede para que o usuário escolha uma ação:(\textit{Ler, Criar, Editar, Apagar})  e a chama caso o  o funcionário tenha o nivel de permisão adequado para realizar tal função.
+
+\subsection{Ler\_Hospede\_Bin}
+	Muito semelhante a \textit{Ler\_Hospede\_Txt}, a função abre o arquivo pela url que foi passada por parâmetro em modo leitura de arquivos binários e lé o conteudo referente a uma struct e mostra seu conteudo na tela.é importante ressaltar que esta função percorre todo o arquivo.bin o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Hospede\_Memoria} passando uma struct DADOS Hospede  por vez.
+
+\subsection{Gravar\_Hospede\_Bin}
+	Muito semelhante a \textit{Gravar\_Hospede\_Txt}, esta função abre o arquivo pela url que foi passada por parâmetro em modo concatenação binária e salva a struct DADOS\_HOSPEDE  no arquivo, é importante ressaltar que  a struct foi passada por referência e nã ouo por valor.
+
+
+\subsection{Criar\_Modificar\_Hospede}
+	Esta função verifica qual o menor numero natural não utilizado como codigo e o usa para o codigo do novo Hospede apos isto  chama a função \textit{Recebe\_Dados\_Hospede} para prencher a struct e e por fim ela salva a struct no arquivo atraves da função \textit{Gravar\_Hospede\_Txt} ou \textit{Gravar\_Hospede\_Bin}
+
+\subsection{Retorna\_Campo\_Struct\_Hospede}
+	Esta função le todas as structs do arquivo binário e retorna qual a posição da struct que possui o codigo passado por parametro,caso retorne \textbf{-1} é porque não há hoteis com este código.
+
+\subsection{Apagar\_Modificar\_Hospede\_Bin}
+	Está função abre um arquivo binario que teve sua  url passada por parametro, alem disso eśtá função recebe um codigo por parametro e uma flag.
+	a Funcionalidade principal destá função é transferir todos os dados de struct para um arquivo temporario exceto a struct com o codigo recebido. caso a flag esteja ligada no momento que o codigo é encontrado é chamada a função \textit{Criar\_Modificar\_Hospede} para repreencher a struct . apos a transferencia de todos os dados o arquivo original \textit{Hospede.bin} é apagado e o Temp é renomeado para \textit{Hospede.bin}
+
+\subsection{Nome\_Hospede\_Codigo}
+	Está função recebe um codigo por parametro, abre o arquivo Hospede em modo leitura (\textit{.bin ou .txt}) e procura pelo nome do hospede que contem  codigo informado retornando uma string (modifca um vetor que foi passado por referencia);
+
+
+\subsection{Ler\_Codigo\_Categoria\_Memoria}
+	Função responsavel para mostrar no terminal o conteudo da struct CODIGO\_CATEGORIA passada por  refêrencia.
+
+\subsection{Gravar\_Codigo\_Categoria\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo concatenação de texto e salva a struct CODIGO\_CATEGORIA  no arquivo, é importante ressaltar que  a struct foi passada por referência e não por valor.
+
+\subsection{Ler\_Codigo\_Categoria\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo leitura de texto lé o seu conteudo de linha em linha (o que equivale a uma struct) e mostra seu conteúdo na tela. É importante ressaltar que esta função percorre todo o arquivo.txt o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Codigo\_Categoria\_Memoria} passando uma struct DADOS Codigo\_Categoria  por vez.
+
+\subsection{Recebe\_CODIGO\_CATEGORIA}
+	A função recebe uma struct  CODIGO\_CATEGORIA por referência e prenche com valores digitados pelo usuário.
+
+\subsection{Main\_Codigo\_Categoria}
+	A função verifica se os arquivos referente ao backup do Codigo\_Categoria existe caso não exista ela os cria. Sempre que a função é chamada ela ordena o conteudo do Codigo\_Categoria.txt por meio da função \textit{OrdenaValoresTxt} e pede para que o usuário escolha uma ação:(\textit{Ler, Criar, Editar, Apagar})  e a chama caso o  o funcionário tenha o nivel de permisão adequado para realizar tal função.
+
+\subsection{Ler\_Codigo\_Categoria\_Bin}
+	Muito semelhante a \textit{Ler\_Codigo\_Categoria\_Txt}, a função abre o arquivo pela url que foi passada por parâmetro em modo leitura de arquivos binários e lé o conteudo referente a uma struct e mostra seu conteudo na tela.é importante ressaltar que esta função percorre todo o arquivo.bin o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Codigo\_Categoria\_Memoria} passando uma struct DADOS Codigo\_Categoria  por vez.
+
+\subsection{Gravar\_Codigo\_Categoria\_Bin}
+	Muito semelhante a \textit{Gravar\_Codigo\_Categoria\_Txt}, esta função abre o arquivo pela url que foi passada por parâmetro em modo concatenação binária e salva a struct CODIGO\_CATEGORIA  no arquivo, é importante ressaltar que  a struct foi passada por referência e nã ouo por valor.
+
+\subsection{Criar\_Modificar\_Codigo\_Categoria}
+	Esta função verifica qual o menor numero natural não utilizado como codigo e o usa para o codigo do novo Codigo\_Categoria apos isto  chama a função \textit{Recebe\_CODIGO\_CATEGORIA} para prencher a struct e e por fim ela salva a struct no arquivo atraves da função \textit{Gravar\_Codigo\_Categoria\_Txt} ou \textit{Gravar\_Codigo\_Categoria\_Bin}
+
+\subsection{Retorna\_Campo\_Struct\_Codigo\_Categoria}
+	Esta função le todas as structs do arquivo binário e retorna qual a posição da struct que possui o codigo passado por parametro,caso retorne \textbf{-1} é porque não há Codigo de categorias com este numero.
+
+\subsection{Apagar\_Modificar\_Codigo\_Categoria\_Bin}
+	Está função abre um arquivo binario que teve sua  url passada por parametro, alem disso eśtá função recebe um codigo por parametro e uma flag.
+	a Funcionalidade principal destá função é transferir todos os dados de struct para um arquivo temporario exceto a struct com o codigo recebido. caso a flag esteja ligada no momento que o codigo é encontrado é chamada a função \textit{Criar\_Modificar\_Codigo\_Categoria} para repreencher a struct . apos a transferencia de todos os dados o arquivo original \textit{Codigo\_Categoria.bin} é apagado e o Temp é renomeado para \textit{Codigo\_Categoria.bin}
+
+\subsection{Valida\_Acomadacao\_Codigo\_Categoria}
+	Esta função recebe um codigo por parametro e o pesquisa dentro do arquivo Codigo\_Categoria \textit{.txt ou .bin}, caso o codigo exista no arquivo é retornado \textbf{1} e caso não exista é retornado  \textbf{0}.
+
+
+\subsection{Ler\_Acomodacoes\_Memoria}
+	Função responsavel para mostrar no terminal o conteudo da struct Acomodacoes passada por  refêrencia.
+
+\subsection{Gravar\_Acomodacoes\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo concatenação de texto e salva a struct Acomodacoes  no arquivo, é importante ressaltar que  a struct foi passada por referência e não por valor.
+
+\subsection{Ler\_Acomodacoes\_Txt}
+	A função abre o arquivo pela url que foi passada por parâmetro em modo leitura de texto lé o seu conteudo de linha em linha (o que equivale a uma struct) e mostra seu conteúdo na tela. É importante ressaltar que esta função percorre todo o arquivo.txt o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Acomodacoes\_Memoria} passando uma struct DADOS Acomodacoes  por vez.
+
+\subsection{Recebe\_Acomodacoes}
+	A função recebe uma struct  Acomodacoes por referência e prenche com valores digitados pelo usuário.
+
+\subsection{Main\_Acomodacoes}
+	A função verifica se os arquivos referente ao backup do Acomodacoes existe caso não exista ela os cria. Sempre que a função é chamada ela ordena o conteudo do Acomodacoes.txt por meio da função \textit{OrdenaValoresTxt} e pede para que o usuário escolha uma ação:(\textit{Ler, Criar, Editar, Apagar})  e a chama caso o  o funcionário tenha o nivel de permisão adequado para realizar tal função.
+
+\subsection{Ler\_Acomodacoes\_Bin}
+	Muito semelhante a \textit{Ler\_Acomodacoes\_Txt}, a função abre o arquivo pela url que foi passada por parâmetro em modo leitura de arquivos binários e lé o conteudo referente a uma struct e mostra seu conteudo na tela.é importante ressaltar que esta função percorre todo o arquivo.bin o que faz com que todos os dados salvos no arquivo sejam exibidos. e para mostrar na tela chama a função \textit{Ler\_Acomodacoes\_Memoria} passando uma struct DADOS Acomodacoes  por vez.
+
+\subsection{Gravar\_Acomodacoes\_Bin}
+	Muito semelhante a \textit{Gravar\_Acomodacoes\_Txt}, esta função abre o arquivo pela url que foi passada por parâmetro em modo concatenação binária e salva a struct Acomodacoes  no arquivo, é importante ressaltar que  a struct foi passada por referência e nã ouo por valor.
+
+\subsection{Criar\_Modificar\_Acomodacoes}
+	Esta função verifica qual o menor numero natural não utilizado como codigo e o usa para o codigo do novo Acomodacoes apos isto  chama a função \textit{Recebe\_Acomodacoes} para prencher a struct e e por fim ela salva a struct no arquivo atraves da função \textit{Gravar\_Acomodacoes\_Txt} ou \textit{Gravar\_Acomodacoes\_Bin}
+
+\subsection{Retorna\_Campo\_Struct\_Acomodacoes}
+	Esta função le todas as structs do arquivo binário e retorna qual a posição da struct que possui o codigo passado por parametro,caso retorne \textbf{-1} é porque não há Codigo de categorias com este numero.
+
+\subsection{Apagar\_Modificar\_Acomodacoes\_Bin}
+	Está função abre um arquivo binario que teve sua  url passada por parametro, alem disso eśtá função recebe um codigo por parametro e uma flag.
+	a Funcionalidade principal destá função é transferir todos os dados de struct para um arquivo temporario exceto a struct com o codigo recebido. caso a flag esteja ligada no momento que o codigo é encontrado é chamada a função \textit{Criar\_Modificar\_Acomodacoes} para repreencher a struct . apos a transferencia de todos os dados o arquivo original \textit{Acomodacoes.bin} é apagado e o Temp é renomeado para \textit{Acomodacoes.bin}
+
+
+\subsection{Valida\_Codigo\_Categoria\_Acomodacoes}
+	Está função  abre o arquivo Codigo\_Categoria (\textit{.txt ou .bin}) e pesquisa pelo codigo passado por parâmetro caso encontre o codigo é retornado \textbf{1} caso  não encontre é retornado (\textbf{-1 ou 0})
+	
+\subsection{Valida\_Codigo\_Hotel}
+	Está função  abre o arquivo Hotel (\textit{.txt ou .bin}) e pesquisa pelo codigo passado por parâmetro caso encontre o codigo é retornado \textbf{1} caso  não encontre é retornado (\textbf{-1 ou 0})
+
+\subsection{Recebe\_Dados\_Acomodacoes}	
+	Está função Recebe do usuário informações para preencher a struct porem antes de fazer sua principal função é verificado se existe algum Codigo categoria já cadastrado
+	
+\end{document}	
