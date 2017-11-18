@@ -1,0 +1,241 @@
+\documentclass[titlepage]{article}
+\usepackage[T1]{fontenc}
+\usepackage{setspace}
+\usepackage{indentfirst}
+%\usepackage{sbc-template}
+\usepackage[brazil]{babel}
+%\usepackage[lati11]{inputenc}
+\usepackage[pdftex]{hyperref}
+
+\title{Documentação Técnica Hoteis Molezinha}
+\date{11 de Dezembro de 2017}
+\author{Lucas Mateus Fernandes \and Leandro Soulza Pinheiro}
+	\begin{document}
+	\maketitle
+	\newpage
+	\tableofcontents %%Sumário
+	\newpage
+
+
+	\section{\#Arquivos de cabeçalho (Include)}
+		Os arquivos de cabeçalho se estruturam em 4 pastas: \textit{ Pasta Raiz}, \textit{Importacao\_Exportacao}, \textit{Modulo\_FeedBack}, \textit{Modulo\_Registro} e \textit{Modulo\_Registro}.
+		\subsection{Pasta Raiz}
+			São os Arquivos e diretorios Dentro de  \textit{Arquivos\_Cabecalho}.\\
+			\textit{Registros.h} Possui todas os  \textit{enum} e as \textit{structs} com os respectivos \textit{typdef}.\\
+			\textit{Prototipos.h} Possui Todos os prototipos de funções.\\ 
+			\textit{Funcoes.h} Possui as funções mais gerais que não são específicas de nenhum módulo.\\
+		\subsection{Modulo\_Feedback}
+			\textit{Feedback.h} Voltado para gerar o .csv\\
+		\subsection{Importacao\_Exportacao}
+			\textit{Importacao.h} Voltado para Importação e Exportação de arquivos .xml\\
+		\subsection{Modulo\_Reserva}
+			\textit{Reserva.h e Pesquisa.h} São arquivos voltados para a Pesquisa e o registro de reservas\\
+		\subsection{Modulo\_Registro}
+			\textit{Hotel.h, Hospede.h, Codigo\_Categoria.h, Acomodacoes.h, Login.h, Funcionarios.h, Fornecedores.h, Produtos.h} ,São arquivos que possuêm as funções especificas para registar determinada classe\\
+
+	\newpage
+	\section{Funçõe por Arquivo}
+
+
+
+			
+	\subsection{Funçoes.h}
+	Apagar\_Modificar\cit{oi}\\
+	MenuInicialFeedback\\
+	MenuListagemFeedback\\
+	Cria\_Pasta\\
+	Opcao\_Acoes\\
+	Main\_All\\
+	Apagar\_Modificar\\
+	Confirmacao\\
+	Intrervalo\_Vetor\\
+	Modo\_Manipulacao\\
+	Quick\_Sort\\
+	Retorna\_Linha\_Codigo\\
+	Valida\_Codigo\\
+	Verificacao\_Arquivo\\
+	Modo\_Bin\_ou\_Txt\\
+	Converter\_Decimal\_Binario\\
+	Arquivo\_Texto\_Vazio\\
+	Arquivo\_Binario\_Vazio	
+	Verificacao\_All\\
+	Ler\_Configuracoes\_Retorna\_Modo\_de\_Abertura\\
+	Valida\_Codigo\_Produto\\
+	Recebe\_Dados\_Produtos\\
+	
+	\subsection{Hotel.h}
+	Retorna\_Campo\_Struct\_Hotel\\
+	Apagar\_Modificar\_Hotel\_Bin\\
+	Criar\_Modificar\_Hotel\\
+	Gravar\_Hotel\_Bin\\
+	Gravar\_Hotel\_Txt\\
+	Ler\_Hotel\_Bin\\
+	Ler\_Hotel\_Memoria\\
+	\label{oi}Ler\_Hotel\_Txt\\
+	Main\_Hotel\\
+	Valida\_Acomadacao\_Hotel\\
+	
+	\subsection{Hospede.h}
+	Retorna\_Campo\_Struct\_Hospede\\
+	Apagar\_Modificar\_Hospede\_Bin\\
+	Criar\_Modificar\_Hospede\\
+	Gravar\_Hospede\_Bin\\
+	Gravar\_Hospede\_Txt\\
+	Ler\_Hospede\_Bin\\
+	Ler\_Hospede\_Memoria\\
+	Ler\_Hospede\_Txt\\
+	Main\_Hospede\\
+	Nome\_Hospede\_Codigo	
+	
+	\subsection{Codigo.h}\_Categoria
+	Retorna\_Campo\_Struct\_Codigo\_Categoria\\
+	Apagar\_Modificar\_Codigo\_Categoria\_Bin\\
+	Criar\_Modificar\_Codigo\_Categoria\\
+	Gravar\_Codigo\_Categoria\_Bin\\
+	Gravar\_Codigo\_Categoria\_Txt\\
+	Ler\_Codigo\_Categoria\_Bin\\
+	Ler\_Codigo\_Categoria\_Memoria\\
+	Ler\_Codigo\_Categoria\_Txt\\
+	Main\_Codigo\_Categoria\\
+	Valida\_Acomadacao\_Codigo\_Categoria\\
+	
+	\subsection{Acomodacoes.h}
+	Valida\_Codigo\_Hotel\\
+	Retorna\_Campo\_Struct\_Acomodacoes\\
+	Valida\_Codigo\_Categoria\_Acomodacoes\\
+	Apagar\_Modificar\_Acomodacoes\_Bin\\
+	Criar\_Modificar\_Acomodacoes\\
+	Gravar\_Acomodacoes\_Bin\\
+	Gravar\_Acomodacoes\_Txt\\
+	Ler\_Acomodacoes\_Bin\\
+	Ler\_Acomodacoes\_Memoria\\
+	Ler\_Acomodacoes\_Txt\\
+	Recebe\_Dados\_Acomodacoes\\
+	Main\_Acomodacoes\\
+	
+	\subsection{Login.h}
+	Login\\
+	Criptografar\\
+	Descriptografar\\
+	
+	\subsection{Funcionarios.h}
+	Ler\_Funcionarios\_Txt\\
+	Ler\_Funcionarios\_Bin\\
+	Ler\_Funcionarios\_Memoria\\
+	Gravar\_Funcionarios\_Txt\\
+	Gravar\_Funcionarios\_Bin\\
+	Criar\_Modificar\_Funcionarios\\
+	Retorna\_Campo\_Struct\_Funcionarios\\
+	Apagar\_Modificar\_Funcionarios\_Bin\\
+	
+	\subsection{Fornecedores.h}
+	Retorna\_Campo\_Struct\_Fornecedores\\
+	Apagar\_Modificar\_Fornecedores\_Bin\\
+	Criar\_Modificar\_Fornecedores\\
+	Gravar\_Fornecedores\_Bin\\
+	Gravar\_Fornecedores\_Txt\\
+	Ler\_Fornecedores\_Bin\\
+	Ler\_Fornecedores\_Memoria\\
+	Ler\_Fornecedores\_Txt\\
+	Main\_Fornecedores\\
+	
+	\subsection{Produtos.h}
+	Ler\_Produtos\_Txt\\
+	Ler\_Produtos\_Bin\\
+	Ler\_Produtos\_Memoria\\
+	Gravar\_Produtos\_Txt\\
+	Gravar\_Produtos\_Bin\\
+	Criar\_Modificar\_Produtos\\
+	Retorna\_Campo\_Struct\_Produtos\\
+	Apagar\_Modificar\_Produtos\_Bin\\
+	Valida\_Codigo\_Hotel\_Produtos\\
+	
+	\subsection{Reserva.h}
+	Retorna\_Campo\_Struct\_Reserva\\
+	Apagar\_Modificar\_Reserva\_Bin\\
+	Criar\_Modificar\_Reserva\\
+	Gravar\_Reserva\_Bin\\
+	Gravar\_Reserva\_Txt\\
+	Ler\_Reserva\_Bin\\
+	Ler\_Reserva\_Memoria\\
+	Ler\_Reserva\_Txt\\
+	Main\_Reserva\\
+	Valida\_Acomadacao\_Reserva\\
+	Mostra\_Se\_Conta\_Paga\\
+	Modo\_De\_Pagamento\\
+	Valida\_Hospede\_Reserva\\
+	DebugFluxo\\
+	Apagar\_Fluxo\\
+	Retorna\_Campo\_Struct\_Fluxo\\
+	Arquivo\_Url\_Fluxo\\
+	Retorna\_Codigos\_Reserva	
+	
+	\subsection{Pesquisa.h}
+	Main\_Pesquisa	
+	Verifica\_Fluxo\\
+	PESQUISA Tipo\_Pesquisa\\
+	DATA Pesquisa\\
+	Retorna\_Acomodacao\_Disponiveis\_Por\_Periodo\\
+	Pequisa\_Quantidade\\
+	Pequisa\_Facilidades\\
+	Pequisa\_Categoria\_Acomodacao\\
+	Valida\_Codigo\_Acomodacao\\
+	Recebe\_Data\\
+	Todas\_Acomodacoes\_TXT\\
+	Mostra\_Acomodacoes\_TXT\\
+	Mostra\_Acomodacoes\_BIN	
+	Todas\_Acomodacoes\_BIN	
+	Retorna\_Acomodacoes\_Indisponiveis\_Com\_Codigo\_Categoria	
+	Retorna\_Acomodacoes\_Indisponiveis\_Com\_Quantidade\_Pessoas\\
+	Retorna\_Acomodacoes\_Indisponiveis\_Com\_Facilidades\\
+	
+	\subsection{Importar/Exportar XML.h}
+	Exportar\\
+	Set\_On\_Off\\
+
+	
+	\subsection{FeedBack}
+	MainFeedback\\
+	Tipo\_Listagem\_Hospede\\
+	Filtro\_Hospede\_Codigos	
+	Filtro\_Hospede\_Sexo	
+	Tipo\_Listagem\_Acomodacao\\
+	Filtro\_Acomodacao\_Codigos	
+	Gera\_CSV\_Acomodacoes\_TXT\\
+	Gera\_CSV\_Acomodacoes\_BIN\\
+	Filtro\_Acomodacao\_Data\_Disponivel\\
+	Filtro\_Acomodacao\_CodCategoria\\
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				
+	\end{document}
