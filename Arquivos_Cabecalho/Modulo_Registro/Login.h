@@ -154,7 +154,6 @@ int Login(MODO Modo){
 
 
 void Criptografar(char Senha[]){
-		
 		for(int i=0;Senha[i];i++){
 			if(i%2==0){
 				Senha[i]= Senha[i]+1;

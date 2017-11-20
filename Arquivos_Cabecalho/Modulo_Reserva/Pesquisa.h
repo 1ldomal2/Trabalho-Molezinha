@@ -504,7 +504,8 @@ int Retorna_Acomodacoes_Indisponiveis_Com_Quantidade_Pessoas(int Adultos, int Cr
 		}
 		else if(Modo_Abertura == Arquivo_Texto){
 			fscanf(Arquivo,"%d",&Acomodacoes.Codigo);
-			for(int i = 0 ; i < 7;	i++){
+			getc(Arquivo);
+			for(int i = 0 ; i < 6;	i++){
 				fscanf(Arquivo,"%[^;]s",Temporario);
 				getc(Arquivo);
 			}
