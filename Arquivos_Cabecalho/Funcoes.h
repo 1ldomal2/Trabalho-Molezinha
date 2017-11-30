@@ -223,13 +223,14 @@ int Modulo(){
 		"\n\t3\tPara Pesquisas"
 		"\n\t4\tFeedBack"
 		"\n\t5\tPara Importar/Exportar XML"
+		"\n\t6\tPara Transações"
 		"\n\t0\tSair\n\t");
 		scanf("%d",&Registro);
 		system("clear");
-		if(Registro <0 || Registro > 5){
+		if(Registro <0 || Registro > 6){
 			Vermelho("Digite um valor valido");	
 		}
-	}while(Registro <0 || Registro > 5);
+	}while(Registro <0 || Registro > 6);
 	return Registro;
 }
 

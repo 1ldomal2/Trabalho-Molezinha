@@ -10,6 +10,7 @@ char BUGS[999];
 #define DEBUG(TEXTO) printf("\n%s%s \t Linha = %d \t %s%s\n","\33[1;31m",__FILE__, __LINE__,TEXTO,"\33[0;29m");//scanf("%d",&Bug)
 #define DEBUGINT(TEXTO,INT) printf("\n%s%s \t Linha = %d \t %s%d%s\n","\33[1;32m",__FILE__,__LINE__,TEXTO,INT,"\33[0;29m");//scanf("%d",&Bug)
 #define Vermelho(TEXTO)	printf("\33[1;31m%s\33[0;29m",TEXTO);
+#define Vermelho_F(FLOAT)	printf("\33[1;31m%.2f\33[0;29m",FLOAT);
 #define Verde(TEXTO)	printf("\33[1;32m%s\33[0;29m",TEXTO);
 #define Amarelo(TEXTO)	printf("\33[1;33m%s\33[0;29m",TEXTO);
 //Biblioteca Padrão
@@ -40,6 +41,8 @@ char BUGS[999];
 #include "Arquivos_Cabecalho/Importacao_Exportacao/Importacao.h"
 //Modulo FeedBack
 #include "Arquivos_Cabecalho/Modulo_FeedBack/Feedback.h"
+//Modulo Transacoes
+#include "Arquivos_Cabecalho/Modulo_Transacao/Transacao.h"
 
 
 
@@ -137,6 +140,10 @@ int main(int argc, char const *argv[])
 				break;
 				case Importar_ExportarXml:
 					Main_IE();
+					system("clear");
+				break;
+				case Transacoes:
+					Main_Transacoes();
 					system("clear");
 				break;
 				case 0:

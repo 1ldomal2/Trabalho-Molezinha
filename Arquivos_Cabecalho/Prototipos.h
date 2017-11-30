@@ -166,4 +166,9 @@ void Filtro_Reserva_Codigo_Hospede(int Modo_Feedback);
 int Tipo_Listagem_Produtos();
 void Filtro_Produtos_Codigos(int Modo_Feedback);
 void Filtro_Produtos_Codigos_Em_Estoque_Minimo(int Modo_Feedback);
+//Transacoes
+void Main_Transacoes();
+int Valida_Reserva(int Codigo, int Modo_de_Abertura);
+float Valor_Total(int Codigo, int Modo_de_Abertura);
+void Checkin();	
 #endif

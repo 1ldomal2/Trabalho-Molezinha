@@ -5,14 +5,24 @@ void Main_Transacoes(){
 	int Opcao=0;
 	do{
 		printf("\n");
-		printf("\nDigite um numero referente a açao:");
+		printf("\nDigite um numero referente a açao:\n");
+		Amarelo("1 - Check IN\n");
+		Amarelo("2 - Check OUT\n");
+		Amarelo("0 - Sair\n");
 		scanf("%d",&Opcao);
-	}while(Opcao<0);
-
+		//Recebe a Opcao do usuario
+	}while(Opcao<0 || Opcao>2);//Repete enquanto opcao invalida
+	
 	switch (Opcao)
 	{
-		case 1:
+		case 1://Caso Check IN
+			Checkin();
+			Verde("\nDigite 1 e pressione enter para continuar");			
+			PAUSA; 
 		break;
+		case 2://Caso Check OUT
+		break;
+		
 
 	}
 }
@@ -95,11 +105,13 @@ int Valida_Reserva(int Codigo, int Modo_de_Abertura){
 	return 0;
 }
 
-float Valor_Diarias(int Codigo, int Modo_de_Abertura){
+float Valor_Total(int Codigo, int Modo_de_Abertura){
 	RESERVA Reserva;
 	int Codigo_Acomodacao = 0, Codigo_Categoria = 0;
-	float Valor_Diaria = 0;
+	float Valor_Total = 0;
+	int Quantidade_Dias = 0;
 	FILE *Arquivo;
+	char Temporario[999];
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
 		Arquivo=fopen("Arquivos/Reserva.txt","r");
@@ -146,7 +158,30 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 					//Lê o Codigo
 				getc(Arquivo);
 					//lê/pula ';'
+				fscanf(Arquivo,"%i",&Reserva.Data_Entrada.Dia);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				fscanf(Arquivo,"%i",&Reserva.Data_Entrada.Mes);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				fscanf(Arquivo,"%i",&Reserva.Data_Entrada.Ano);
+					//Lê o Codigo
+				getc(Arquivo);
+				fscanf(Arquivo,"%i",&Reserva.Data_Saida.Dia);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				fscanf(Arquivo,"%i",&Reserva.Data_Saida.Mes);
+					//Lê o Codigo
+				getc(Arquivo);
+					//lê/pula ';'
+				fscanf(Arquivo,"%i",&Reserva.Data_Saida.Ano);
+					//Lê o Codigo
+				getc(Arquivo);
 				Codigo_Acomodacao = Reserva.Cod_Acomodacao;
+				Quantidade_Dias = Reserva.Data_Saida.Dia - Reserva.Data_Entrada.Dia;
 			}else{
 				if(feof(Arquivo)){
 					//Verifica se chegou a ao fim do arquivo
@@ -169,6 +204,7 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 			}
 			if(Reserva.Codigo == Codigo){
 				Codigo_Acomodacao = Reserva.Cod_Acomodacao;
+				Quantidade_Dias = Reserva.Data_Saida.Dia - Reserva.Data_Entrada.Dia;
 			}
 		}
 	}
@@ -241,7 +277,7 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 			}
 		}
 	}
-	CODIGO_CATEGORIA Codigo_Categoria;
+	CODIGO_CATEGORIA Cod_Categoria;
 	switch(Modo_de_Abertura){
 		case Arquivo_Texto:
 		Arquivo=fopen("Arquivos/Codigo_Categoria.txt","r");
@@ -266,7 +302,7 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 	{
 		while(!feof(Arquivo)){
 
-			fscanf(Arquivo,"%d",&Codigo_Categoria.Codigo);
+			fscanf(Arquivo,"%d",&Cod_Categoria.Codigo);
 				//Lê o Codigo
 			getc(Arquivo);
 				//lê/pula ';'
@@ -275,16 +311,16 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 					break;
 					//sai do while
 			}
-			if(Codigo_Categoria.Codigo == Codigo_Categoria){
+			if(Cod_Categoria.Codigo == Codigo_Categoria){
 				for(int i = 0;i < 2; i++){
 					fscanf(Arquivo,"%[^;]s",Temporario);
 					getc(Arquivo);
 				}//Pula ate chegar no codigo de categoria
 
-				fscanf(Arquivo,"%f",&Codigo_Categoria.Valor_Diaria);
+				fscanf(Arquivo,"%f",&Cod_Categoria.Valor_Diaria);
 					//Lê o Codigo
 				getc(Arquivo);
-				Valor_Diaria = Codigo_Categoria.Valor_Diaria;
+				Valor_Total = Cod_Categoria.Valor_Diaria;
 			}else{
 				if(feof(Arquivo)){
 					//Verifica se chegou a ao fim do arquivo
@@ -299,18 +335,20 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 	{
 		//Zera contador de Codigos
 		while(!feof(Arquivo)){
-			fread(&Codigo_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
+			fread(&Cod_Categoria, sizeof(CODIGO_CATEGORIA),1,Arquivo);
 			//Le arquivo e passac para a struct
 			if(feof(Arquivo)){
 				break;
 				//Se estiver no fim do arquivo sai do loop
 			}
-			if(Codigo_Categoria.Codigo == Codigo_Categoria){
-				Valor_Diaria = Codigo_Categoria.Valor_Diaria;
+			if(Cod_Categoria.Codigo == Codigo_Categoria){
+				Valor_Total = Cod_Categoria.Valor_Diaria;
 			}
 		}
 	}
-	return Valor_Diaria;
+	Valor_Total = Valor_Total * Quantidade_Dias;
+
+	return Valor_Total;
 }
 
 
@@ -318,9 +356,10 @@ float Valor_Diarias(int Codigo, int Modo_de_Abertura){
 void Checkin(){
 	int Reserva=0,Loop=1,Check=0;
 	int Configuracao=Configuracoes();
+	float Valor_Total_Diarias = 0;
 	//Declara Variaveis
 	while(Loop){//Loop que repete equanto loop for igual 1
-		printf("Digite o codigo da reserva:\n");
+		printf("Digite o codigo da reserva para efetuar o Check In:\n");
 		scanf("%d",&Reserva);
 		//Recebe codigo da reserva
 		Loop = Valida_Reserva(Reserva, Configuracao);
@@ -328,6 +367,7 @@ void Checkin(){
 		if(Loop == 1){
 			Loop = 0;//Caso encontre zera o loop para sair do while
 		}else{//see nao
+			Vermelho("Código digitado é invalido\n");
 			printf("Deseja sair sem validar o codigo da reseva(1 - Sim 2 - Nao)");
 			scanf("%d",&Loop);
 			//Pergunta se usuario deseja sair sem validar
@@ -348,10 +388,14 @@ void Checkin(){
 		Vermelho("Saida\n")
 		//Recebe se usuario deseja pagar na entrada ou na saida
 		scanf("%d",&Check);
-	}while(Check<1 || Check>2);
+	}while(Check<1 || Check>2);//Repete equanto nao digitar opcao valida
 
-	if(Check == 1){
-
+	if(Check == 1){//Caso deseja efetuar o pagamento na entrada
+		Valor_Total_Diarias = Valor_Total(Reserva, Configuracao);
+		//Chama Funcao para calcular o valor a ser pago
+		Vermelho("O valor a ser pago é R$");
+		Vermelho_F(Valor_Total_Diarias);
+		//Mostra na tela o valor da diaria
 	}
 }
 
