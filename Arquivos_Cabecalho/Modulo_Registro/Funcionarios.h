@@ -252,7 +252,7 @@ void Recebe_Dados_Funcionarios(FUNCIONARIOS *Funcionarios){
 		scanf("%d",&Editar);
 		printf("\nPermissao para Apagar:");
 		scanf("%d",&Apagar);
-		Decimal = Converter_Decimal_Binario(Ler,Criar,Editar,Apagar);
+		Decimal = Converter_Decimal_Binario(Apagar,Editar,Criar,Ler);
 		system("clear");
 		if (Decimal == 0)
 		{
